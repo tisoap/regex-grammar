@@ -1,0 +1,8 @@
+IVOSAF (Incontrolavel Vontade de Sair Fazendo)
+	* Gramatica Completa de Regex feita em 4 horas
+	* Nao funciona
+	* Inviavel fazer debug
+	
+0.1
+	* Reconhece caracteres alpha numericos
+	
