@@ -1,0 +1,19 @@
+IVOSAF (Incontrolavel Vontade de Sair Fazendo) (25/03/2015)
+	* Gramatica Completa de Regex feita em 4 horas
+	* Nao funciona
+	* Inviavel fazer debug
+
+0.1 (27/03/2015)
+	* Reconhece caracteres alpha numericos
+	
+0.2 (27/03/2015)
+	* Reconhece grupos numericos, nomeados e de nao captura
+	* Reconhece grupos dentro de grupos
+	* Criado caso de teste com aplicacao Java
+	* Criado Listener que imprime texto traduzido
+
+0.2.1 (29/03/2015)
+	* Reconhece comentarios
+	* Melhorado o reconhecimento de grupos
+	* Caso de teste agora e um JAR executavel
+	* Possivel fazer teste de todos os tipos de grupos
