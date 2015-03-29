@@ -1,0 +1,42 @@
+A gramatica em seu estado atual consegue reconhecer:
+	
+	* Caracteres alpha numericos e espacos
+	
+	* Grupos
+		- Numericos 
+		- Nomeados
+		- Nao captura
+		- Comentarios
+	
+	* Multiplas opcoes
+
+TODO:
+	
+	* Quantificadores
+		- Greedy
+		- Lazy
+	
+	* Listas
+		- Caracteres
+		- Conjuntos de caracteres
+		- Listas negativas
+	
+	* Posicoes
+	
+	* Classes de caracteres
+		- Classes positivas
+		- Classes negativas
+		- Unicode
+		- Hexadecimal
+		- ASCII
+		- Controle
+	
+	* Lookarouds
+		- Positive Look Ahead
+		- Negative Look Ahead
+		- Positive Look Behind
+		- Negative Look Behind
+	
+	* Suporte a todos os caracteres imprimiveis
+	
+	* Suporte a caracteres especiais escapados
