@@ -9,13 +9,13 @@ A gramatica em seu estado atual consegue reconhecer:
 		- Comentarios
 	
 	* Multiplas opcoes
-
-TODO:
 	
 	* Quantificadores
 		- Greedy
 		- Lazy
-	
+
+TODO:
+
 	* Listas
 		- Caracteres
 		- Conjuntos de caracteres

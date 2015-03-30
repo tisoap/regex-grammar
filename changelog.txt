@@ -1,4 +1,7 @@
 
+0.4 (30/03/2015)
+	* Reconhece quantificadores
+
 0.3  (29/03/2015)
 	* Reconhece multiplas opcoes
 	* Reconhece varios niveis de multiplas opcoes dentro de grupos
