@@ -12,23 +12,23 @@ a(b|c)
 EOF
 ```
 
-##Visualizando
-
-Você pode exibir uma representação gráfica da parse tree criada a partir de uma expressão regular utilizando o `TestRig` da biblioteca ANTLR. Para isso, primeiro siga as instruções de como configurar o ANTRL em seu sistema pelo [Quick Start Guide](http://www.antlr.org/) ou pelo [Getting Started with ANTLR v4](https://theantlrguy.atlassian.net/wiki/display/ANTLR4/Getting+Started+with+ANTLR+v4).
-
-Com o ANTRL configurado, execute estes comandos no mesmo diretório da gramatica, para gerar e compilar os arquivos necessários:
+Para mostrar uma representação gráfica da Parse Tree gerada a partir de uma expressão regular, adicione o parâmetro `-gui` na execução do comando. Exemplo:
 
 ```
-$ antlr4  RegularExpression.g4
-$ javac  RegularExpression*.java
-```
-Agora você pode ver a representação gráfica de uma expressão qualquer executando:
-
-```
-$ grun RegularExpression expression -gui
+$  java -jar test-case.jar -gui
 a(b|c)
 EOF
 ```
+
+Para imprimir a ParseTree gerada em forma de listas, adicione o parâmetro `-list` na execução do comando. Exemplo:
+
+
+```
+$  java -jar test-case.jar -list
+a(b|c)
+EOF
+```
+
 
 ##Suporte
 
@@ -75,36 +75,40 @@ A gramatica em seu estado atual consegue reconhecer:
 
 ## Changelog
 
+0.5 (02/04/2015)
+
+- Adicionado parâmetros `-gui` e `-list` na aplicação de teste
+
 0.4 (30/03/2015)
 
-	- Reconhece quantificadores
+- Reconhece quantificadores
 
 0.3  (29/03/2015)
 
-	- Reconhece múltiplas opções
-	- Reconhece vários níveis de múltiplas opções dentro de grupos
-	- Possível fazer teste de expressões com múltiplas opções
+- Reconhece múltiplas opções
+- Reconhece vários níveis de múltiplas opções dentro de grupos
+- Possível fazer teste de expressões com múltiplas opções
 
 0.2.1 (29/03/2015)
 
-	- Reconhece comentários
-	- Melhorado o reconhecimento de grupos
-	- Caso de teste agora em JAR executável
-	- Possível fazer teste de expressões com todos os tipos de grupos
+- Reconhece comentários
+- Melhorado o reconhecimento de grupos
+- Caso de teste agora em JAR executável
+- Possível fazer teste de expressões com todos os tipos de grupos
 
 0.2 (27/03/2015)
 
-	- Reconhece grupos numéricos, nomeados e de não captura
-	- Reconhece grupos dentro de grupos
-	- Criado caso de teste com aplicação Java
-	- Criado Listener que imprime texto traduzido
+- Reconhece grupos numéricos, nomeados e de não captura
+- Reconhece grupos dentro de grupos
+- Criado caso de teste com aplicação Java
+- Criado Listener que imprime texto traduzido
 
 0.1 (27/03/2015)
 
-	- Reconhece caracteres alfanuméricos
+- Reconhece caracteres alfanuméricos
 
 IVOSAF (Incontrolável Vontade de Sair Fazendo) (25/03/2015)
 
-	- Gramatica Completa de Regex feita em 4 horas
-	- Não funciona
-	- Inviável fazer debug
+- Gramatica Completa de Regex feita em 4 horas
+- Não funciona
+- Inviável fazer debug

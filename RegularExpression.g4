@@ -43,7 +43,8 @@ groupName : CHAR+ ;
 noCaptureGroup : NOCAPTUREGROUP expression CLOSE ;
 
 //Um elemento a ser quantificado e o simbolo repetidor
-repetition : quantified quantifier;
+//O simbolo repetidor se associa a esquerda do elemento quantificado
+repetition : <assoc=right> quantified quantifier ;
 
 //So e possivel quantificar grupos ou caracteres individuais
 quantified : group
