@@ -1,6 +1,36 @@
 # Gramática Regex
 
-Gramática ANTLR que define expressões regulares.
+Gramática ANTLR que define expressões regulares. Inclui uma aplicação de teste Java que realiza a tradução da expressão para linguagem natural em estrutura de árvore.
+
+##Traduzindo
+
+Para traduzir uma expressão, execute o comando `java -jar test-case.jar` e digite sua expressão seguida de uma quebra de linha e o caractere de fim de arquivo EOF (Ctrl+Z em Windows, Ctrl+D em Unix). Exemplo:
+
+```
+$  java -jar test-case.jar
+a(b|c)
+EOF
+```
+
+##Visualizando
+
+Você pode exibir uma representação gráfica da parse tree criada a partir de uma expressão regular utilizando o `TestRig` da biblioteca ANTLR. Para isso, primeiro siga as instruções de como configurar o ANTRL em seu sistema pelo [Quick Start Guide](http://www.antlr.org/) ou pelo [Getting Started with ANTLR v4](https://theantlrguy.atlassian.net/wiki/display/ANTLR4/Getting+Started+with+ANTLR+v4).
+
+Com o ANTRL configurado, execute estes comandos no mesmo diretório da gramatica, para gerar e compilar os arquivos necessários:
+
+```
+$ antlr4  RegularExpression.g4
+$ javac  RegularExpression*.java
+```
+Agora você pode ver a representação gráfica de uma expressão qualquer executando:
+
+```
+$ grun RegularExpression expression -gui
+a(b|c)
+EOF
+```
+
+##Suporte
 
 A gramatica em seu estado atual consegue reconhecer:
 	
@@ -9,20 +39,7 @@ A gramatica em seu estado atual consegue reconhecer:
 	- Numéricos 
 	- Nomeados
 	- Não captura
-	- Comentários
-- Múltiplas opções
-- Quantificadores
-	- Greedy
-	- Lazy
-
-A aplicação de teste Java consegue traduzir:
-
-- Caracteres alfanuméricos e espaços
-- Grupos
-	- Numéricos 
-	- Nomeados
-	- Não captura
-	- Comentários
+- Comentários
 - Múltiplas opções
 - Quantificadores
 	- Greedy
@@ -31,7 +48,7 @@ A aplicação de teste Java consegue traduzir:
 ##Bugs Conhecidos
 
 - Não existe validação do quantificador `{n,m}` para garantir que `n > 0` e `n < m`
-- Aplicação de teste sem suporte a quantificadores
+- Aplicação de teste sem suporte para tradução de quantificadores
 
 ##TODO
 
