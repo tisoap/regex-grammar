@@ -4,7 +4,7 @@ Gramática ANTLR que define expressões regulares. Inclui uma aplicação de tes
 
 ##Traduzindo
 
-Para traduzir uma expressão, execute o comando `java -jar test-case.jar` e digite sua expressão seguida de uma quebra de linha e o caractere de fim de arquivo EOF (Ctrl+Z em Windows, Ctrl+D em Unix). Exemplo:
+Para traduzir uma expressão, execute o comando `java -jar test-case.jar` e digite sua expressão seguida de uma quebra de linha e o caractere de fim de arquivo EOF (`Ctrl+Z` seguido de `Enter` no Windows, `Ctrl+D` em sistemas Unix). Exemplo:
 
 ```
 $  java -jar test-case.jar
@@ -28,7 +28,6 @@ $  java -jar test-case.jar -list
 a(b|c)
 EOF
 ```
-
 
 ##Suporte
 
