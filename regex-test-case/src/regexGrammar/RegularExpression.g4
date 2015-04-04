@@ -114,19 +114,25 @@ character : (CHAR|DIGIT) ;
 
 
 /** Lexer Rules */
-COMMA              : ','                 ;
-QUESTION           : '?'                 ;
-PLUS               : '+'                 ;
-ASTERISC           : '*'                 ;
-CURLYOPEN          : '{'                 ;
-CURLYCLOSE         : '}'                 ;
-DIGIT              : [0-9]               ;
-PIPE               : '|'                 ;
-NAMESTART          : '(?<'               ;
-NAMEEND            : '>'                 ;
-NUMERICALGROUP     : '('                 ;
-NOCAPTUREGROUP     : '(?:'               ;
-COMMENT            : '(?#'               ;
-CLOSE              : ')'                 ;
-CHAR               : [A-Za-z ]           ;
+
+COMMA              : ','        ;
+QUESTION           : '?'        ;
+PLUS               : '+'        ;
+ASTERISC           : '*'        ;
+CURLYOPEN          : '{'        ;
+CURLYCLOSE         : '}'        ;
+DIGIT              : [0-9]      ;
+PIPE               : '|'        ;
+NAMESTART          : '(?<'      ;
+NAMEEND            : '>'        ;
+NUMERICALGROUP     : '('        ;
+NOCAPTUREGROUP     : '(?:'      ;
+COMMENT            : '(?#'      ;
+CLOSE              : ')'        ;
+CHAR               : [A-Za-z ]  ;
+
+
+/** Skip Rules */
+
 WS                 : [\r\n\t] -> skip    ;
+
