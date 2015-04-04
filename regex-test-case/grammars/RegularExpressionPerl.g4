@@ -1,37 +1,45 @@
-grammar RegularExpression;
+/**
+ * Gramatica para expressoes regulares, padrao Perlre
+ * (Perl Regular Expressions)
+ * 
+ * http://perldoc.perl.org/perlre.html
+ */
 
-/** Parser Rules*/
+grammar RegularExpressionPerl;
+import RegularExpressionERE;
+
+
+/** Parser Rules */
 
 //Definicao de uma exprecao regular, que pode ser
+//@Override 
 expression : multiple                //Multiplas opcoes
            | group                   //Um grupo de captura
            | repetition              //Repeticoes
            | comment                 //Comentarios
            | expression expression   //Varias exprecoes
-           | characters              //Caracteres
+           | list                    //Uma lista de possiveis caracteres
+           | characters              //Caracteres em sequencia
            | WS                      //Regra especial para ignorar espacamento
            ;
 
-//Multiplas opcoes sao uma ou mais subexprecoes divididas por '|'
-multiple : subExpression (PIPE subExpression)+ ;
-
 //Uma subexpressao nao contem multiplas opcoes
+//@Override 
 subExpression : group                         //Um grupo de captura
               | repetition                    //Repeticoes
               | comment                       //Comentarios
               | subExpression subExpression   //Varias subexprecoes
-              | characters                    //Caracteres alpha numericos
+              | list                          //Uma lista de possiveis caracteres
+              | characters                    //Caracteres em sequencia
               | WS                            //Regra especial para ignorar espacamento
               ;
 
 //Grupos podem ser divididos em: 
+//@Override 
 group : numericalGroup  //Grupos de captura numericos
       | namedGroup      //Grupos de captura nomeados
       | noCaptureGroup  //Grupos de nao captura
       ;
-
-//Um grupo numerado inicia com '(', contem uma expressao, e termina com ')'
-numericalGroup : NUMERICALGROUP expression CLOSE ;
 
 //Um grupo nomeado inicia com '(?<Nome do grupo>', contem uma expressao, e termina com ')'
 namedGroup : NAMESTART groupName NAMEEND expression CLOSE ;
@@ -42,15 +50,8 @@ groupName : CHAR+ ;
 //Um grupo de nao captura inicia com '(?:', contem uma expressao, e termina com ')'
 noCaptureGroup : NOCAPTUREGROUP expression CLOSE ;
 
-//Um elemento a ser quantificado e o simbolo repetidor
-repetition : quantified quantifier;
-
-//So e possivel quantificar grupos ou caracteres individuais
-quantified : group
-           | character
-           ;
-
 //Um quantificador pode ser de tres tipos:
+//@Override 
 quantifier : lazy    //Quantidade minima possivel (preguicoso)
            | greedy  //Quantidade maxima possivel (guloso)
            | exact   //Exatamente uma quantidade
@@ -72,67 +73,28 @@ greedy : greedyOneOrMore    //Um ou mais
        | greedyBetween      //Entre X e Y
        ;
 
-//Abre chaves, digito, fecha chaves
-exact : CURLYOPEN value CURLYCLOSE ;
-
 greedyOneOrMore   : PLUS ;      //+
 greedyZeroOrMore  : ASTERISC ;  //*
 greedyConditional : QUESTION ;  //?
-
-//Abre chaves, digito, virgula, fecha chaves
-greedyAtLeast  : CURLYOPEN DIGIT+ COMMA CURLYCLOSE ;
-
-//Abre chaves, digito, virgula, digito, fecha chaves
-greedyBetween  : CURLYOPEN firstValue COMMA lastValue CURLYCLOSE ;
+greedyAtLeast     : CURLYOPEN DIGIT+ COMMA CURLYCLOSE ; //{n,}
+greedyBetween     : CURLYOPEN firstValue COMMA lastValue CURLYCLOSE ; //{n,m}
 
 lazyOneOrMore   : PLUS QUESTION;      //+?
 lazyZeroOrMore  : ASTERISC QUESTION;  //*?
 lazyConditional : QUESTION QUESTION;  //??
-
-//Abre chaves, digito, virgula, fecha chaves, interrogacao
-lazyAtLeast  : CURLYOPEN DIGIT+ COMMA CURLYCLOSE QUESTION;
-
-//Abre chaves, digito, virgula, digito, fecha chaves, interrogacao
-lazyBetween  : CURLYOPEN firstValue COMMA lastValue CURLYCLOSE QUESTION;
-
-//Um ou mais digitos
-value      : DIGIT+ ;
-firstValue : DIGIT+ ;
-lastValue  : DIGIT+ ;
+lazyAtLeast     : CURLYOPEN DIGIT+ COMMA CURLYCLOSE QUESTION; //{n,}?
+lazyBetween     : CURLYOPEN firstValue COMMA lastValue CURLYCLOSE QUESTION; //{n,m}?
 
 //Um comentario inicia com '(?#', contem um texto qualquer, e termina com ')'
 comment : COMMENT commentText CLOSE;
 
-//Um comentario pode conter um ou mais caracteres alpha-numericos e/ou espacos
+//O texto de um comentario pode conter um ou mais caracteres alpha-numericos e/ou espacos
 commentText: (CHAR|DIGIT)+ ;
-
-//Uma colecao de caracteres pode conter um ou mais caracteres alpha-numericos e/ou espacos
-characters : (CHAR|DIGIT)+ ;
-
-//Um caractere alpha numerico ou um espaco
-character : (CHAR|DIGIT) ;
 
 
 /** Lexer Rules */
 
-COMMA              : ','        ;
-QUESTION           : '?'        ;
-PLUS               : '+'        ;
-ASTERISC           : '*'        ;
-CURLYOPEN          : '{'        ;
-CURLYCLOSE         : '}'        ;
-DIGIT              : [0-9]      ;
-PIPE               : '|'        ;
 NAMESTART          : '(?<'      ;
 NAMEEND            : '>'        ;
-NUMERICALGROUP     : '('        ;
 NOCAPTUREGROUP     : '(?:'      ;
 COMMENT            : '(?#'      ;
-CLOSE              : ')'        ;
-CHAR               : [A-Za-z ]  ;
-
-
-/** Skip Rules */
-
-WS                 : [\r\n\t] -> skip    ;
-

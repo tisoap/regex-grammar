@@ -1,11 +1,12 @@
-package test;
+package test.listeners;
 
-import regexGrammar.RegularExpressionBaseListener;
-import regexGrammar.RegularExpressionParser.*;
+import generated.regexPerl.RegularExpressionPerlBaseListener;
+import generated.regexPerl.RegularExpressionPerlParser.*;
 
 /** Listener que vai ouvir os callbacks do ParseTreeWalker quando estiver caminhado
  *  por uma arvore. Dependendo do tipo de callback, sera imprimido um texto na tela. */
-public class TestRegexListener extends RegularExpressionBaseListener{
+
+public class TestRegexListenerPerl extends RegularExpressionPerlBaseListener {
 	
 	private String identacao = "";
 	private String caracteres = "";
@@ -15,8 +16,11 @@ public class TestRegexListener extends RegularExpressionBaseListener{
 	
 	/**  ------- Metodos auxiliares  ------- */
 	
-	/** @param x O nivel de identacao desejado.
-	 *  @return Uma String com 3 espacos vezes o numero da identacao.*/
+	/** 
+	 * Cria uma identacao de espacos de acordo com o nivel desejado.
+	 * 
+	 * @param x O nivel de identacao desejado.
+	 * @return Uma String com 3 espacos vezes o numero da identacao.*/
 	public String calcularIdentacao (int x) {
 		
 		String ident = "";
@@ -46,7 +50,7 @@ public class TestRegexListener extends RegularExpressionBaseListener{
 	/** ------- Listeners ------- */
 	
 	/** Quando entra em um conjunto de caracteres, imprime
-	 * 'Caracteres: ' + caracteres. */
+	 * 'Caracteres: ' + os caracteres do conjunto. */
 	@Override
 	public void enterCharacters(CharactersContext ctx) {
 		caracteres = ctx.getText();
