@@ -1,8 +1,10 @@
 # Gramática Regex
 
-Gramática ANTLR que define expressões regulares. Dividida em duas vertentes: `POSIX ERE` e `Perlre`.
+Gramática ANTLR que define expressões regulares. Dividida em duas vertentes: `POSIX ERE` e `PCRE`.
 
 Inclui uma aplicação de teste Java que realiza tradução de expressões regulares para linguagem natural em estrutura de árvore, fazendo uso de classes geradas pelo ANTLR.
+
+Para todos os casos, é assumido o padrão de codificação UTF-8.
 
 ##Aplicação de Teste
 
@@ -15,7 +17,7 @@ test-case.jar <modo> [<visualização>]
 `<modo>` é um argumento obrigatório que pode ser:
 
 - `-posix`: executa em modo de compatibilidade `POSIX ERE`
-- `-perl`:  executa em modo de compatibilidade `Perlre`
+- `-pcre`:  executa em modo de compatibilidade `PCRE`
 
 `[<visualização>]` é um argumento opcional que pode ser:
 
@@ -33,7 +35,7 @@ EOF
 Para gerar uma visualização da parse tree, adicione um argumento de visualização. Exemplo:
 
 ```
-$  java -jar test-case.jar -perl -gui
+$  java -jar test-case.jar -pcre -gui
 a(b|c)
 EOF
 ```
@@ -42,7 +44,7 @@ Adicionar um argumento de visualização faz com que a expressão não seja trad
 
 ##Suporte
 
-Cada vertente da gramática tem um nível de suporte diferente.
+Cada vertente da gramática tem um nível de suporte diferente. Por enquanto nenhuma vertente tem suporte completo de acordo com as definições oficiais.
 
 ###POSIX ERE:
 	
@@ -55,7 +57,7 @@ Cada vertente da gramática tem um nível de suporte diferente.
 	- Séries de caracteres
 	- Listas Negativas
 
-###Perl:
+###PCRE:
 
 - Caracteres alfanuméricos e espaços
 - Grupos
@@ -74,8 +76,10 @@ Cada vertente da gramática tem um nível de suporte diferente.
 
 ##Bugs Conhecidos
 
-- Não existe validação do quantificador `{n,m}` para garantir que `n > 0` e `n < m`
-- Tradução de quantificadores e listas não implementada
+- Não existe validação dos quantificadores `{n}`,`{n,}` e `{n,m}` para garantir que `n > 0` e `m > 0`
+- Não existe validação do quantificador `{n,m}` para garantir que `n < m`
+- Não existe validação de séries de caracteres `A-B` dentro de listas para garantir que `A` precede `B`, dentro do padrão UTF-8
+- Tradução em linguagem natural de quantificadores e listas não implementada
 
 ##TODO
 
@@ -99,6 +103,15 @@ Cada vertente da gramática tem um nível de suporte diferente.
 
 
 ## Changelog
+
+Padrão `DD/MM/AAAA` para as datas.
+
+0.6.1 (05/04/2015)
+
+- Todas as ocorrências de `Perl` e `Perlre` foram renomeadas para `PCRE`
+- O argumento `-perl` mudou para `-pcre`
+- Entrada de dados pelo usuário abstraída das classes geradoras de parse tree
+- Melhorada a definição da regra de caracteres
 
 0.6 (04/04/2015)
 

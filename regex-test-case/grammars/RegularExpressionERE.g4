@@ -2,7 +2,7 @@
  * Gramatica para expressoes regulares, padrao POSIX ERE
  * (Portable Operating System Interface Extended Regular Expressions)
  * 
- * http://pubs.opengroup.org/onlinepubs/000095399/basedefs/xbd_chap09.html#tag_09_04
+ * http://pubs.opengroup.org/onlinepubs/000095399/basedefs/xbd_chap09.html
  */
 
 grammar RegularExpressionERE;
@@ -23,13 +23,14 @@ expression : multiple                //Multiplas opcoes
 //Multiplas opcoes sao uma ou mais subexprecoes divididas por '|'
 multiple : subExpression (PIPE subExpression)+ ;
 
-//Uma subexpressao nao contem multiplas opcoes
+//Uma subexpressao e como uma expressao, mas sem multiplas opcoes.
+//Para se ter um nivel a mais de multiplas opcoes, estas obrigatoriamente devem
+//estar dentro de um grupo.
 subExpression : group                         //Um grupo de captura
               | repetition                    //Repeticoes
               | subExpression subExpression   //Varias subexprecoes
               | list                          //Uma lista de possiveis caracteres
               | characters                    //Caracteres em sequencia
-              | WS                            //Regra especial para ignorar espacamento
               ;
 
 //Grupos de captura so podem ser numericos, de acordo com o padrao POSIX
@@ -60,11 +61,11 @@ oneOrMore   : PLUS ;      //+
 zeroOrMore  : ASTERISC ;  //*
 conditional : QUESTION ;  //?
 
-//Abre chaves, digito, fecha chaves
+//Abre chaves, numeros, fecha chaves
 exact : CURLYOPEN value CURLYCLOSE ;
 
-//Abre chaves, digito, virgula, fecha chaves
-atLeast  : CURLYOPEN DIGIT+ COMMA CURLYCLOSE ;
+//Abre chaves, numeros, virgula, fecha chaves
+atLeast  : CURLYOPEN value COMMA CURLYCLOSE ;
 
 //Abre chaves, digito, virgula, digito, fecha chaves
 between  : CURLYOPEN firstValue COMMA lastValue CURLYCLOSE ;
@@ -79,20 +80,20 @@ list : negativeList
      | positiveList
      ;
 
-//Uma lista negativa pode ser um ou mais caracteres ou series, com um ^ no comeco, entre colchetes
+//Uma lista negativa pode ser uma ou mais colecoes de caracteres ou series, com um ^ no comeco, entre colchetes
 negativeList : BRACKETOPEN CIRCUMFLEX (characters|range)+ BRACKETCLOSE;
 
-//Uma lista positiva pode ser um ou mais caracteres ou series, entre colchetes
+//Uma lista positiva pode ser uma ou mais colecoes de caracteres ou series, entre colchetes
 positiveList : BRACKETOPEN (characters|range)+ BRACKETCLOSE;
 
 //Uma serie sao dois caracteres separados por um traco
 range: character DASH character;
 
-//Uma colecao de caracteres pode conter um ou mais caracteres alpha-numericos e/ou espacos
-characters : (CHAR|DIGIT)+ ;
+//Uma colecao de caracteres pode conter um ou mais caracteres
+characters : character+ ;
 
-//Um caractere alpha numerico ou um espaco
-character : (CHAR|DIGIT) ;
+//Um caractere pode ser um digito, letra ou espaco
+character : (DIGIT|LATIN|SPACE) ;
 
 
 /** Lexer Rules */
@@ -107,14 +108,15 @@ BRACKETOPEN        : '['        ;
 BRACKETCLOSE       : ']'        ;
 DASH               : '-'        ;
 CIRCUMFLEX         : '^'        ;
-DIGIT              : [0-9]      ;
 PIPE               : '|'        ;
 OPEN               : '('        ;
 CLOSE              : ')'        ;
-CHAR               : [A-Za-z ]  ;
+SPACE              : ' '        ;
+DIGIT              : [0-9]      ;
+LATIN              : [A-Za-z]   ;
 
 
-/** Skip Rules */
+/** Lexer Skip Rules */
 
-WS : [\r\n\t] -> skip ;
+WS : [\r\n\t] -> skip ; //Ignora quebras de linha e tabulacoes
 

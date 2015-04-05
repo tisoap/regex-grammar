@@ -1,12 +1,12 @@
 package test.listeners;
 
-import generated.regexPerl.RegularExpressionPerlBaseListener;
-import generated.regexPerl.RegularExpressionPerlParser.*;
+import generated.regexPCRE.RegularExpressionPCREBaseListener;
+import generated.regexPCRE.RegularExpressionPCREParser.*;
 
 /** Listener que vai ouvir os callbacks do ParseTreeWalker quando estiver caminhado
  *  por uma arvore. Dependendo do tipo de callback, sera imprimido um texto na tela. */
 
-public class TestRegexListenerPerl extends RegularExpressionPerlBaseListener {
+public class TestRegexListenerPCRE extends RegularExpressionPCREBaseListener {
 	
 	private String identacao = "";
 	private String caracteres = "";

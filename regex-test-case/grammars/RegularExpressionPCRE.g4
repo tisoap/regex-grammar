@@ -1,11 +1,14 @@
 /**
- * Gramatica para expressoes regulares, padrao Perlre
- * (Perl Regular Expressions)
+ * Gramatica para expressoes regulares, padrao PCRE
+ * (Perl Compatible Regular Expressions)
  * 
- * http://perldoc.perl.org/perlre.html
+ * http://www.pcre.org/
+ * 
+ * OBS: Comentarios com @Override indicam que a regra imediatamente abaixo
+ * e uma sobreposicao de uma regra da gramatica importada.
  */
 
-grammar RegularExpressionPerl;
+grammar RegularExpressionPCRE;
 import RegularExpressionERE;
 
 
@@ -23,7 +26,9 @@ expression : multiple                //Multiplas opcoes
            | WS                      //Regra especial para ignorar espacamento
            ;
 
-//Uma subexpressao nao contem multiplas opcoes
+//Uma subexpressao e como uma expressao, mas sem multiplas opcoes.
+//Para se ter um nivel a mais de multiplas opcoes, estas obrigatoriamente devem
+//estar dentro de um grupo.
 //@Override 
 subExpression : group                         //Um grupo de captura
               | repetition                    //Repeticoes
@@ -31,7 +36,6 @@ subExpression : group                         //Um grupo de captura
               | subExpression subExpression   //Varias subexprecoes
               | list                          //Uma lista de possiveis caracteres
               | characters                    //Caracteres em sequencia
-              | WS                            //Regra especial para ignorar espacamento
               ;
 
 //Grupos podem ser divididos em: 
@@ -45,7 +49,7 @@ group : numericalGroup  //Grupos de captura numericos
 namedGroup : NAMESTART groupName NAMEEND expression CLOSE ;
 
 //O nome de um grupo pode ser um ou mais caracteres
-groupName : CHAR+ ;
+groupName : character+ ;
 
 //Um grupo de nao captura inicia com '(?:', contem uma expressao, e termina com ')'
 noCaptureGroup : NOCAPTUREGROUP expression CLOSE ;
@@ -88,8 +92,8 @@ lazyBetween     : CURLYOPEN firstValue COMMA lastValue CURLYCLOSE QUESTION; //{n
 //Um comentario inicia com '(?#', contem um texto qualquer, e termina com ')'
 comment : COMMENT commentText CLOSE;
 
-//O texto de um comentario pode conter um ou mais caracteres alpha-numericos e/ou espacos
-commentText: (CHAR|DIGIT)+ ;
+//O texto de um comentario pode conter um ou mais caracteres
+commentText: character+ ;
 
 
 /** Lexer Rules */

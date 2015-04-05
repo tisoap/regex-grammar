@@ -1,20 +1,21 @@
 package test.parseTree;
 
-import generated.regexERE.RegularExpressionERELexer;
-import generated.regexERE.RegularExpressionEREParser;
-import generated.regexERE.RegularExpressionEREParser.ExpressionContext;
+import generated.regexPCRE.RegularExpressionPCRELexer;
+import generated.regexPCRE.RegularExpressionPCREParser;
+import generated.regexPCRE.RegularExpressionPCREParser.ExpressionContext;
 
 import java.io.IOException;
+import java.io.InputStream;
 
 import org.antlr.v4.runtime.*;
 import org.antlr.v4.runtime.tree.*;
 
 import test.listeners.TestRegexListenerERE;
 
-public class TestRegexPosix {
+public class TestRegexPCRE {
 	
-	private RegularExpressionEREParser posixParser;
-	private RegularExpressionEREParser.ExpressionContext tree;
+	private RegularExpressionPCREParser posixParser;
+	private RegularExpressionPCREParser.ExpressionContext tree;
 	
 	
 	/** Getters */
@@ -23,14 +24,14 @@ public class TestRegexPosix {
 		return tree;
 	}
 
-	public RegularExpressionEREParser getParser() {
+	public RegularExpressionPCREParser getParser() {
 		return posixParser;
 	}
 	
 	
 	/** Setters */
 
-	public void setParser(RegularExpressionEREParser parser) {
+	public void setParser(RegularExpressionPCREParser parser) {
 		this.posixParser = parser;
 	}
 	
@@ -38,24 +39,10 @@ public class TestRegexPosix {
 		this.tree = tree;
 	}
 	
-
-	/** 
-	 * Usuario digita pela entrada de texto padrao uma expressao regular,
-	 * seguido de uma quebra de linha e o caractere de fim de arquivo (EOF). Como resultado,
-	 * e imprimido na tela uma versao em estrutura de arvore e linguagem natural da
-	 * expressao.<br>
-	 * <br>
-	 * O argumento -gui exibe uma representacao grafica da parse tree gerada.<br>
-	 * <br>
-	 * O argumento -list exibe a parse tree em forma de lista.<br>
-	 * <br>
-	 * EOF: no Windows Ctrl+Z, em Unix Ctrl+D 
-	 * @param opcao Opcional, aceita argumentos -gui ou -list
-	 * @throws IOException */
-	 public TestRegexPosix(String opcao) throws IOException {
-		 
+	public TestRegexPCRE(InputStream input, String opcao) throws IOException {
+		
 		//Recebe uma string do usuario pelo terminal e inicializa a parse tree
-		criarParseTree();
+		criarParseTree(input);
 		
 		//Checa se foram passados argumentos
 		if (!opcao.equals(null)){
@@ -79,23 +66,23 @@ public class TestRegexPosix {
 	  * entrada do usuario.
 	 * @throws IOException
 	  */
-	private void criarParseTree() throws IOException {
+	private void criarParseTree(InputStream input) throws IOException {
 		
 		// Cria um stream de chars a partir de um texto digitado pelo usuario
-		ANTLRInputStream input = new ANTLRInputStream(System.in);
+		ANTLRInputStream inputAntrl = new ANTLRInputStream(input);
 		
 		// Cria um lexer que recebe o stream de chars
-		RegularExpressionERELexer lexer = new RegularExpressionERELexer(input);
+		RegularExpressionPCRELexer lexer = new RegularExpressionPCRELexer(inputAntrl);
 		
 		// Cria um stream de tokens retirados do lexer
 		CommonTokenStream tokens = new CommonTokenStream(lexer);
 		
 		// Cria um parser que recebe o stream de tokens
-		RegularExpressionEREParser parser = new RegularExpressionEREParser(tokens);
+		RegularExpressionPCREParser parser = new RegularExpressionPCREParser(tokens);
 		setParser(parser);
 		
 		// Cria a ParseTree comecando pela regra inicial 'expression'
-		RegularExpressionEREParser.ExpressionContext tree = parser.expression();
+		RegularExpressionPCREParser.ExpressionContext tree = parser.expression();
 		setTree(tree);
 		
 	}
@@ -135,7 +122,7 @@ public class TestRegexPosix {
 	 * @param tree A parse tree
 	 * @param parser O parser que gerou a parse tree
 	 */
-	private void parserTreeGui(ExpressionContext tree, RegularExpressionEREParser parser){
+	private void parserTreeGui(ExpressionContext tree, RegularExpressionPCREParser parser){
 		
 		//http://stackoverflow.com/questions/29353114/running-antrl-testrig-gui-from-within-a-java-application
 		//http:/www.antlr.org/api/JavaTool/org/antlr/v4/runtime/RuleContext.html#inspect%28org.antlr.v4.runtime.Parser%29
