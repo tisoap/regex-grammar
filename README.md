@@ -24,12 +24,11 @@ test-case.jar <modo> [<visualização>]
 - `-gui`: Exibe a parse tree de modo gráfico
 - `-list`: Exibe a parse tree em forma de listas
 
-Para traduzir uma expressão, execute o JAR com um argumento de modo e digite sua expressão seguida de uma quebra de linha e o caractere de fim de arquivo EOF (`Ctrl+Z` seguido de `Enter` no Windows, `Ctrl+D` em sistemas Unix). Exemplo:
+Para traduzir uma expressão, execute o JAR com um argumento de modo e digite sua expressão seguida de uma quebra de linha. Exemplo:
 
 ```
 $  java -jar test-case.jar -posix
 a(b|c)
-EOF
 ```
 
 Para gerar uma visualização da parse tree, adicione um argumento de visualização. Exemplo:
@@ -37,7 +36,6 @@ Para gerar uma visualização da parse tree, adicione um argumento de visualiza�
 ```
 $  java -jar test-case.jar -pcre -gui
 a(b|c)
-EOF
 ```
 
 Adicionar um argumento de visualização faz com que a expressão não seja traduzida para linguagem natural.
@@ -79,9 +77,11 @@ Cada vertente da gramática tem um nível de suporte diferente. Por enquanto nen
 - Não existe validação dos quantificadores `{n}`,`{n,}` e `{n,m}` para garantir que `n > 0` e `m > 0`
 - Não existe validação do quantificador `{n,m}` para garantir que `n < m`
 - Não existe validação de séries de caracteres `A-B` dentro de listas para garantir que `A` precede `B`, dentro do padrão UTF-8
-- Tradução em linguagem natural de quantificadores e listas não implementada
+- Tradução em linguagem natural de quantificadores não implementada
 
 ##TODO
+
+Implementar nas gramáticas:
 
 - Posições
 - Referências
@@ -101,10 +101,22 @@ Cada vertente da gramática tem um nível de suporte diferente. Por enquanto nen
 - Suporte a todos os caracteres imprimíveis
 - Suporte a caracteres especiais escapados
 
+Implementar na aplicação de teste:
+
+- Método de tradução utilizando visitor
+- Tradução de todos os elementos POSIX ERE
+- Validação de elementos
 
 ## Changelog
 
 Padrão `DD/MM/AAAA` para as datas.
+
+0.6.2 (05/04/2015)
+
+- Corrigido erro do tradutor introduzido na divisão da gramática
+- Não é mais necessário digitar o caractere de fim de arquivo EOF
+- Implementada tradução de listas é series de caracteres
+- Implementada tradução do quantificador `+`
 
 0.6.1 (05/04/2015)
 

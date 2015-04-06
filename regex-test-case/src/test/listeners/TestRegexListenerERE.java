@@ -94,10 +94,38 @@ public class TestRegexListenerERE extends RegularExpressionEREBaseListener {
 		imprimeMenosIdentacao("Grupo Numerado " + contadorGruposNumerados);
 	}
 	
-	//TODO
 	@Override
-	public void enterRepetition(RepetitionContext ctx) {
+	public void enterQuantifier(QuantifierContext ctx) {
+		nivelIdentacaoAtual++;
+	}
+	
+	@Override
+	public void exitQuantifier(QuantifierContext ctx) {
+		nivelIdentacaoAtual--;
+	}
+	
+	@Override
+	public void enterOneOrMore(OneOrMoreContext ctx) {
+		imprimeMenosIdentacao("Um ou mais do elemento anterior deste nivel");
+	}
+	
+	@Override
+	public void enterList(ListContext ctx) {
+		nivelIdentacaoAtual++;
+		imprimeMenosIdentacao("Qualquer um dos seguintes caracteres:");
+	}
+	
+	@Override
+	public void exitList(ListContext ctx) {
+		nivelIdentacaoAtual--;
+	}
+	
+	@Override
+	public void enterRange(RangeContext ctx) {
+		String a = ctx.getChild(0).getText();
+		String b = ctx.getChild(2).getText();
 		
+		imprime("Do caractere '" + a + "' ate o '" + b +"'");
 	}
 
 }
