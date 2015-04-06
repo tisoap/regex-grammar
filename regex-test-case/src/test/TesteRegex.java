@@ -1,7 +1,12 @@
 package test;
 
+import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
+//import java.io.InputStreamReader;
+
+
+import java.io.InputStreamReader;
+
 import test.parseTree.TestRegexERE;
 import test.parseTree.TestRegexPCRE;
 
@@ -35,9 +40,9 @@ public class TesteRegex {
 		if (args.length > 0){
 			
 			String modo = args[0]; //Salva o 1o argumento
-			String opcao = null;
+			String opcao = "";
 			
-			//Se foram passados pelo menos 2o argumentos
+			//Se foram passados pelo menos dois argumentos
 			if (args.length > 1) {
 				
 				opcao = args[1]; //Salva o 2o argumento
@@ -61,8 +66,8 @@ public class TesteRegex {
 			}
 			else {
 				
-				//Recebe um texto a ser digitado do usuario pela entrada padrao (console)
-				InputStream input = System.in;
+				BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+				String input = br.readLine();
 				
 				//Executa em modo POSIX ERE
 				if (modo.equals("-posix"))

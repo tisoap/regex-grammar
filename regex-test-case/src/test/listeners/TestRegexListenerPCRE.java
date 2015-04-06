@@ -100,15 +100,8 @@ public class TestRegexListenerPCRE extends RegularExpressionPCREBaseListener {
 	@Override
 	public void enterNamedGroup(NamedGroupContext ctx) {
 
-		/**Recupera o nome do grupo, que e o segundo filho da arvore do grupo.
-		 * Um grupo numerado tem o formato (?<Nome>expressao) e seus filhos vao ser:
-		 * 0: (?<
-		 * 1: Nome
-		 * 2: >
-		 * 3: expressao
-		 * 4: )
-		 * */
-		String groupName = ctx.getChild(1).getText();
+		//Recupera o nome do grupo
+		String groupName = ctx.groupName().getText();
 		
 		imprimeMenosIdentacao("Grupo Nomeado \"" + groupName + "\"");
 	}
@@ -124,21 +117,15 @@ public class TestRegexListenerPCRE extends RegularExpressionPCREBaseListener {
 	@Override
 	public void enterComment(CommentContext ctx) {
 		
-		/** Recupera o texto do comentario, que e o segundo filho da arvore de comentario.
-		 *  Um comentario tem o formato (?#comentario) e seus filhos vao ser:
-		 *  0: (?#
-		 *  1: comentario
-		 *  2: )
-		 *  */
-		String commentText = ctx.getChild(1).getText();
+		//Recupera o texto do comentario
+		String commentText = ctx.commentText().getText();
 		
 		imprime("Comentario: \"" + commentText + "\"");
 	}
 	
-	//TODO
 	@Override
-	public void enterRepetition(RepetitionContext ctx) {
-		
+	public void enterOneOrMore(OneOrMoreContext ctx) {
+		imprime("Um ou mais");
 	}
 
 }

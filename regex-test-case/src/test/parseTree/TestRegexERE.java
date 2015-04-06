@@ -3,62 +3,52 @@ package test.parseTree;
 import generated.regexERE.RegularExpressionERELexer;
 import generated.regexERE.RegularExpressionEREParser;
 import generated.regexERE.RegularExpressionEREParser.ExpressionContext;
-
 import java.io.IOException;
-import java.io.InputStream;
-
 import org.antlr.v4.runtime.*;
 import org.antlr.v4.runtime.tree.*;
-
 import test.listeners.TestRegexListenerERE;
 
 public class TestRegexERE {
 	
 	private RegularExpressionEREParser posixParser;
-	private RegularExpressionEREParser.ExpressionContext tree;
+	private ExpressionContext expContext;
 	
-	
-	/** Getters */
-	
-	public ExpressionContext getTree() {
-		return tree;
-	}
-
-	public RegularExpressionEREParser getParser() {
+	public RegularExpressionEREParser getPosixParser() {
 		return posixParser;
 	}
-	
-	
-	/** Setters */
 
-	public void setParser(RegularExpressionEREParser parser) {
-		this.posixParser = parser;
+	public ExpressionContext getExpContext() {
+		return expContext;
 	}
 	
-	public void setTree(ExpressionContext tree) {
-		this.tree = tree;
+	public void setPosixParser(RegularExpressionEREParser posixParser) {
+		this.posixParser = posixParser;
+	}
+
+	public void setExpContext(ExpressionContext expContext) {
+		this.expContext = expContext;
 	}
 	
-	public TestRegexERE(InputStream input, String opcao) throws IOException {
+	public TestRegexERE(String input, String opcao) throws IOException {
 		 
 		//Recebe uma string do usuario pelo terminal e inicializa a parse tree
 		criarParseTree(input);
 		
 		//Checa se foram passados argumentos
-		if (!opcao.equals(null)){
+		if (!opcao.isEmpty()){
 			
 			//Se o 1o argumento  for '-list', exibe a parse tree em forma de lista
-			if (opcao.equals("-list")) imprimirParseTree(tree);
+			if (opcao.equals("-list")) imprimirParseTree(expContext);
 			
 			//Se o 1o argumento for '-gui', exibe a parse tree de forma grafica
-			else if (opcao.equals("-gui")) parserTreeGui(tree, posixParser);
+			else if (opcao.equals("-gui")) parserTreeGui(expContext, posixParser);
 			
 			//Caso contrario, traduza a entrada do usuario
-			else traduzirListener(tree);
+			else traduzirListener(expContext);
 		}
 		
 		//Se nao foram passados argumentos, traduza a entrada do usuario
-		else traduzirListener(tree);
+		else traduzirListener(expContext);
 	}
 	 
 	 /** 
@@ -66,7 +56,7 @@ public class TestRegexERE {
 	  * entrada do usuario.
 	 * @throws IOException
 	  */
-	private void criarParseTree(InputStream input) throws IOException {
+	private void criarParseTree(String input) throws IOException {
 		
 		// Cria um stream de chars a partir de um texto digitado pelo usuario
 		ANTLRInputStream inputAntrl = new ANTLRInputStream(input);
@@ -79,11 +69,11 @@ public class TestRegexERE {
 		
 		// Cria um parser que recebe o stream de tokens
 		RegularExpressionEREParser parser = new RegularExpressionEREParser(tokens);
-		setParser(parser);
+		setPosixParser(parser);
 		
 		// Cria a ParseTree comecando pela regra inicial 'expression'
-		RegularExpressionEREParser.ExpressionContext tree = parser.expression();
-		setTree(tree);
+		ExpressionContext expContext = parser.expression();
+		setExpContext(expContext);
 		
 	}
 	

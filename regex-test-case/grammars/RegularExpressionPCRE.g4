@@ -14,16 +14,18 @@ import RegularExpressionERE;
 
 /** Parser Rules */
 
-//Definicao de uma exprecao regular, que pode ser
+//Definicao de uma exprecao regular, que pode ser:
 //@Override 
 expression : multiple                //Multiplas opcoes
+           | comment                 //Um comentario
            | group                   //Um grupo de captura
-           | repetition              //Repeticoes
-           | comment                 //Comentarios
+           | repetition              //Uma repeticao
            | expression expression   //Varias exprecoes
            | list                    //Uma lista de possiveis caracteres
            | characters              //Caracteres em sequencia
-           | WS                      //Regra especial para ignorar espacamento
+           
+           //Regra especial para ignorar espacamento
+           | WS
            ;
 
 //Uma subexpressao e como uma expressao, mas sem multiplas opcoes.
@@ -49,7 +51,7 @@ group : numericalGroup  //Grupos de captura numericos
 namedGroup : NAMESTART groupName NAMEEND expression CLOSE ;
 
 //O nome de um grupo pode ser um ou mais caracteres
-groupName : character+ ;
+groupName : characters ;
 
 //Um grupo de nao captura inicia com '(?:', contem uma expressao, e termina com ')'
 noCaptureGroup : NOCAPTUREGROUP expression CLOSE ;
@@ -94,7 +96,6 @@ comment : COMMENT commentText CLOSE;
 
 //O texto de um comentario pode conter um ou mais caracteres
 commentText: character+ ;
-
 
 /** Lexer Rules */
 

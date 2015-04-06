@@ -530,6 +530,9 @@ public class RegularExpressionEREParser extends Parser {
 		public GroupContext group() {
 			return getRuleContext(GroupContext.class,0);
 		}
+		public ListContext list() {
+			return getRuleContext(ListContext.class,0);
+		}
 		public CharacterContext character() {
 			return getRuleContext(CharacterContext.class,0);
 		}
@@ -551,7 +554,7 @@ public class RegularExpressionEREParser extends Parser {
 		QuantifiedContext _localctx = new QuantifiedContext(_ctx, getState());
 		enterRule(_localctx, 12, RULE_quantified);
 		try {
-			setState(94);
+			setState(95);
 			switch (_input.LA(1)) {
 			case OPEN:
 				enterOuterAlt(_localctx, 1);
@@ -560,12 +563,19 @@ public class RegularExpressionEREParser extends Parser {
 				group();
 				}
 				break;
-			case SPACE:
-			case DIGIT:
-			case LATIN:
+			case BRACKETOPEN:
 				enterOuterAlt(_localctx, 2);
 				{
 				setState(93);
+				list();
+				}
+				break;
+			case SPACE:
+			case DIGIT:
+			case LATIN:
+				enterOuterAlt(_localctx, 3);
+				{
+				setState(94);
 				character();
 				}
 				break;
@@ -621,47 +631,47 @@ public class RegularExpressionEREParser extends Parser {
 		QuantifierContext _localctx = new QuantifierContext(_ctx, getState());
 		enterRule(_localctx, 14, RULE_quantifier);
 		try {
-			setState(102);
+			setState(103);
 			switch ( getInterpreter().adaptivePredict(_input,6,_ctx) ) {
 			case 1:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(96);
+				setState(97);
 				oneOrMore();
 				}
 				break;
 			case 2:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(97);
+				setState(98);
 				zeroOrMore();
 				}
 				break;
 			case 3:
 				enterOuterAlt(_localctx, 3);
 				{
-				setState(98);
+				setState(99);
 				conditional();
 				}
 				break;
 			case 4:
 				enterOuterAlt(_localctx, 4);
 				{
-				setState(99);
+				setState(100);
 				exact();
 				}
 				break;
 			case 5:
 				enterOuterAlt(_localctx, 5);
 				{
-				setState(100);
+				setState(101);
 				atLeast();
 				}
 				break;
 			case 6:
 				enterOuterAlt(_localctx, 6);
 				{
-				setState(101);
+				setState(102);
 				between();
 				}
 				break;
@@ -700,7 +710,7 @@ public class RegularExpressionEREParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(104);
+			setState(105);
 			match(PLUS);
 			}
 		}
@@ -737,7 +747,7 @@ public class RegularExpressionEREParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(106);
+			setState(107);
 			match(ASTERISC);
 			}
 		}
@@ -774,7 +784,7 @@ public class RegularExpressionEREParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(108);
+			setState(109);
 			match(QUESTION);
 			}
 		}
@@ -815,11 +825,11 @@ public class RegularExpressionEREParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(110);
-			match(CURLYOPEN);
 			setState(111);
-			value();
+			match(CURLYOPEN);
 			setState(112);
+			value();
+			setState(113);
 			match(CURLYCLOSE);
 			}
 		}
@@ -861,13 +871,13 @@ public class RegularExpressionEREParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(114);
-			match(CURLYOPEN);
 			setState(115);
-			value();
+			match(CURLYOPEN);
 			setState(116);
-			match(COMMA);
+			value();
 			setState(117);
+			match(COMMA);
+			setState(118);
 			match(CURLYCLOSE);
 			}
 		}
@@ -912,15 +922,15 @@ public class RegularExpressionEREParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(119);
-			match(CURLYOPEN);
 			setState(120);
-			firstValue();
+			match(CURLYOPEN);
 			setState(121);
-			match(COMMA);
+			firstValue();
 			setState(122);
-			lastValue();
+			match(COMMA);
 			setState(123);
+			lastValue();
+			setState(124);
 			match(CURLYCLOSE);
 			}
 		}
@@ -961,17 +971,17 @@ public class RegularExpressionEREParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(126); 
+			setState(127); 
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			do {
 				{
 				{
-				setState(125);
+				setState(126);
 				match(DIGIT);
 				}
 				}
-				setState(128); 
+				setState(129); 
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			} while ( _la==DIGIT );
@@ -1014,17 +1024,17 @@ public class RegularExpressionEREParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(131); 
+			setState(132); 
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			do {
 				{
 				{
-				setState(130);
+				setState(131);
 				match(DIGIT);
 				}
 				}
-				setState(133); 
+				setState(134); 
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			} while ( _la==DIGIT );
@@ -1067,17 +1077,17 @@ public class RegularExpressionEREParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(136); 
+			setState(137); 
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			do {
 				{
 				{
-				setState(135);
+				setState(136);
 				match(DIGIT);
 				}
 				}
-				setState(138); 
+				setState(139); 
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			} while ( _la==DIGIT );
@@ -1119,19 +1129,19 @@ public class RegularExpressionEREParser extends Parser {
 		ListContext _localctx = new ListContext(_ctx, getState());
 		enterRule(_localctx, 34, RULE_list);
 		try {
-			setState(142);
+			setState(143);
 			switch ( getInterpreter().adaptivePredict(_input,10,_ctx) ) {
 			case 1:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(140);
+				setState(141);
 				negativeList();
 				}
 				break;
 			case 2:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(141);
+				setState(142);
 				positiveList();
 				}
 				break;
@@ -1185,36 +1195,36 @@ public class RegularExpressionEREParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(144);
-			match(BRACKETOPEN);
 			setState(145);
+			match(BRACKETOPEN);
+			setState(146);
 			match(CIRCUMFLEX);
-			setState(148); 
+			setState(149); 
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			do {
 				{
-				setState(148);
+				setState(149);
 				switch ( getInterpreter().adaptivePredict(_input,11,_ctx) ) {
 				case 1:
 					{
-					setState(146);
+					setState(147);
 					characters();
 					}
 					break;
 				case 2:
 					{
-					setState(147);
+					setState(148);
 					range();
 					}
 					break;
 				}
 				}
-				setState(150); 
+				setState(151); 
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			} while ( (((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << SPACE) | (1L << DIGIT) | (1L << LATIN))) != 0) );
-			setState(152);
+			setState(153);
 			match(BRACKETCLOSE);
 			}
 		}
@@ -1265,34 +1275,34 @@ public class RegularExpressionEREParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(154);
+			setState(155);
 			match(BRACKETOPEN);
-			setState(157); 
+			setState(158); 
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			do {
 				{
-				setState(157);
+				setState(158);
 				switch ( getInterpreter().adaptivePredict(_input,13,_ctx) ) {
 				case 1:
 					{
-					setState(155);
+					setState(156);
 					characters();
 					}
 					break;
 				case 2:
 					{
-					setState(156);
+					setState(157);
 					range();
 					}
 					break;
 				}
 				}
-				setState(159); 
+				setState(160); 
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			} while ( (((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << SPACE) | (1L << DIGIT) | (1L << LATIN))) != 0) );
-			setState(161);
+			setState(162);
 			match(BRACKETCLOSE);
 			}
 		}
@@ -1335,11 +1345,11 @@ public class RegularExpressionEREParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(163);
-			character();
 			setState(164);
-			match(DASH);
+			character();
 			setState(165);
+			match(DASH);
+			setState(166);
 			character();
 			}
 		}
@@ -1355,11 +1365,17 @@ public class RegularExpressionEREParser extends Parser {
 	}
 
 	public static class CharactersContext extends ParserRuleContext {
-		public List<CharacterContext> character() {
-			return getRuleContexts(CharacterContext.class);
+		public List<TerminalNode> DIGIT() { return getTokens(RegularExpressionEREParser.DIGIT); }
+		public TerminalNode DIGIT(int i) {
+			return getToken(RegularExpressionEREParser.DIGIT, i);
 		}
-		public CharacterContext character(int i) {
-			return getRuleContext(CharacterContext.class,i);
+		public List<TerminalNode> LATIN() { return getTokens(RegularExpressionEREParser.LATIN); }
+		public TerminalNode LATIN(int i) {
+			return getToken(RegularExpressionEREParser.LATIN, i);
+		}
+		public List<TerminalNode> SPACE() { return getTokens(RegularExpressionEREParser.SPACE); }
+		public TerminalNode SPACE(int i) {
+			return getToken(RegularExpressionEREParser.SPACE, i);
 		}
 		public CharactersContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -1378,11 +1394,12 @@ public class RegularExpressionEREParser extends Parser {
 	public final CharactersContext characters() throws RecognitionException {
 		CharactersContext _localctx = new CharactersContext(_ctx, getState());
 		enterRule(_localctx, 42, RULE_characters);
+		int _la;
 		try {
 			int _alt;
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(168); 
+			setState(169); 
 			_errHandler.sync(this);
 			_alt = 1;
 			do {
@@ -1390,15 +1407,20 @@ public class RegularExpressionEREParser extends Parser {
 				case 1:
 					{
 					{
-					setState(167);
-					character();
+					setState(168);
+					_la = _input.LA(1);
+					if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << SPACE) | (1L << DIGIT) | (1L << LATIN))) != 0)) ) {
+					_errHandler.recoverInline(this);
+					} else {
+						consume();
+					}
 					}
 					}
 					break;
 				default:
 					throw new NoViableAltException(this);
 				}
-				setState(170); 
+				setState(171); 
 				_errHandler.sync(this);
 				_alt = getInterpreter().adaptivePredict(_input,15,_ctx);
 			} while ( _alt!=2 && _alt!=org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER );
@@ -1440,7 +1462,7 @@ public class RegularExpressionEREParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(172);
+			setState(173);
 			_la = _input.LA(1);
 			if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << SPACE) | (1L << DIGIT) | (1L << LATIN))) != 0)) ) {
 			_errHandler.recoverInline(this);
@@ -1485,57 +1507,58 @@ public class RegularExpressionEREParser extends Parser {
 	}
 
 	public static final String _serializedATN =
-		"\3\u0430\ud6d1\u8206\uad2d\u4417\uaef1\u8d80\uaadd\3\23\u00b1\4\2\t\2"+
+		"\3\u0430\ud6d1\u8206\uad2d\u4417\uaef1\u8d80\uaadd\3\23\u00b2\4\2\t\2"+
 		"\4\3\t\3\4\4\t\4\4\5\t\5\4\6\t\6\4\7\t\7\4\b\t\b\4\t\t\t\4\n\t\n\4\13"+
 		"\t\13\4\f\t\f\4\r\t\r\4\16\t\16\4\17\t\17\4\20\t\20\4\21\t\21\4\22\t\22"+
 		"\4\23\t\23\4\24\t\24\4\25\t\25\4\26\t\26\4\27\t\27\4\30\t\30\3\2\3\2\3"+
 		"\2\3\2\3\2\3\2\3\2\5\28\n\2\3\2\3\2\7\2<\n\2\f\2\16\2?\13\2\3\3\3\3\3"+
 		"\3\6\3D\n\3\r\3\16\3E\3\4\3\4\3\4\3\4\3\4\5\4M\n\4\3\4\3\4\7\4Q\n\4\f"+
-		"\4\16\4T\13\4\3\5\3\5\3\6\3\6\3\6\3\6\3\7\3\7\3\7\3\b\3\b\5\ba\n\b\3\t"+
-		"\3\t\3\t\3\t\3\t\3\t\5\ti\n\t\3\n\3\n\3\13\3\13\3\f\3\f\3\r\3\r\3\r\3"+
-		"\r\3\16\3\16\3\16\3\16\3\16\3\17\3\17\3\17\3\17\3\17\3\17\3\20\6\20\u0081"+
-		"\n\20\r\20\16\20\u0082\3\21\6\21\u0086\n\21\r\21\16\21\u0087\3\22\6\22"+
-		"\u008b\n\22\r\22\16\22\u008c\3\23\3\23\5\23\u0091\n\23\3\24\3\24\3\24"+
-		"\3\24\6\24\u0097\n\24\r\24\16\24\u0098\3\24\3\24\3\25\3\25\3\25\6\25\u00a0"+
-		"\n\25\r\25\16\25\u00a1\3\25\3\25\3\26\3\26\3\26\3\26\3\27\6\27\u00ab\n"+
-		"\27\r\27\16\27\u00ac\3\30\3\30\3\30\2\4\2\6\31\2\4\6\b\n\f\16\20\22\24"+
-		"\26\30\32\34\36 \"$&(*,.\2\3\3\2\20\22\u00b3\2\67\3\2\2\2\4@\3\2\2\2\6"+
-		"L\3\2\2\2\bU\3\2\2\2\nW\3\2\2\2\f[\3\2\2\2\16`\3\2\2\2\20h\3\2\2\2\22"+
-		"j\3\2\2\2\24l\3\2\2\2\26n\3\2\2\2\30p\3\2\2\2\32t\3\2\2\2\34y\3\2\2\2"+
-		"\36\u0080\3\2\2\2 \u0085\3\2\2\2\"\u008a\3\2\2\2$\u0090\3\2\2\2&\u0092"+
-		"\3\2\2\2(\u009c\3\2\2\2*\u00a5\3\2\2\2,\u00aa\3\2\2\2.\u00ae\3\2\2\2\60"+
-		"\61\b\2\1\2\618\5\4\3\2\628\5\b\5\2\638\5\f\7\2\648\5$\23\2\658\5,\27"+
-		"\2\668\7\23\2\2\67\60\3\2\2\2\67\62\3\2\2\2\67\63\3\2\2\2\67\64\3\2\2"+
-		"\2\67\65\3\2\2\2\67\66\3\2\2\28=\3\2\2\29:\f\6\2\2:<\5\2\2\7;9\3\2\2\2"+
-		"<?\3\2\2\2=;\3\2\2\2=>\3\2\2\2>\3\3\2\2\2?=\3\2\2\2@C\5\6\4\2AB\7\r\2"+
-		"\2BD\5\6\4\2CA\3\2\2\2DE\3\2\2\2EC\3\2\2\2EF\3\2\2\2F\5\3\2\2\2GH\b\4"+
-		"\1\2HM\5\b\5\2IM\5\f\7\2JM\5$\23\2KM\5,\27\2LG\3\2\2\2LI\3\2\2\2LJ\3\2"+
-		"\2\2LK\3\2\2\2MR\3\2\2\2NO\f\5\2\2OQ\5\6\4\6PN\3\2\2\2QT\3\2\2\2RP\3\2"+
-		"\2\2RS\3\2\2\2S\7\3\2\2\2TR\3\2\2\2UV\5\n\6\2V\t\3\2\2\2WX\7\16\2\2XY"+
-		"\5\2\2\2YZ\7\17\2\2Z\13\3\2\2\2[\\\5\16\b\2\\]\5\20\t\2]\r\3\2\2\2^a\5"+
-		"\b\5\2_a\5.\30\2`^\3\2\2\2`_\3\2\2\2a\17\3\2\2\2bi\5\22\n\2ci\5\24\13"+
-		"\2di\5\26\f\2ei\5\30\r\2fi\5\32\16\2gi\5\34\17\2hb\3\2\2\2hc\3\2\2\2h"+
-		"d\3\2\2\2he\3\2\2\2hf\3\2\2\2hg\3\2\2\2i\21\3\2\2\2jk\7\5\2\2k\23\3\2"+
-		"\2\2lm\7\6\2\2m\25\3\2\2\2no\7\4\2\2o\27\3\2\2\2pq\7\7\2\2qr\5\36\20\2"+
-		"rs\7\b\2\2s\31\3\2\2\2tu\7\7\2\2uv\5\36\20\2vw\7\3\2\2wx\7\b\2\2x\33\3"+
-		"\2\2\2yz\7\7\2\2z{\5 \21\2{|\7\3\2\2|}\5\"\22\2}~\7\b\2\2~\35\3\2\2\2"+
-		"\177\u0081\7\21\2\2\u0080\177\3\2\2\2\u0081\u0082\3\2\2\2\u0082\u0080"+
-		"\3\2\2\2\u0082\u0083\3\2\2\2\u0083\37\3\2\2\2\u0084\u0086\7\21\2\2\u0085"+
-		"\u0084\3\2\2\2\u0086\u0087\3\2\2\2\u0087\u0085\3\2\2\2\u0087\u0088\3\2"+
-		"\2\2\u0088!\3\2\2\2\u0089\u008b\7\21\2\2\u008a\u0089\3\2\2\2\u008b\u008c"+
-		"\3\2\2\2\u008c\u008a\3\2\2\2\u008c\u008d\3\2\2\2\u008d#\3\2\2\2\u008e"+
-		"\u0091\5&\24\2\u008f\u0091\5(\25\2\u0090\u008e\3\2\2\2\u0090\u008f\3\2"+
-		"\2\2\u0091%\3\2\2\2\u0092\u0093\7\t\2\2\u0093\u0096\7\f\2\2\u0094\u0097"+
-		"\5,\27\2\u0095\u0097\5*\26\2\u0096\u0094\3\2\2\2\u0096\u0095\3\2\2\2\u0097"+
-		"\u0098\3\2\2\2\u0098\u0096\3\2\2\2\u0098\u0099\3\2\2\2\u0099\u009a\3\2"+
-		"\2\2\u009a\u009b\7\n\2\2\u009b\'\3\2\2\2\u009c\u009f\7\t\2\2\u009d\u00a0"+
-		"\5,\27\2\u009e\u00a0\5*\26\2\u009f\u009d\3\2\2\2\u009f\u009e\3\2\2\2\u00a0"+
-		"\u00a1\3\2\2\2\u00a1\u009f\3\2\2\2\u00a1\u00a2\3\2\2\2\u00a2\u00a3\3\2"+
-		"\2\2\u00a3\u00a4\7\n\2\2\u00a4)\3\2\2\2\u00a5\u00a6\5.\30\2\u00a6\u00a7"+
-		"\7\13\2\2\u00a7\u00a8\5.\30\2\u00a8+\3\2\2\2\u00a9\u00ab\5.\30\2\u00aa"+
-		"\u00a9\3\2\2\2\u00ab\u00ac\3\2\2\2\u00ac\u00aa\3\2\2\2\u00ac\u00ad\3\2"+
-		"\2\2\u00ad-\3\2\2\2\u00ae\u00af\t\2\2\2\u00af/\3\2\2\2\22\67=ELR`h\u0082"+
-		"\u0087\u008c\u0090\u0096\u0098\u009f\u00a1\u00ac";
+		"\4\16\4T\13\4\3\5\3\5\3\6\3\6\3\6\3\6\3\7\3\7\3\7\3\b\3\b\3\b\5\bb\n\b"+
+		"\3\t\3\t\3\t\3\t\3\t\3\t\5\tj\n\t\3\n\3\n\3\13\3\13\3\f\3\f\3\r\3\r\3"+
+		"\r\3\r\3\16\3\16\3\16\3\16\3\16\3\17\3\17\3\17\3\17\3\17\3\17\3\20\6\20"+
+		"\u0082\n\20\r\20\16\20\u0083\3\21\6\21\u0087\n\21\r\21\16\21\u0088\3\22"+
+		"\6\22\u008c\n\22\r\22\16\22\u008d\3\23\3\23\5\23\u0092\n\23\3\24\3\24"+
+		"\3\24\3\24\6\24\u0098\n\24\r\24\16\24\u0099\3\24\3\24\3\25\3\25\3\25\6"+
+		"\25\u00a1\n\25\r\25\16\25\u00a2\3\25\3\25\3\26\3\26\3\26\3\26\3\27\6\27"+
+		"\u00ac\n\27\r\27\16\27\u00ad\3\30\3\30\3\30\2\4\2\6\31\2\4\6\b\n\f\16"+
+		"\20\22\24\26\30\32\34\36 \"$&(*,.\2\3\3\2\20\22\u00b5\2\67\3\2\2\2\4@"+
+		"\3\2\2\2\6L\3\2\2\2\bU\3\2\2\2\nW\3\2\2\2\f[\3\2\2\2\16a\3\2\2\2\20i\3"+
+		"\2\2\2\22k\3\2\2\2\24m\3\2\2\2\26o\3\2\2\2\30q\3\2\2\2\32u\3\2\2\2\34"+
+		"z\3\2\2\2\36\u0081\3\2\2\2 \u0086\3\2\2\2\"\u008b\3\2\2\2$\u0091\3\2\2"+
+		"\2&\u0093\3\2\2\2(\u009d\3\2\2\2*\u00a6\3\2\2\2,\u00ab\3\2\2\2.\u00af"+
+		"\3\2\2\2\60\61\b\2\1\2\618\5\4\3\2\628\5\b\5\2\638\5\f\7\2\648\5$\23\2"+
+		"\658\5,\27\2\668\7\23\2\2\67\60\3\2\2\2\67\62\3\2\2\2\67\63\3\2\2\2\67"+
+		"\64\3\2\2\2\67\65\3\2\2\2\67\66\3\2\2\28=\3\2\2\29:\f\6\2\2:<\5\2\2\7"+
+		";9\3\2\2\2<?\3\2\2\2=;\3\2\2\2=>\3\2\2\2>\3\3\2\2\2?=\3\2\2\2@C\5\6\4"+
+		"\2AB\7\r\2\2BD\5\6\4\2CA\3\2\2\2DE\3\2\2\2EC\3\2\2\2EF\3\2\2\2F\5\3\2"+
+		"\2\2GH\b\4\1\2HM\5\b\5\2IM\5\f\7\2JM\5$\23\2KM\5,\27\2LG\3\2\2\2LI\3\2"+
+		"\2\2LJ\3\2\2\2LK\3\2\2\2MR\3\2\2\2NO\f\5\2\2OQ\5\6\4\6PN\3\2\2\2QT\3\2"+
+		"\2\2RP\3\2\2\2RS\3\2\2\2S\7\3\2\2\2TR\3\2\2\2UV\5\n\6\2V\t\3\2\2\2WX\7"+
+		"\16\2\2XY\5\2\2\2YZ\7\17\2\2Z\13\3\2\2\2[\\\5\16\b\2\\]\5\20\t\2]\r\3"+
+		"\2\2\2^b\5\b\5\2_b\5$\23\2`b\5.\30\2a^\3\2\2\2a_\3\2\2\2a`\3\2\2\2b\17"+
+		"\3\2\2\2cj\5\22\n\2dj\5\24\13\2ej\5\26\f\2fj\5\30\r\2gj\5\32\16\2hj\5"+
+		"\34\17\2ic\3\2\2\2id\3\2\2\2ie\3\2\2\2if\3\2\2\2ig\3\2\2\2ih\3\2\2\2j"+
+		"\21\3\2\2\2kl\7\5\2\2l\23\3\2\2\2mn\7\6\2\2n\25\3\2\2\2op\7\4\2\2p\27"+
+		"\3\2\2\2qr\7\7\2\2rs\5\36\20\2st\7\b\2\2t\31\3\2\2\2uv\7\7\2\2vw\5\36"+
+		"\20\2wx\7\3\2\2xy\7\b\2\2y\33\3\2\2\2z{\7\7\2\2{|\5 \21\2|}\7\3\2\2}~"+
+		"\5\"\22\2~\177\7\b\2\2\177\35\3\2\2\2\u0080\u0082\7\21\2\2\u0081\u0080"+
+		"\3\2\2\2\u0082\u0083\3\2\2\2\u0083\u0081\3\2\2\2\u0083\u0084\3\2\2\2\u0084"+
+		"\37\3\2\2\2\u0085\u0087\7\21\2\2\u0086\u0085\3\2\2\2\u0087\u0088\3\2\2"+
+		"\2\u0088\u0086\3\2\2\2\u0088\u0089\3\2\2\2\u0089!\3\2\2\2\u008a\u008c"+
+		"\7\21\2\2\u008b\u008a\3\2\2\2\u008c\u008d\3\2\2\2\u008d\u008b\3\2\2\2"+
+		"\u008d\u008e\3\2\2\2\u008e#\3\2\2\2\u008f\u0092\5&\24\2\u0090\u0092\5"+
+		"(\25\2\u0091\u008f\3\2\2\2\u0091\u0090\3\2\2\2\u0092%\3\2\2\2\u0093\u0094"+
+		"\7\t\2\2\u0094\u0097\7\f\2\2\u0095\u0098\5,\27\2\u0096\u0098\5*\26\2\u0097"+
+		"\u0095\3\2\2\2\u0097\u0096\3\2\2\2\u0098\u0099\3\2\2\2\u0099\u0097\3\2"+
+		"\2\2\u0099\u009a\3\2\2\2\u009a\u009b\3\2\2\2\u009b\u009c\7\n\2\2\u009c"+
+		"\'\3\2\2\2\u009d\u00a0\7\t\2\2\u009e\u00a1\5,\27\2\u009f\u00a1\5*\26\2"+
+		"\u00a0\u009e\3\2\2\2\u00a0\u009f\3\2\2\2\u00a1\u00a2\3\2\2\2\u00a2\u00a0"+
+		"\3\2\2\2\u00a2\u00a3\3\2\2\2\u00a3\u00a4\3\2\2\2\u00a4\u00a5\7\n\2\2\u00a5"+
+		")\3\2\2\2\u00a6\u00a7\5.\30\2\u00a7\u00a8\7\13\2\2\u00a8\u00a9\5.\30\2"+
+		"\u00a9+\3\2\2\2\u00aa\u00ac\t\2\2\2\u00ab\u00aa\3\2\2\2\u00ac\u00ad\3"+
+		"\2\2\2\u00ad\u00ab\3\2\2\2\u00ad\u00ae\3\2\2\2\u00ae-\3\2\2\2\u00af\u00b0"+
+		"\t\2\2\2\u00b0/\3\2\2\2\22\67=ELRai\u0083\u0088\u008d\u0091\u0097\u0099"+
+		"\u00a0\u00a2\u00ad";
 	public static final ATN _ATN =
 		new ATNDeserializer().deserialize(_serializedATN.toCharArray());
 	static {

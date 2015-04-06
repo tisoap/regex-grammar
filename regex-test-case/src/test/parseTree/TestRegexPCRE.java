@@ -3,43 +3,35 @@ package test.parseTree;
 import generated.regexPCRE.RegularExpressionPCRELexer;
 import generated.regexPCRE.RegularExpressionPCREParser;
 import generated.regexPCRE.RegularExpressionPCREParser.ExpressionContext;
-
 import java.io.IOException;
-import java.io.InputStream;
-
 import org.antlr.v4.runtime.*;
 import org.antlr.v4.runtime.tree.*;
-
 import test.listeners.TestRegexListenerERE;
 
 public class TestRegexPCRE {
 	
-	private RegularExpressionPCREParser posixParser;
-	private RegularExpressionPCREParser.ExpressionContext tree;
+	private RegularExpressionPCREParser pcreParser;
+	private ExpressionContext exprContext;
 	
 	
-	/** Getters */
-	
-	public ExpressionContext getTree() {
-		return tree;
+	public RegularExpressionPCREParser getPcreParser() {
+		return pcreParser;
 	}
 
-	public RegularExpressionPCREParser getParser() {
-		return posixParser;
+	public ExpressionContext getExprContext() {
+		return exprContext;
 	}
-	
-	
-	/** Setters */
 
-	public void setParser(RegularExpressionPCREParser parser) {
-		this.posixParser = parser;
+	public void setExprContext(ExpressionContext exprContext) {
+		this.exprContext = exprContext;
 	}
 	
-	public void setTree(ExpressionContext tree) {
-		this.tree = tree;
+	public void setPcreParser(RegularExpressionPCREParser pcreParser) {
+		this.pcreParser = pcreParser;
 	}
 	
-	public TestRegexPCRE(InputStream input, String opcao) throws IOException {
+
+	public TestRegexPCRE(String input, String opcao) throws IOException {
 		
 		//Recebe uma string do usuario pelo terminal e inicializa a parse tree
 		criarParseTree(input);
@@ -48,17 +40,17 @@ public class TestRegexPCRE {
 		if (!opcao.equals(null)){
 			
 			//Se o 1o argumento  for '-list', exibe a parse tree em forma de lista
-			if (opcao.equals("-list")) imprimirParseTree(tree);
+			if (opcao.equals("-list")) imprimirParseTree(exprContext);
 			
 			//Se o 1o argumento for '-gui', exibe a parse tree de forma grafica
-			else if (opcao.equals("-gui")) parserTreeGui(tree, posixParser);
+			else if (opcao.equals("-gui")) parserTreeGui(exprContext, pcreParser);
 			
 			//Caso contrario, traduza a entrada do usuario
-			else traduzirListener(tree);
+			else traduzirListener(exprContext);
 		}
 		
 		//Se nao foram passados argumentos, traduza a entrada do usuario
-		else traduzirListener(tree);
+		else traduzirListener(exprContext);
 	}
 	 
 	 /** 
@@ -66,7 +58,7 @@ public class TestRegexPCRE {
 	  * entrada do usuario.
 	 * @throws IOException
 	  */
-	private void criarParseTree(InputStream input) throws IOException {
+	private void criarParseTree(String input) throws IOException {
 		
 		// Cria um stream de chars a partir de um texto digitado pelo usuario
 		ANTLRInputStream inputAntrl = new ANTLRInputStream(input);
@@ -79,11 +71,11 @@ public class TestRegexPCRE {
 		
 		// Cria um parser que recebe o stream de tokens
 		RegularExpressionPCREParser parser = new RegularExpressionPCREParser(tokens);
-		setParser(parser);
+		setPcreParser(parser);
 		
 		// Cria a ParseTree comecando pela regra inicial 'expression'
-		RegularExpressionPCREParser.ExpressionContext tree = parser.expression();
-		setTree(tree);
+		ExpressionContext tree = parser.expression();
+		setExprContext(tree);
 		
 	}
 	
