@@ -2,23 +2,20 @@ package test;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-//import java.io.InputStreamReader;
-
-
 import java.io.InputStreamReader;
 
 import test.parseTree.TestRegexERE;
-import test.parseTree.TestRegexPCRE;
+
+//TODO Modo PCRE desativado 
+//import test.parseTree.TestRegexPCRE;
 
 public class TesteRegex {
 	
 	/** 
 	 * Usuario digita pela entrada de texto padrao uma expressao regular,
-	 * seguido de uma quebra de linha e o caractere de fim de arquivo (EOF). Como resultado,
+	 * seguido de uma quebra de linha. Como resultado,
 	 * e imprimido na tela uma versao em estrutura de arvore e linguagem natural da
 	 * expressao. Opcionalmente pode ser exibida uma representacao da parse tree gerada.<br>
-	 * <br>
-	 * EOF: Em sistemas Windows 'Ctrl+Z' seguido de Enter, em sistemas Unix 'Ctrl+D'.<br>
 	 * @param args Uma lista de argumentos String[]<br>
 	 * <br>
 	 * Obrigatoriamente deve ser passado um argumento de modo de execucao, e opcionalmente um
@@ -73,9 +70,10 @@ public class TesteRegex {
 				if (modo.equals("-posix"))
 					new TestRegexERE(input, opcao);
 				
-				//Executa em modo PCRE
+				//TODO Modo PCRE desativado 
+/*				//Executa em modo PCRE
 				else if (modo.equals("-pcre"))
-					new TestRegexPCRE(input, opcao);
+					new TestRegexPCRE(input, opcao);*/
 			}
 		}
 		

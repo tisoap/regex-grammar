@@ -3,10 +3,14 @@ package test.parseTree;
 import generated.regexERE.RegularExpressionERELexer;
 import generated.regexERE.RegularExpressionEREParser;
 import generated.regexERE.RegularExpressionEREParser.ExpressionContext;
+
 import java.io.IOException;
+
 import org.antlr.v4.runtime.*;
 import org.antlr.v4.runtime.tree.*;
+
 import test.listeners.TestRegexListenerERE;
+import test.visitors.TestRegexVisitorERE;
 
 public class TestRegexERE {
 	
@@ -44,11 +48,17 @@ public class TestRegexERE {
 			else if (opcao.equals("-gui")) parserTreeGui(expContext, posixParser);
 			
 			//Caso contrario, traduza a entrada do usuario
-			else traduzirListener(expContext);
+			else traduzirVisitor(expContext);
+			
+			//TODO Traducao por listener desativada
+			//else traduzirListener(expContext);
 		}
 		
 		//Se nao foram passados argumentos, traduza a entrada do usuario
-		else traduzirListener(expContext);
+		else traduzirVisitor(expContext);
+		
+		//TODO Traducao por listener desativada
+		//else traduzirListener(expContext);
 	}
 	 
 	 /** 
@@ -93,6 +103,9 @@ public class TestRegexERE {
 	 * imprimindo os resultados no console.
 	 * @param tree Uma parse tree
 	 */
+	//TODO Remover traducao por listener
+	@SuppressWarnings("unused")
+	@Deprecated
 	private void traduzirListener(ParseTree tree){
 		
 		// Cria um 'andador' de arvore que pode chamar callbacks
@@ -105,6 +118,19 @@ public class TestRegexERE {
 		walker.walk(new TestRegexListenerERE(), tree);
 		
 		System.out.println("");
+	}
+	
+	/**
+	 * Realiza a traducao da arvore usando um parse tree visitor,
+	 * imprimindo os resultados no console.
+	 * @param tree Uma parse tree
+	 */
+	private void traduzirVisitor(ParseTree tree){
+		
+		TestRegexVisitorERE visitor = new TestRegexVisitorERE();
+		
+		String texto = visitor.visit(tree);
+		System.out.println(texto);
 	}
 	
 	/** 

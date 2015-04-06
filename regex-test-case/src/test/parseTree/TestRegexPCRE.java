@@ -7,6 +7,7 @@ import java.io.IOException;
 import org.antlr.v4.runtime.*;
 import org.antlr.v4.runtime.tree.*;
 import test.listeners.TestRegexListenerERE;
+import test.visitors.TestRegexVisitorPCRE;
 
 public class TestRegexPCRE {
 	
@@ -95,6 +96,7 @@ public class TestRegexPCRE {
 	 * imprimindo os resultados no console.
 	 * @param tree Uma parse tree
 	 */
+	@Deprecated
 	private void traduzirListener(ParseTree tree){
 		
 		// Cria um 'andador' de arvore que pode chamar callbacks
@@ -107,6 +109,21 @@ public class TestRegexPCRE {
 		walker.walk(new TestRegexListenerERE(), tree);
 		
 		System.out.println("");
+	}
+	
+	/**
+	 * Realiza a traducao da arvore usando um parse tree visitor,
+	 * imprimindo os resultados no console.
+	 * @param tree Uma parse tree
+	 */
+	//TODO Fazer uso de visitor
+	@SuppressWarnings("unused")
+	private void traduzirVisitor(ParseTree tree){
+		
+		TestRegexVisitorPCRE visitor = new TestRegexVisitorPCRE();
+		
+		String texto = visitor.visit(tree);
+		System.out.println(texto);
 	}
 	
 	/** 

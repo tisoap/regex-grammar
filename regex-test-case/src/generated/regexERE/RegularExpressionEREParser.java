@@ -128,6 +128,11 @@ public class RegularExpressionEREParser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof RegularExpressionEREListener ) ((RegularExpressionEREListener)listener).exitExpression(this);
 		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof RegularExpressionEREVisitor ) return ((RegularExpressionEREVisitor<? extends T>)visitor).visitExpression(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final ExpressionContext expression() throws RecognitionException {
@@ -243,6 +248,11 @@ public class RegularExpressionEREParser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof RegularExpressionEREListener ) ((RegularExpressionEREListener)listener).exitMultiple(this);
 		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof RegularExpressionEREVisitor ) return ((RegularExpressionEREVisitor<? extends T>)visitor).visitMultiple(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final MultipleContext multiple() throws RecognitionException {
@@ -319,6 +329,11 @@ public class RegularExpressionEREParser extends Parser {
 		@Override
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof RegularExpressionEREListener ) ((RegularExpressionEREListener)listener).exitSubExpression(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof RegularExpressionEREVisitor ) return ((RegularExpressionEREVisitor<? extends T>)visitor).visitSubExpression(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 
@@ -416,6 +431,11 @@ public class RegularExpressionEREParser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof RegularExpressionEREListener ) ((RegularExpressionEREListener)listener).exitGroup(this);
 		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof RegularExpressionEREVisitor ) return ((RegularExpressionEREVisitor<? extends T>)visitor).visitGroup(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final GroupContext group() throws RecognitionException {
@@ -456,6 +476,11 @@ public class RegularExpressionEREParser extends Parser {
 		@Override
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof RegularExpressionEREListener ) ((RegularExpressionEREListener)listener).exitNumericalGroup(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof RegularExpressionEREVisitor ) return ((RegularExpressionEREVisitor<? extends T>)visitor).visitNumericalGroup(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 
@@ -503,6 +528,11 @@ public class RegularExpressionEREParser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof RegularExpressionEREListener ) ((RegularExpressionEREListener)listener).exitRepetition(this);
 		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof RegularExpressionEREVisitor ) return ((RegularExpressionEREVisitor<? extends T>)visitor).visitRepetition(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final RepetitionContext repetition() throws RecognitionException {
@@ -549,6 +579,11 @@ public class RegularExpressionEREParser extends Parser {
 		@Override
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof RegularExpressionEREListener ) ((RegularExpressionEREListener)listener).exitQuantified(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof RegularExpressionEREVisitor ) return ((RegularExpressionEREVisitor<? extends T>)visitor).visitQuantified(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 
@@ -627,6 +662,11 @@ public class RegularExpressionEREParser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof RegularExpressionEREListener ) ((RegularExpressionEREListener)listener).exitQuantifier(this);
 		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof RegularExpressionEREVisitor ) return ((RegularExpressionEREVisitor<? extends T>)visitor).visitQuantifier(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final QuantifierContext quantifier() throws RecognitionException {
@@ -704,6 +744,11 @@ public class RegularExpressionEREParser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof RegularExpressionEREListener ) ((RegularExpressionEREListener)listener).exitOneOrMore(this);
 		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof RegularExpressionEREVisitor ) return ((RegularExpressionEREVisitor<? extends T>)visitor).visitOneOrMore(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final OneOrMoreContext oneOrMore() throws RecognitionException {
@@ -741,6 +786,11 @@ public class RegularExpressionEREParser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof RegularExpressionEREListener ) ((RegularExpressionEREListener)listener).exitZeroOrMore(this);
 		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof RegularExpressionEREVisitor ) return ((RegularExpressionEREVisitor<? extends T>)visitor).visitZeroOrMore(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final ZeroOrMoreContext zeroOrMore() throws RecognitionException {
@@ -777,6 +827,11 @@ public class RegularExpressionEREParser extends Parser {
 		@Override
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof RegularExpressionEREListener ) ((RegularExpressionEREListener)listener).exitConditional(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof RegularExpressionEREVisitor ) return ((RegularExpressionEREVisitor<? extends T>)visitor).visitConditional(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 
@@ -818,6 +873,11 @@ public class RegularExpressionEREParser extends Parser {
 		@Override
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof RegularExpressionEREListener ) ((RegularExpressionEREListener)listener).exitExact(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof RegularExpressionEREVisitor ) return ((RegularExpressionEREVisitor<? extends T>)visitor).visitExact(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 
@@ -864,6 +924,11 @@ public class RegularExpressionEREParser extends Parser {
 		@Override
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof RegularExpressionEREListener ) ((RegularExpressionEREListener)listener).exitAtLeast(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof RegularExpressionEREVisitor ) return ((RegularExpressionEREVisitor<? extends T>)visitor).visitAtLeast(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 
@@ -916,6 +981,11 @@ public class RegularExpressionEREParser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof RegularExpressionEREListener ) ((RegularExpressionEREListener)listener).exitBetween(this);
 		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof RegularExpressionEREVisitor ) return ((RegularExpressionEREVisitor<? extends T>)visitor).visitBetween(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final BetweenContext between() throws RecognitionException {
@@ -963,6 +1033,11 @@ public class RegularExpressionEREParser extends Parser {
 		@Override
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof RegularExpressionEREListener ) ((RegularExpressionEREListener)listener).exitValue(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof RegularExpressionEREVisitor ) return ((RegularExpressionEREVisitor<? extends T>)visitor).visitValue(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 
@@ -1017,6 +1092,11 @@ public class RegularExpressionEREParser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof RegularExpressionEREListener ) ((RegularExpressionEREListener)listener).exitFirstValue(this);
 		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof RegularExpressionEREVisitor ) return ((RegularExpressionEREVisitor<? extends T>)visitor).visitFirstValue(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final FirstValueContext firstValue() throws RecognitionException {
@@ -1069,6 +1149,11 @@ public class RegularExpressionEREParser extends Parser {
 		@Override
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof RegularExpressionEREListener ) ((RegularExpressionEREListener)listener).exitLastValue(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof RegularExpressionEREVisitor ) return ((RegularExpressionEREVisitor<? extends T>)visitor).visitLastValue(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 
@@ -1124,6 +1209,11 @@ public class RegularExpressionEREParser extends Parser {
 		@Override
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof RegularExpressionEREListener ) ((RegularExpressionEREListener)listener).exitList(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof RegularExpressionEREVisitor ) return ((RegularExpressionEREVisitor<? extends T>)visitor).visitList(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 
@@ -1187,6 +1277,11 @@ public class RegularExpressionEREParser extends Parser {
 		@Override
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof RegularExpressionEREListener ) ((RegularExpressionEREListener)listener).exitNegativeList(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof RegularExpressionEREVisitor ) return ((RegularExpressionEREVisitor<? extends T>)visitor).visitNegativeList(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 
@@ -1268,6 +1363,11 @@ public class RegularExpressionEREParser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof RegularExpressionEREListener ) ((RegularExpressionEREListener)listener).exitPositiveList(this);
 		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof RegularExpressionEREVisitor ) return ((RegularExpressionEREVisitor<? extends T>)visitor).visitPositiveList(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final PositiveListContext positiveList() throws RecognitionException {
@@ -1339,6 +1439,11 @@ public class RegularExpressionEREParser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof RegularExpressionEREListener ) ((RegularExpressionEREListener)listener).exitRange(this);
 		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof RegularExpressionEREVisitor ) return ((RegularExpressionEREVisitor<? extends T>)visitor).visitRange(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final RangeContext range() throws RecognitionException {
@@ -1390,6 +1495,11 @@ public class RegularExpressionEREParser extends Parser {
 		@Override
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof RegularExpressionEREListener ) ((RegularExpressionEREListener)listener).exitCharacters(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof RegularExpressionEREVisitor ) return ((RegularExpressionEREVisitor<? extends T>)visitor).visitCharacters(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 
@@ -1454,6 +1564,11 @@ public class RegularExpressionEREParser extends Parser {
 		@Override
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof RegularExpressionEREListener ) ((RegularExpressionEREListener)listener).exitCharacter(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof RegularExpressionEREVisitor ) return ((RegularExpressionEREVisitor<? extends T>)visitor).visitCharacter(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 

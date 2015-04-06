@@ -82,12 +82,16 @@ greedy : greedyOneOrMore    //Um ou mais
 greedyOneOrMore   : PLUS ;      //+
 greedyZeroOrMore  : ASTERISC ;  //*
 greedyConditional : QUESTION ;  //?
+
+//TODO Garantir que n>0 e n<m
 greedyAtLeast     : CURLYOPEN DIGIT+ COMMA CURLYCLOSE ; //{n,}
 greedyBetween     : CURLYOPEN firstValue COMMA lastValue CURLYCLOSE ; //{n,m}
 
 lazyOneOrMore   : PLUS QUESTION;      //+?
 lazyZeroOrMore  : ASTERISC QUESTION;  //*?
 lazyConditional : QUESTION QUESTION;  //??
+
+//TODO Garantir que n>0 e n<m
 lazyAtLeast     : CURLYOPEN DIGIT+ COMMA CURLYCLOSE QUESTION; //{n,}?
 lazyBetween     : CURLYOPEN firstValue COMMA lastValue CURLYCLOSE QUESTION; //{n,m}?
 

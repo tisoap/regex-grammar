@@ -63,6 +63,8 @@ quantifier : oneOrMore    //Um ou mais
 oneOrMore   : PLUS ;      //+
 zeroOrMore  : ASTERISC ;  //*
 conditional : QUESTION ;  //?
+
+//TODO Garantir que n>0 e n<m
 exact       : CURLYOPEN value CURLYCLOSE ; //{n}
 atLeast     : CURLYOPEN value COMMA CURLYCLOSE ; //{n,}
 between     : CURLYOPEN firstValue COMMA lastValue CURLYCLOSE ; //{n,m}
@@ -84,6 +86,7 @@ negativeList : BRACKETOPEN CIRCUMFLEX (characters|range)+ BRACKETCLOSE;
 positiveList : BRACKETOPEN (characters|range)+ BRACKETCLOSE;
 
 //Uma serie sao dois caracteres separados por um traco
+//TODO Garantir que o primeiro caractere precede o segundo
 range: character DASH character;
 
 //Uma colecao de caracteres pode ser um ou mais digitos, letras do alfabeto latino ou espacos

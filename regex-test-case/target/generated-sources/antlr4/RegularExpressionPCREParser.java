@@ -140,6 +140,11 @@ public class RegularExpressionPCREParser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof RegularExpressionPCREListener ) ((RegularExpressionPCREListener)listener).exitExpression(this);
 		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof RegularExpressionPCREVisitor ) return ((RegularExpressionPCREVisitor<? extends T>)visitor).visitExpression(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final ExpressionContext expression() throws RecognitionException {
@@ -272,6 +277,11 @@ public class RegularExpressionPCREParser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof RegularExpressionPCREListener ) ((RegularExpressionPCREListener)listener).exitSubExpression(this);
 		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof RegularExpressionPCREVisitor ) return ((RegularExpressionPCREVisitor<? extends T>)visitor).visitSubExpression(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final SubExpressionContext subExpression() throws RecognitionException {
@@ -380,6 +390,11 @@ public class RegularExpressionPCREParser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof RegularExpressionPCREListener ) ((RegularExpressionPCREListener)listener).exitGroup(this);
 		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof RegularExpressionPCREVisitor ) return ((RegularExpressionPCREVisitor<? extends T>)visitor).visitGroup(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final GroupContext group() throws RecognitionException {
@@ -446,6 +461,11 @@ public class RegularExpressionPCREParser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof RegularExpressionPCREListener ) ((RegularExpressionPCREListener)listener).exitNamedGroup(this);
 		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof RegularExpressionPCREVisitor ) return ((RegularExpressionPCREVisitor<? extends T>)visitor).visitNamedGroup(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final NamedGroupContext namedGroup() throws RecognitionException {
@@ -493,6 +513,11 @@ public class RegularExpressionPCREParser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof RegularExpressionPCREListener ) ((RegularExpressionPCREListener)listener).exitGroupName(this);
 		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof RegularExpressionPCREVisitor ) return ((RegularExpressionPCREVisitor<? extends T>)visitor).visitGroupName(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final GroupNameContext groupName() throws RecognitionException {
@@ -533,6 +558,11 @@ public class RegularExpressionPCREParser extends Parser {
 		@Override
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof RegularExpressionPCREListener ) ((RegularExpressionPCREListener)listener).exitNoCaptureGroup(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof RegularExpressionPCREVisitor ) return ((RegularExpressionPCREVisitor<? extends T>)visitor).visitNoCaptureGroup(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 
@@ -582,6 +612,11 @@ public class RegularExpressionPCREParser extends Parser {
 		@Override
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof RegularExpressionPCREListener ) ((RegularExpressionPCREListener)listener).exitQuantifier(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof RegularExpressionPCREVisitor ) return ((RegularExpressionPCREVisitor<? extends T>)visitor).visitQuantifier(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 
@@ -652,6 +687,11 @@ public class RegularExpressionPCREParser extends Parser {
 		@Override
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof RegularExpressionPCREListener ) ((RegularExpressionPCREListener)listener).exitLazy(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof RegularExpressionPCREVisitor ) return ((RegularExpressionPCREVisitor<? extends T>)visitor).visitLazy(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 
@@ -737,6 +777,11 @@ public class RegularExpressionPCREParser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof RegularExpressionPCREListener ) ((RegularExpressionPCREListener)listener).exitGreedy(this);
 		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof RegularExpressionPCREVisitor ) return ((RegularExpressionPCREVisitor<? extends T>)visitor).visitGreedy(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final GreedyContext greedy() throws RecognitionException {
@@ -807,6 +852,11 @@ public class RegularExpressionPCREParser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof RegularExpressionPCREListener ) ((RegularExpressionPCREListener)listener).exitGreedyOneOrMore(this);
 		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof RegularExpressionPCREVisitor ) return ((RegularExpressionPCREVisitor<? extends T>)visitor).visitGreedyOneOrMore(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final GreedyOneOrMoreContext greedyOneOrMore() throws RecognitionException {
@@ -844,6 +894,11 @@ public class RegularExpressionPCREParser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof RegularExpressionPCREListener ) ((RegularExpressionPCREListener)listener).exitGreedyZeroOrMore(this);
 		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof RegularExpressionPCREVisitor ) return ((RegularExpressionPCREVisitor<? extends T>)visitor).visitGreedyZeroOrMore(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final GreedyZeroOrMoreContext greedyZeroOrMore() throws RecognitionException {
@@ -880,6 +935,11 @@ public class RegularExpressionPCREParser extends Parser {
 		@Override
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof RegularExpressionPCREListener ) ((RegularExpressionPCREListener)listener).exitGreedyConditional(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof RegularExpressionPCREVisitor ) return ((RegularExpressionPCREVisitor<? extends T>)visitor).visitGreedyConditional(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 
@@ -923,6 +983,11 @@ public class RegularExpressionPCREParser extends Parser {
 		@Override
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof RegularExpressionPCREListener ) ((RegularExpressionPCREListener)listener).exitGreedyAtLeast(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof RegularExpressionPCREVisitor ) return ((RegularExpressionPCREVisitor<? extends T>)visitor).visitGreedyAtLeast(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 
@@ -988,6 +1053,11 @@ public class RegularExpressionPCREParser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof RegularExpressionPCREListener ) ((RegularExpressionPCREListener)listener).exitGreedyBetween(this);
 		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof RegularExpressionPCREVisitor ) return ((RegularExpressionPCREVisitor<? extends T>)visitor).visitGreedyBetween(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final GreedyBetweenContext greedyBetween() throws RecognitionException {
@@ -1034,6 +1104,11 @@ public class RegularExpressionPCREParser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof RegularExpressionPCREListener ) ((RegularExpressionPCREListener)listener).exitLazyOneOrMore(this);
 		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof RegularExpressionPCREVisitor ) return ((RegularExpressionPCREVisitor<? extends T>)visitor).visitLazyOneOrMore(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final LazyOneOrMoreContext lazyOneOrMore() throws RecognitionException {
@@ -1073,6 +1148,11 @@ public class RegularExpressionPCREParser extends Parser {
 		@Override
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof RegularExpressionPCREListener ) ((RegularExpressionPCREListener)listener).exitLazyZeroOrMore(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof RegularExpressionPCREVisitor ) return ((RegularExpressionPCREVisitor<? extends T>)visitor).visitLazyZeroOrMore(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 
@@ -1115,6 +1195,11 @@ public class RegularExpressionPCREParser extends Parser {
 		@Override
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof RegularExpressionPCREListener ) ((RegularExpressionPCREListener)listener).exitLazyConditional(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof RegularExpressionPCREVisitor ) return ((RegularExpressionPCREVisitor<? extends T>)visitor).visitLazyConditional(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 
@@ -1161,6 +1246,11 @@ public class RegularExpressionPCREParser extends Parser {
 		@Override
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof RegularExpressionPCREListener ) ((RegularExpressionPCREListener)listener).exitLazyAtLeast(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof RegularExpressionPCREVisitor ) return ((RegularExpressionPCREVisitor<? extends T>)visitor).visitLazyAtLeast(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 
@@ -1229,6 +1319,11 @@ public class RegularExpressionPCREParser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof RegularExpressionPCREListener ) ((RegularExpressionPCREListener)listener).exitLazyBetween(this);
 		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof RegularExpressionPCREVisitor ) return ((RegularExpressionPCREVisitor<? extends T>)visitor).visitLazyBetween(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final LazyBetweenContext lazyBetween() throws RecognitionException {
@@ -1280,6 +1375,11 @@ public class RegularExpressionPCREParser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof RegularExpressionPCREListener ) ((RegularExpressionPCREListener)listener).exitComment(this);
 		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof RegularExpressionPCREVisitor ) return ((RegularExpressionPCREVisitor<? extends T>)visitor).visitComment(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final CommentContext comment() throws RecognitionException {
@@ -1325,6 +1425,11 @@ public class RegularExpressionPCREParser extends Parser {
 		@Override
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof RegularExpressionPCREListener ) ((RegularExpressionPCREListener)listener).exitCommentText(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof RegularExpressionPCREVisitor ) return ((RegularExpressionPCREVisitor<? extends T>)visitor).visitCommentText(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 
@@ -1384,6 +1489,11 @@ public class RegularExpressionPCREParser extends Parser {
 		@Override
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof RegularExpressionPCREListener ) ((RegularExpressionPCREListener)listener).exitMultiple(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof RegularExpressionPCREVisitor ) return ((RegularExpressionPCREVisitor<? extends T>)visitor).visitMultiple(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 
@@ -1449,6 +1559,11 @@ public class RegularExpressionPCREParser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof RegularExpressionPCREListener ) ((RegularExpressionPCREListener)listener).exitNumericalGroup(this);
 		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof RegularExpressionPCREVisitor ) return ((RegularExpressionPCREVisitor<? extends T>)visitor).visitNumericalGroup(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final NumericalGroupContext numericalGroup() throws RecognitionException {
@@ -1494,6 +1609,11 @@ public class RegularExpressionPCREParser extends Parser {
 		@Override
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof RegularExpressionPCREListener ) ((RegularExpressionPCREListener)listener).exitRepetition(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof RegularExpressionPCREVisitor ) return ((RegularExpressionPCREVisitor<? extends T>)visitor).visitRepetition(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 
@@ -1541,6 +1661,11 @@ public class RegularExpressionPCREParser extends Parser {
 		@Override
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof RegularExpressionPCREListener ) ((RegularExpressionPCREListener)listener).exitQuantified(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof RegularExpressionPCREVisitor ) return ((RegularExpressionPCREVisitor<? extends T>)visitor).visitQuantified(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 
@@ -1604,6 +1729,11 @@ public class RegularExpressionPCREParser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof RegularExpressionPCREListener ) ((RegularExpressionPCREListener)listener).exitOneOrMore(this);
 		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof RegularExpressionPCREVisitor ) return ((RegularExpressionPCREVisitor<? extends T>)visitor).visitOneOrMore(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final OneOrMoreContext oneOrMore() throws RecognitionException {
@@ -1641,6 +1771,11 @@ public class RegularExpressionPCREParser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof RegularExpressionPCREListener ) ((RegularExpressionPCREListener)listener).exitZeroOrMore(this);
 		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof RegularExpressionPCREVisitor ) return ((RegularExpressionPCREVisitor<? extends T>)visitor).visitZeroOrMore(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final ZeroOrMoreContext zeroOrMore() throws RecognitionException {
@@ -1677,6 +1812,11 @@ public class RegularExpressionPCREParser extends Parser {
 		@Override
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof RegularExpressionPCREListener ) ((RegularExpressionPCREListener)listener).exitConditional(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof RegularExpressionPCREVisitor ) return ((RegularExpressionPCREVisitor<? extends T>)visitor).visitConditional(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 
@@ -1718,6 +1858,11 @@ public class RegularExpressionPCREParser extends Parser {
 		@Override
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof RegularExpressionPCREListener ) ((RegularExpressionPCREListener)listener).exitExact(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof RegularExpressionPCREVisitor ) return ((RegularExpressionPCREVisitor<? extends T>)visitor).visitExact(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 
@@ -1764,6 +1909,11 @@ public class RegularExpressionPCREParser extends Parser {
 		@Override
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof RegularExpressionPCREListener ) ((RegularExpressionPCREListener)listener).exitAtLeast(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof RegularExpressionPCREVisitor ) return ((RegularExpressionPCREVisitor<? extends T>)visitor).visitAtLeast(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 
@@ -1816,6 +1966,11 @@ public class RegularExpressionPCREParser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof RegularExpressionPCREListener ) ((RegularExpressionPCREListener)listener).exitBetween(this);
 		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof RegularExpressionPCREVisitor ) return ((RegularExpressionPCREVisitor<? extends T>)visitor).visitBetween(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final BetweenContext between() throws RecognitionException {
@@ -1863,6 +2018,11 @@ public class RegularExpressionPCREParser extends Parser {
 		@Override
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof RegularExpressionPCREListener ) ((RegularExpressionPCREListener)listener).exitValue(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof RegularExpressionPCREVisitor ) return ((RegularExpressionPCREVisitor<? extends T>)visitor).visitValue(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 
@@ -1917,6 +2077,11 @@ public class RegularExpressionPCREParser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof RegularExpressionPCREListener ) ((RegularExpressionPCREListener)listener).exitFirstValue(this);
 		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof RegularExpressionPCREVisitor ) return ((RegularExpressionPCREVisitor<? extends T>)visitor).visitFirstValue(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final FirstValueContext firstValue() throws RecognitionException {
@@ -1969,6 +2134,11 @@ public class RegularExpressionPCREParser extends Parser {
 		@Override
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof RegularExpressionPCREListener ) ((RegularExpressionPCREListener)listener).exitLastValue(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof RegularExpressionPCREVisitor ) return ((RegularExpressionPCREVisitor<? extends T>)visitor).visitLastValue(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 
@@ -2024,6 +2194,11 @@ public class RegularExpressionPCREParser extends Parser {
 		@Override
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof RegularExpressionPCREListener ) ((RegularExpressionPCREListener)listener).exitList(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof RegularExpressionPCREVisitor ) return ((RegularExpressionPCREVisitor<? extends T>)visitor).visitList(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 
@@ -2087,6 +2262,11 @@ public class RegularExpressionPCREParser extends Parser {
 		@Override
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof RegularExpressionPCREListener ) ((RegularExpressionPCREListener)listener).exitNegativeList(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof RegularExpressionPCREVisitor ) return ((RegularExpressionPCREVisitor<? extends T>)visitor).visitNegativeList(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 
@@ -2168,6 +2348,11 @@ public class RegularExpressionPCREParser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof RegularExpressionPCREListener ) ((RegularExpressionPCREListener)listener).exitPositiveList(this);
 		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof RegularExpressionPCREVisitor ) return ((RegularExpressionPCREVisitor<? extends T>)visitor).visitPositiveList(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final PositiveListContext positiveList() throws RecognitionException {
@@ -2239,6 +2424,11 @@ public class RegularExpressionPCREParser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof RegularExpressionPCREListener ) ((RegularExpressionPCREListener)listener).exitRange(this);
 		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof RegularExpressionPCREVisitor ) return ((RegularExpressionPCREVisitor<? extends T>)visitor).visitRange(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final RangeContext range() throws RecognitionException {
@@ -2290,6 +2480,11 @@ public class RegularExpressionPCREParser extends Parser {
 		@Override
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof RegularExpressionPCREListener ) ((RegularExpressionPCREListener)listener).exitCharacters(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof RegularExpressionPCREVisitor ) return ((RegularExpressionPCREVisitor<? extends T>)visitor).visitCharacters(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 
@@ -2354,6 +2549,11 @@ public class RegularExpressionPCREParser extends Parser {
 		@Override
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof RegularExpressionPCREListener ) ((RegularExpressionPCREListener)listener).exitCharacter(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof RegularExpressionPCREVisitor ) return ((RegularExpressionPCREVisitor<? extends T>)visitor).visitCharacter(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 
