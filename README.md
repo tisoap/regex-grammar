@@ -115,7 +115,7 @@ Padrão `DD/MM/AAAA` para as datas.
 
 - Corrigido erro do tradutor introduzido na divisão da gramática
 - Não é mais necessário digitar o caractere de fim de arquivo EOF
-- Implementada tradução de listas é series de caracteres
+- Implementada tradução de listas e séries de caracteres
 - Implementada tradução do quantificador `+`
 
 0.6.1 (05/04/2015)
