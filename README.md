@@ -109,56 +109,62 @@ Implementar na aplicação de teste:
 
 ## Changelog
 
-Padrão `DD/MM/AAAA` para as datas.
+Padrão `DD/MM/AAAA` para as datas e padrão `X.Y.Z` para o versionamento, onde:
 
-0.6.2 (05/04/2015)
+- `X`: Versões finais
+- `Y`: Alterações na gramática
+- `Z`: Alterações no caso de teste
+
+0.6.13 (06/04/2015)
+
+- Desativado modo PCRE
+- Desativada tradução por listener
+- Criado método de tradução por visitor
+- Implementada tradução de caracteres alfanuméricos e espaços
+
+0.6.9 (05/04/2015)
 
 - Corrigido erro do tradutor introduzido na divisão da gramática
 - Não é mais necessário digitar o caractere de fim de arquivo EOF
-- Implementada tradução de listas e séries de caracteres
+- Implementada tradução de listas é series de caracteres
 - Implementada tradução do quantificador `+`
 
-0.6.1 (05/04/2015)
+0.6.5 (05/04/2015)
 
 - Todas as ocorrências de `Perl` e `Perlre` foram renomeadas para `PCRE`
-- O argumento `-perl` mudou para `-pcre`
 - Entrada de dados pelo usuário abstraída das classes geradoras de parse tree
 - Melhorada a definição da regra de caracteres
 
-0.6 (04/04/2015)
+0.6.2 (04/04/2015)
 
-- Reconhece listas
-- Reconhece listas negativas
-- Reconhece série de caracteres dentro de listas
+- Reconhece listas positivas, negativas e séries
 - Gramática dividida em dois padrões: `POSIX ERE` e `Perl`
 - Adicionado parâmetros `-posix` e `-perl` na aplicação de teste
 
-0.5 (02/04/2015)
+0.5.2 (02/04/2015)
 
 - O caso de teste agora é capaz de exibir a parse tree de forma gráfica ou em listas
 - Adicionado parâmetros `-gui` e `-list` na aplicação de teste
 
-0.4 (30/03/2015)
+0.5 (30/03/2015)
 
 - Reconhece quantificadores
 
-0.3  (29/03/2015)
+0.4.1  (29/03/2015)
 
 - Reconhece múltiplas opções
-- Reconhece vários níveis de múltiplas opções dentro de grupos
 - Possível fazer teste de expressões com múltiplas opções
 
-0.2.1 (29/03/2015)
+0.3.3 (29/03/2015)
 
 - Reconhece comentários
 - Melhorado o reconhecimento de grupos
 - Caso de teste agora em JAR executável
 - Possível fazer teste de expressões com todos os tipos de grupos
 
-0.2 (27/03/2015)
+0.2.2 (27/03/2015)
 
 - Reconhece grupos numéricos, nomeados e de não captura
-- Reconhece grupos dentro de grupos
 - Criado caso de teste com aplicação Java
 - Criado Listener que imprime texto traduzido
 
@@ -170,4 +176,3 @@ IVOSAF (Incontrolável Vontade de Sair Fazendo) (25/03/2015)
 
 - Gramatica Completa de Regex feita em 4 horas
 - Não funciona
-- Inviável fazer debug
