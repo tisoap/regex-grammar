@@ -58,6 +58,36 @@ public interface RegularExpressionEREListener extends ParseTreeListener {
 	 */
 	void exitNumericalGroup(RegularExpressionEREParser.NumericalGroupContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link RegularExpressionEREParser#anchor}.
+	 * @param ctx the parse tree
+	 */
+	void enterAnchor(RegularExpressionEREParser.AnchorContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link RegularExpressionEREParser#anchor}.
+	 * @param ctx the parse tree
+	 */
+	void exitAnchor(RegularExpressionEREParser.AnchorContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link RegularExpressionEREParser#startAnchor}.
+	 * @param ctx the parse tree
+	 */
+	void enterStartAnchor(RegularExpressionEREParser.StartAnchorContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link RegularExpressionEREParser#startAnchor}.
+	 * @param ctx the parse tree
+	 */
+	void exitStartAnchor(RegularExpressionEREParser.StartAnchorContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link RegularExpressionEREParser#endAnchor}.
+	 * @param ctx the parse tree
+	 */
+	void enterEndAnchor(RegularExpressionEREParser.EndAnchorContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link RegularExpressionEREParser#endAnchor}.
+	 * @param ctx the parse tree
+	 */
+	void exitEndAnchor(RegularExpressionEREParser.EndAnchorContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link RegularExpressionEREParser#repetition}.
 	 * @param ctx the parse tree
 	 */
@@ -217,6 +247,156 @@ public interface RegularExpressionEREListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitRange(RegularExpressionEREParser.RangeContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link RegularExpressionEREParser#charclass}.
+	 * @param ctx the parse tree
+	 */
+	void enterCharclass(RegularExpressionEREParser.CharclassContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link RegularExpressionEREParser#charclass}.
+	 * @param ctx the parse tree
+	 */
+	void exitCharclass(RegularExpressionEREParser.CharclassContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link RegularExpressionEREParser#classname}.
+	 * @param ctx the parse tree
+	 */
+	void enterClassname(RegularExpressionEREParser.ClassnameContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link RegularExpressionEREParser#classname}.
+	 * @param ctx the parse tree
+	 */
+	void exitClassname(RegularExpressionEREParser.ClassnameContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link RegularExpressionEREParser#alnum}.
+	 * @param ctx the parse tree
+	 */
+	void enterAlnum(RegularExpressionEREParser.AlnumContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link RegularExpressionEREParser#alnum}.
+	 * @param ctx the parse tree
+	 */
+	void exitAlnum(RegularExpressionEREParser.AlnumContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link RegularExpressionEREParser#alpha}.
+	 * @param ctx the parse tree
+	 */
+	void enterAlpha(RegularExpressionEREParser.AlphaContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link RegularExpressionEREParser#alpha}.
+	 * @param ctx the parse tree
+	 */
+	void exitAlpha(RegularExpressionEREParser.AlphaContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link RegularExpressionEREParser#blank}.
+	 * @param ctx the parse tree
+	 */
+	void enterBlank(RegularExpressionEREParser.BlankContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link RegularExpressionEREParser#blank}.
+	 * @param ctx the parse tree
+	 */
+	void exitBlank(RegularExpressionEREParser.BlankContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link RegularExpressionEREParser#cntrl}.
+	 * @param ctx the parse tree
+	 */
+	void enterCntrl(RegularExpressionEREParser.CntrlContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link RegularExpressionEREParser#cntrl}.
+	 * @param ctx the parse tree
+	 */
+	void exitCntrl(RegularExpressionEREParser.CntrlContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link RegularExpressionEREParser#digitclass}.
+	 * @param ctx the parse tree
+	 */
+	void enterDigitclass(RegularExpressionEREParser.DigitclassContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link RegularExpressionEREParser#digitclass}.
+	 * @param ctx the parse tree
+	 */
+	void exitDigitclass(RegularExpressionEREParser.DigitclassContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link RegularExpressionEREParser#graph}.
+	 * @param ctx the parse tree
+	 */
+	void enterGraph(RegularExpressionEREParser.GraphContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link RegularExpressionEREParser#graph}.
+	 * @param ctx the parse tree
+	 */
+	void exitGraph(RegularExpressionEREParser.GraphContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link RegularExpressionEREParser#lower}.
+	 * @param ctx the parse tree
+	 */
+	void enterLower(RegularExpressionEREParser.LowerContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link RegularExpressionEREParser#lower}.
+	 * @param ctx the parse tree
+	 */
+	void exitLower(RegularExpressionEREParser.LowerContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link RegularExpressionEREParser#print}.
+	 * @param ctx the parse tree
+	 */
+	void enterPrint(RegularExpressionEREParser.PrintContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link RegularExpressionEREParser#print}.
+	 * @param ctx the parse tree
+	 */
+	void exitPrint(RegularExpressionEREParser.PrintContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link RegularExpressionEREParser#punct}.
+	 * @param ctx the parse tree
+	 */
+	void enterPunct(RegularExpressionEREParser.PunctContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link RegularExpressionEREParser#punct}.
+	 * @param ctx the parse tree
+	 */
+	void exitPunct(RegularExpressionEREParser.PunctContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link RegularExpressionEREParser#spaceclass}.
+	 * @param ctx the parse tree
+	 */
+	void enterSpaceclass(RegularExpressionEREParser.SpaceclassContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link RegularExpressionEREParser#spaceclass}.
+	 * @param ctx the parse tree
+	 */
+	void exitSpaceclass(RegularExpressionEREParser.SpaceclassContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link RegularExpressionEREParser#upper}.
+	 * @param ctx the parse tree
+	 */
+	void enterUpper(RegularExpressionEREParser.UpperContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link RegularExpressionEREParser#upper}.
+	 * @param ctx the parse tree
+	 */
+	void exitUpper(RegularExpressionEREParser.UpperContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link RegularExpressionEREParser#xdigit}.
+	 * @param ctx the parse tree
+	 */
+	void enterXdigit(RegularExpressionEREParser.XdigitContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link RegularExpressionEREParser#xdigit}.
+	 * @param ctx the parse tree
+	 */
+	void exitXdigit(RegularExpressionEREParser.XdigitContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link RegularExpressionEREParser#anychar}.
+	 * @param ctx the parse tree
+	 */
+	void enterAnychar(RegularExpressionEREParser.AnycharContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link RegularExpressionEREParser#anychar}.
+	 * @param ctx the parse tree
+	 */
+	void exitAnychar(RegularExpressionEREParser.AnycharContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link RegularExpressionEREParser#characters}.
 	 * @param ctx the parse tree

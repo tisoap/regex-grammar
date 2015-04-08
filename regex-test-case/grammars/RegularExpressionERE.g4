@@ -13,9 +13,12 @@ grammar RegularExpressionERE;
 //Definicao de uma exprecao regular, que pode ser:
 expression : multiple                //Multiplas opcoes
            | group                   //Um grupo de captura
+           | anchor                  //Uma posicao
            | repetition              //Uma repeticao
            | expression expression   //Varias exprecoes
            | list                    //Uma lista de possiveis caracteres
+           | charclass               //Uma classe de caracteres
+           | anychar                 //Qualquer caractere
            | characters              //Caracteres em sequencia
            
            //Regra especial para ignorar espacamento
@@ -32,6 +35,8 @@ subExpression : group                         //Um grupo de captura
               | repetition                    //Repeticoes
               | subExpression subExpression   //Varias subexprecoes
               | list                          //Uma lista de possiveis caracteres
+              | charclass                     //Uma classe de caracteres
+              | anychar                       //Qualquer caractere
               | characters                    //Caracteres em sequencia
               ;
 
@@ -41,13 +46,23 @@ group : numericalGroup ;
 //Um grupo numerado inicia com '(', contem uma expressao, e termina com ')'
 numericalGroup : OPEN expression CLOSE ;
 
+//Uma posicao pode ser de inicio ou fim
+anchor : startAnchor //inicio
+       | endAnchor   //fim
+       ;
+
+startAnchor : CIRCUMFLEX ; //^
+endAnchor   : DOLAR ;      //$
+
 //Um elemento a ser quantificado e o simbolo repetidor
 //O simbolo repetidor se associa a esquerda do elemento quantificado
 repetition : <assoc=right> quantified quantifier;
 
-//So e possivel quantificar grupos, listas ou caracteres individuais
+//So e possivel quantificar itens individuais
 quantified : group
            | list
+           | charclass
+           | anychar
            | character
            ;
 
@@ -79,15 +94,51 @@ list : negativeList
      | positiveList
      ;
 
-//Uma lista negativa pode ser uma ou mais colecoes de caracteres ou series, com um ^ no comeco, entre colchetes
-negativeList : BRACKETOPEN CIRCUMFLEX (range|character)+ BRACKETCLOSE;
+//Uma lista negativa pode ser uma ou mais colecoes de caracteres, classes ou series, com um ^ no comeco, entre colchetes
+negativeList : BRACKETOPEN CIRCUMFLEX (range|charclass|character)+ BRACKETCLOSE;
 
-//Uma lista positiva pode ser uma ou mais colecoes de caracteres ou series, entre colchetes
-positiveList : BRACKETOPEN (range|character)+ BRACKETCLOSE;
+//Uma lista positiva pode ser uma ou mais colecoes de caracteres, classes ou series, entre colchetes
+positiveList : BRACKETOPEN (range|charclass|character)+ BRACKETCLOSE;
 
 //Uma serie sao dois caracteres separados por um traco
 //TODO Garantir que o primeiro caractere precede o segundo
 range: character DASH character;
+
+//Uma classe de caracteres POSIX e o nome da classe entre [: e :]
+charclass: CLASSOPEN classname CLASSCLOSE;
+
+//Uma classe pode ser: 
+classname : alnum         //Caracteres alphanumericos
+          | alpha         //Caracteres alfabeticos
+          | blank         //Espacos e tabulacoes
+          | cntrl         //Caracteres de controle
+          | digitclass    //Digitos
+          | graph         //Caracteres visiveis
+          | lower         //Letras minusculas
+          | print         //Caracteres visiveis e espacos
+          | punct         //Caracteres de pontuacao
+          | spaceclass    //Caracteres de espaco branco
+          | upper         //Letras maiusculas
+          | xdigit        //Digitos hexadecimais
+          ;
+
+//A aplicacao precisa saber o tipo da classe, por isso sao usadas
+//varia regras de parser.
+alnum       : ALNUM      ;
+alpha       : ALPHA      ;
+blank       : BLANK      ;
+cntrl       : CNTRL      ;
+digitclass  : DIGITCLASS ;
+graph       : GRAPH      ;
+lower       : LOWER      ;
+print       : PRINT      ;
+punct       : PUNCT      ;
+spaceclass  : SPACECLASS ;
+upper       : UPPER      ;
+xdigit      : XDIGIT     ;
+
+//O elemento que representa qualquer caractere e o ponto.
+anychar : DOT ;
 
 //Uma colecao de caracteres pode ser um ou mais digitos, letras do alfabeto latino ou espacos
 //A aplicacao nao precisa distinguir cada caractere de uma colecao de caracteres,
@@ -95,11 +146,12 @@ range: character DASH character;
 characters : (DIGIT|LATIN|SPACE)+ ;
 
 //Um caractere pode ser um digito, letra do alfabeto latino ou espaco
-character : (DIGIT|LATIN|SPACE) ;
+character  : (DIGIT|LATIN|SPACE) ;
 
 
 /** Lexer Rules */
 
+DOT                : '.'          ;
 COMMA              : ','          ;
 QUESTION           : '?'          ;
 PLUS               : '+'          ;
@@ -110,9 +162,28 @@ BRACKETOPEN        : '['          ;
 BRACKETCLOSE       : ']'          ;
 DASH               : '-'          ;
 CIRCUMFLEX         : '^'          ;
+DOLAR              : '$'          ;
 PIPE               : '|'          ;
 OPEN               : '('          ;
 CLOSE              : ')'          ;
+CLASSOPEN          : '[:'         ;
+CLASSCLOSE         : ':]'         ;
+
+
+ALNUM              : 'alnum'      ;
+ALPHA              : 'alpha'      ;
+BLANK              : 'blank'      ;
+CNTRL              : 'cntrl'      ;
+DIGITCLASS         : 'digit'      ;
+GRAPH              : 'graph'      ;
+LOWER              : 'lower'      ;
+PRINT              : 'print'      ;
+PUNCT              : 'punct'      ;
+SPACECLASS         : 'space'      ;
+UPPER              : 'upper'      ;
+XDIGIT             : 'xdigit'     ;
+
+
 SPACE              : ' '          ;
 DIGIT              : [0-9]        ;
 LATIN              : [A-Za-z]     ;

@@ -49,6 +49,7 @@ Cada vertente da gramática tem um nível de suporte diferente. Por enquanto nen
 - Caracteres alfanuméricos e espaços
 - Grupos Numéricos 
 - Múltiplas opções
+- Posições
 - Quantificadores
 - Listas
 	- Caracteres
@@ -64,6 +65,7 @@ Cada vertente da gramática tem um nível de suporte diferente. Por enquanto nen
 	- Não captura
 - Comentários
 - Múltiplas opções
+- Posições
 - Quantificadores
 	- Greedy
 	- Lazy
@@ -83,12 +85,10 @@ Cada vertente da gramática tem um nível de suporte diferente. Por enquanto nen
 
 Implementar nas gramáticas:
 
-- Posições
 - Referências
 - Classes de caracteres
 	- Classes positivas
 	- Classes negativas
-	- POSIX
 	- Unicode
 	- Hexadecimal
 	- ASCII
@@ -113,6 +113,13 @@ Padrão *DD/MM/AAAA* para as datas e padrão *X.Y.Z* para o versionamento, onde:
 - **X**: Versões finais
 - **Y**: Alterações na gramática
 - **Z**: Alterações no caso de teste
+
+0.10.3 (08/04/2015)
+
+- Reconhece posições
+- Reconhece classes
+- Reconhece ponto como qualquer caractere
+- Implementada tradução por meio de visitor de posições, classes e ponto
 
 0.7.4 (07/04/2015)
 

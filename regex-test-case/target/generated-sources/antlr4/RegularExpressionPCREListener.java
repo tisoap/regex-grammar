@@ -238,6 +238,36 @@ public interface RegularExpressionPCREListener extends ParseTreeListener {
 	 */
 	void exitNumericalGroup(RegularExpressionPCREParser.NumericalGroupContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link RegularExpressionPCREParser#anchor}.
+	 * @param ctx the parse tree
+	 */
+	void enterAnchor(RegularExpressionPCREParser.AnchorContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link RegularExpressionPCREParser#anchor}.
+	 * @param ctx the parse tree
+	 */
+	void exitAnchor(RegularExpressionPCREParser.AnchorContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link RegularExpressionPCREParser#startAnchor}.
+	 * @param ctx the parse tree
+	 */
+	void enterStartAnchor(RegularExpressionPCREParser.StartAnchorContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link RegularExpressionPCREParser#startAnchor}.
+	 * @param ctx the parse tree
+	 */
+	void exitStartAnchor(RegularExpressionPCREParser.StartAnchorContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link RegularExpressionPCREParser#endAnchor}.
+	 * @param ctx the parse tree
+	 */
+	void enterEndAnchor(RegularExpressionPCREParser.EndAnchorContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link RegularExpressionPCREParser#endAnchor}.
+	 * @param ctx the parse tree
+	 */
+	void exitEndAnchor(RegularExpressionPCREParser.EndAnchorContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link RegularExpressionPCREParser#repetition}.
 	 * @param ctx the parse tree
 	 */
@@ -387,6 +417,156 @@ public interface RegularExpressionPCREListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitRange(RegularExpressionPCREParser.RangeContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link RegularExpressionPCREParser#charclass}.
+	 * @param ctx the parse tree
+	 */
+	void enterCharclass(RegularExpressionPCREParser.CharclassContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link RegularExpressionPCREParser#charclass}.
+	 * @param ctx the parse tree
+	 */
+	void exitCharclass(RegularExpressionPCREParser.CharclassContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link RegularExpressionPCREParser#classname}.
+	 * @param ctx the parse tree
+	 */
+	void enterClassname(RegularExpressionPCREParser.ClassnameContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link RegularExpressionPCREParser#classname}.
+	 * @param ctx the parse tree
+	 */
+	void exitClassname(RegularExpressionPCREParser.ClassnameContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link RegularExpressionPCREParser#alnum}.
+	 * @param ctx the parse tree
+	 */
+	void enterAlnum(RegularExpressionPCREParser.AlnumContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link RegularExpressionPCREParser#alnum}.
+	 * @param ctx the parse tree
+	 */
+	void exitAlnum(RegularExpressionPCREParser.AlnumContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link RegularExpressionPCREParser#alpha}.
+	 * @param ctx the parse tree
+	 */
+	void enterAlpha(RegularExpressionPCREParser.AlphaContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link RegularExpressionPCREParser#alpha}.
+	 * @param ctx the parse tree
+	 */
+	void exitAlpha(RegularExpressionPCREParser.AlphaContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link RegularExpressionPCREParser#blank}.
+	 * @param ctx the parse tree
+	 */
+	void enterBlank(RegularExpressionPCREParser.BlankContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link RegularExpressionPCREParser#blank}.
+	 * @param ctx the parse tree
+	 */
+	void exitBlank(RegularExpressionPCREParser.BlankContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link RegularExpressionPCREParser#cntrl}.
+	 * @param ctx the parse tree
+	 */
+	void enterCntrl(RegularExpressionPCREParser.CntrlContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link RegularExpressionPCREParser#cntrl}.
+	 * @param ctx the parse tree
+	 */
+	void exitCntrl(RegularExpressionPCREParser.CntrlContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link RegularExpressionPCREParser#digitclass}.
+	 * @param ctx the parse tree
+	 */
+	void enterDigitclass(RegularExpressionPCREParser.DigitclassContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link RegularExpressionPCREParser#digitclass}.
+	 * @param ctx the parse tree
+	 */
+	void exitDigitclass(RegularExpressionPCREParser.DigitclassContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link RegularExpressionPCREParser#graph}.
+	 * @param ctx the parse tree
+	 */
+	void enterGraph(RegularExpressionPCREParser.GraphContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link RegularExpressionPCREParser#graph}.
+	 * @param ctx the parse tree
+	 */
+	void exitGraph(RegularExpressionPCREParser.GraphContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link RegularExpressionPCREParser#lower}.
+	 * @param ctx the parse tree
+	 */
+	void enterLower(RegularExpressionPCREParser.LowerContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link RegularExpressionPCREParser#lower}.
+	 * @param ctx the parse tree
+	 */
+	void exitLower(RegularExpressionPCREParser.LowerContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link RegularExpressionPCREParser#print}.
+	 * @param ctx the parse tree
+	 */
+	void enterPrint(RegularExpressionPCREParser.PrintContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link RegularExpressionPCREParser#print}.
+	 * @param ctx the parse tree
+	 */
+	void exitPrint(RegularExpressionPCREParser.PrintContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link RegularExpressionPCREParser#punct}.
+	 * @param ctx the parse tree
+	 */
+	void enterPunct(RegularExpressionPCREParser.PunctContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link RegularExpressionPCREParser#punct}.
+	 * @param ctx the parse tree
+	 */
+	void exitPunct(RegularExpressionPCREParser.PunctContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link RegularExpressionPCREParser#spaceclass}.
+	 * @param ctx the parse tree
+	 */
+	void enterSpaceclass(RegularExpressionPCREParser.SpaceclassContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link RegularExpressionPCREParser#spaceclass}.
+	 * @param ctx the parse tree
+	 */
+	void exitSpaceclass(RegularExpressionPCREParser.SpaceclassContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link RegularExpressionPCREParser#upper}.
+	 * @param ctx the parse tree
+	 */
+	void enterUpper(RegularExpressionPCREParser.UpperContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link RegularExpressionPCREParser#upper}.
+	 * @param ctx the parse tree
+	 */
+	void exitUpper(RegularExpressionPCREParser.UpperContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link RegularExpressionPCREParser#xdigit}.
+	 * @param ctx the parse tree
+	 */
+	void enterXdigit(RegularExpressionPCREParser.XdigitContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link RegularExpressionPCREParser#xdigit}.
+	 * @param ctx the parse tree
+	 */
+	void exitXdigit(RegularExpressionPCREParser.XdigitContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link RegularExpressionPCREParser#anychar}.
+	 * @param ctx the parse tree
+	 */
+	void enterAnychar(RegularExpressionPCREParser.AnycharContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link RegularExpressionPCREParser#anychar}.
+	 * @param ctx the parse tree
+	 */
+	void exitAnychar(RegularExpressionPCREParser.AnycharContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link RegularExpressionPCREParser#characters}.
 	 * @param ctx the parse tree

@@ -41,6 +41,24 @@ public interface RegularExpressionEREVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitNumericalGroup(RegularExpressionEREParser.NumericalGroupContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link RegularExpressionEREParser#anchor}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitAnchor(RegularExpressionEREParser.AnchorContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link RegularExpressionEREParser#startAnchor}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitStartAnchor(RegularExpressionEREParser.StartAnchorContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link RegularExpressionEREParser#endAnchor}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitEndAnchor(RegularExpressionEREParser.EndAnchorContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link RegularExpressionEREParser#repetition}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
@@ -136,6 +154,96 @@ public interface RegularExpressionEREVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitRange(RegularExpressionEREParser.RangeContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link RegularExpressionEREParser#charclass}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitCharclass(RegularExpressionEREParser.CharclassContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link RegularExpressionEREParser#classname}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitClassname(RegularExpressionEREParser.ClassnameContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link RegularExpressionEREParser#alnum}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitAlnum(RegularExpressionEREParser.AlnumContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link RegularExpressionEREParser#alpha}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitAlpha(RegularExpressionEREParser.AlphaContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link RegularExpressionEREParser#blank}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitBlank(RegularExpressionEREParser.BlankContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link RegularExpressionEREParser#cntrl}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitCntrl(RegularExpressionEREParser.CntrlContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link RegularExpressionEREParser#digitclass}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitDigitclass(RegularExpressionEREParser.DigitclassContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link RegularExpressionEREParser#graph}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitGraph(RegularExpressionEREParser.GraphContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link RegularExpressionEREParser#lower}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitLower(RegularExpressionEREParser.LowerContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link RegularExpressionEREParser#print}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitPrint(RegularExpressionEREParser.PrintContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link RegularExpressionEREParser#punct}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitPunct(RegularExpressionEREParser.PunctContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link RegularExpressionEREParser#spaceclass}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitSpaceclass(RegularExpressionEREParser.SpaceclassContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link RegularExpressionEREParser#upper}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitUpper(RegularExpressionEREParser.UpperContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link RegularExpressionEREParser#xdigit}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitXdigit(RegularExpressionEREParser.XdigitContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link RegularExpressionEREParser#anychar}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitAnychar(RegularExpressionEREParser.AnycharContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link RegularExpressionEREParser#characters}.
 	 * @param ctx the parse tree

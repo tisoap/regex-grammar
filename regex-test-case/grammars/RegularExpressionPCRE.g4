@@ -15,10 +15,11 @@ import RegularExpressionERE;
 /** Parser Rules */
 
 //Definicao de uma exprecao regular, que pode ser:
-//@Override 
+//@Override Adciona comentario
 expression : multiple                //Multiplas opcoes
            | comment                 //Um comentario
            | group                   //Um grupo de captura
+           | anchor                  //Uma posicao
            | repetition              //Uma repeticao
            | expression expression   //Varias exprecoes
            | list                    //Uma lista de possiveis caracteres
@@ -31,7 +32,7 @@ expression : multiple                //Multiplas opcoes
 //Uma subexpressao e como uma expressao, mas sem multiplas opcoes.
 //Para se ter um nivel a mais de multiplas opcoes, estas obrigatoriamente devem
 //estar dentro de um grupo.
-//@Override 
+//@Override Adciona comentario
 subExpression : group                         //Um grupo de captura
               | repetition                    //Repeticoes
               | comment                       //Comentarios
@@ -41,7 +42,7 @@ subExpression : group                         //Um grupo de captura
               ;
 
 //Grupos podem ser divididos em: 
-//@Override 
+//@Override Adciona grupos nomeados e de nao captura
 group : numericalGroup  //Grupos de captura numericos
       | namedGroup      //Grupos de captura nomeados
       | noCaptureGroup  //Grupos de nao captura
@@ -57,7 +58,7 @@ groupName : characters ;
 noCaptureGroup : NOCAPTUREGROUP expression CLOSE ;
 
 //Um quantificador pode ser de tres tipos:
-//@Override 
+//@Override adciona quantificadores greedy e lazy
 quantifier : lazy    //Quantidade minima possivel (preguicoso)
            | greedy  //Quantidade maxima possivel (guloso)
            | exact   //Exatamente uma quantidade

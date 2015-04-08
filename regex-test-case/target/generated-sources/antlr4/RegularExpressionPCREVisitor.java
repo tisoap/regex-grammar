@@ -149,6 +149,24 @@ public interface RegularExpressionPCREVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitNumericalGroup(RegularExpressionPCREParser.NumericalGroupContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link RegularExpressionPCREParser#anchor}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitAnchor(RegularExpressionPCREParser.AnchorContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link RegularExpressionPCREParser#startAnchor}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitStartAnchor(RegularExpressionPCREParser.StartAnchorContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link RegularExpressionPCREParser#endAnchor}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitEndAnchor(RegularExpressionPCREParser.EndAnchorContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link RegularExpressionPCREParser#repetition}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
@@ -238,6 +256,96 @@ public interface RegularExpressionPCREVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitRange(RegularExpressionPCREParser.RangeContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link RegularExpressionPCREParser#charclass}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitCharclass(RegularExpressionPCREParser.CharclassContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link RegularExpressionPCREParser#classname}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitClassname(RegularExpressionPCREParser.ClassnameContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link RegularExpressionPCREParser#alnum}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitAlnum(RegularExpressionPCREParser.AlnumContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link RegularExpressionPCREParser#alpha}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitAlpha(RegularExpressionPCREParser.AlphaContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link RegularExpressionPCREParser#blank}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitBlank(RegularExpressionPCREParser.BlankContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link RegularExpressionPCREParser#cntrl}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitCntrl(RegularExpressionPCREParser.CntrlContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link RegularExpressionPCREParser#digitclass}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitDigitclass(RegularExpressionPCREParser.DigitclassContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link RegularExpressionPCREParser#graph}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitGraph(RegularExpressionPCREParser.GraphContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link RegularExpressionPCREParser#lower}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitLower(RegularExpressionPCREParser.LowerContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link RegularExpressionPCREParser#print}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitPrint(RegularExpressionPCREParser.PrintContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link RegularExpressionPCREParser#punct}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitPunct(RegularExpressionPCREParser.PunctContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link RegularExpressionPCREParser#spaceclass}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitSpaceclass(RegularExpressionPCREParser.SpaceclassContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link RegularExpressionPCREParser#upper}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitUpper(RegularExpressionPCREParser.UpperContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link RegularExpressionPCREParser#xdigit}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitXdigit(RegularExpressionPCREParser.XdigitContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link RegularExpressionPCREParser#anychar}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitAnychar(RegularExpressionPCREParser.AnycharContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link RegularExpressionPCREParser#characters}.
 	 * @param ctx the parse tree

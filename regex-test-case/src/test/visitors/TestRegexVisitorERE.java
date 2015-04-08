@@ -114,7 +114,34 @@ public class TestRegexVisitorERE extends RegularExpressionEREBaseVisitor<Void> {
 		return null;
 	}
 	
-	/** Quando visita uma repeticao, aumenta o nivel de identacao,
+	/** Quando visita uma posicao, visita todos os filhos dela. */
+	@Override
+	public Void visitAnchor(AnchorContext ctx) {
+		
+		visitChildren(ctx);
+		
+		return null;
+	}
+	
+	/** Quando visita uma posicao de inicio, imprime 'Inicio do texto' .*/
+	@Override
+	public Void visitStartAnchor(StartAnchorContext ctx) {
+		
+		identacao("Inicio do texto");
+		
+		return null;
+	}
+	
+	/** Quando visita uma posicao de fim, imprime 'Fim do texto'. */
+	@Override
+	public Void visitEndAnchor(EndAnchorContext ctx) {
+		
+		identacao("Fim do texto");
+		
+		return null;
+	}
+	
+	/** Quando visita uma repeticao, aumenta o nivel de identacao e
 	 *  visita o simbolo quantificador seguido da expressao quantificada. */
 	@Override
 	public Void visitRepetition(RepetitionContext ctx) {
@@ -268,6 +295,156 @@ public class TestRegexVisitorERE extends RegularExpressionEREBaseVisitor<Void> {
 			"' e '" + 
 			ctx.getChild(2).getText() + 
 			"'");
+		
+		return null;
+	}
+	
+	/** Quando visita uma classe de caracteres,
+	 *  visita todos os filhos dela. */
+	@Override
+	public Void visitCharclass(CharclassContext ctx) {
+		
+		visitChildren(ctx);
+		
+		return null;
+	}
+	
+	/** Quando Visita o nome da um tipo de classe, 
+	 *  visita todos os filhos dela. */
+	@Override
+	public Void visitClassname(ClassnameContext ctx) {
+		
+		visitChildren(ctx);
+		
+		return null;
+	}
+	
+	/** Quando visita uma classe alfanumerica,
+	 *  imprime 'Caracteres alfanumericos'. */
+	@Override
+	public Void visitAlnum(AlnumContext ctx) {
+		
+		identacao("Caracteres alfanumericos");
+		
+		return null;
+	}
+	
+	/** Quando visita uma classe alafabetica,
+	 *  imprime 'Caracteres alfabeticos'. */
+	@Override
+	public Void visitAlpha(AlphaContext ctx) {
+		
+		identacao("Caracteres alfabeticos");
+		
+		return null;
+	}
+	
+	/** Quando visita uma classe de espaco,
+	 *  imprime 'Espaco e tabulacao'. */
+	@Override
+	public Void visitBlank(BlankContext ctx) {
+		
+		identacao("Espaco e tabulacao");
+		
+		return null;
+	}
+	
+	/** Quando visita uma classe de controle,
+	 *  imprime 'Caracteres de controle'. */
+	@Override
+	public Void visitCntrl(CntrlContext ctx) {
+		
+		identacao("Caracteres de controle");
+		
+		return null;
+	}
+	
+	/** Quando visita uma classe de digitos,
+	 *  imprime 'Digitos'. */
+	@Override
+	public Void visitDigitclass(DigitclassContext ctx) {
+		
+		identacao("Digitos");
+		
+		return null;
+	}
+	
+	/** Quando visita uma classe de caracteres visiveis,
+	 *  imprime 'Caracteres visiveis'. */
+	@Override
+	public Void visitGraph(GraphContext ctx) {
+		
+		identacao("Caracteres visiveis");
+		
+		return null;
+	}
+	
+	/** Quando visita uma classe de letras minusculas,
+	 *  imprime 'Letras minusculas'. */
+	@Override
+	public Void visitLower(LowerContext ctx) {
+		
+		identacao("Letras minusculas");
+		
+		return null;
+	}
+	
+	/** Quando visita uma classe de caracteres imprimiveis,
+	 *  imprime 'Caracteres visiveis e espaco'. */
+	@Override
+	public Void visitPrint(PrintContext ctx) {
+		
+		identacao("Caracteres visiveis e espaco");
+		
+		return null;
+	}
+	
+	/** Quando visita uma classe de pontucao,
+	 *  imprime 'Caracteres de pontucao'. */
+	@Override
+	public Void visitPunct(PunctContext ctx) {
+		
+		identacao("Caracteres de pontucao");
+		
+		return null;
+	}
+	
+	/** Quando visita uma classe de caracteres de espacamento,
+	 *  imprime 'Caracteres brancos'. */
+	@Override
+	public Void visitSpaceclass(SpaceclassContext ctx) {
+		
+		identacao("Caracteres brancos");
+		
+		return null;
+	}
+	
+	/** Quando visita uma classe de letras maiusculas,
+	 *  imprime 'Letras maiusculas'. */
+	@Override
+	public Void visitUpper(UpperContext ctx) {
+		
+		identacao("Letras maiusculas");
+		
+		return null;
+	}
+	
+	/** Quando visita uma classe de digitos hexadecimais,
+	 *  imprime 'Numeros hexadecimais'. */
+	@Override
+	public Void visitXdigit(XdigitContext ctx) {
+		
+		identacao("Numeros hexadecimais");
+		
+		return null;
+	}
+	
+	/** Quando visita um ponto,
+	 *  imprime 'Qualquer caractere'. */
+	@Override
+	public Void visitAnychar(AnycharContext ctx) {
+		
+		identacao("Qualquer caractere");
 		
 		return null;
 	}
