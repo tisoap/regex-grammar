@@ -1,6 +1,6 @@
 # Gramática Regex
 
-Gramática ANTLR que define expressões regulares. Dividida em duas vertentes: [POSIX ERE](http://pubs.opengroup.org/onlinepubs/000095399/basedefs/xbd_chap09.html) e [PCRE](http://www.pcre.org/).
+Gramática ANTLR que define expressões regulares. Dividida em duas vertentes: [POSIX ERE](http://pubs.opengroup.org/onlinepubs/9699919799/basedefs/V1_chap09.html) e [PCRE](http://www.pcre.org/).
 
 Inclui uma aplicação de teste Java que realiza tradução de expressões regulares para linguagem natural em estrutura de árvore, fazendo uso de classes geradas pelo ANTLR.
 

@@ -2,7 +2,7 @@
  * Gramatica para expressoes regulares, padrao POSIX ERE
  * (Portable Operating System Interface Extended Regular Expressions)
  * 
- * http://pubs.opengroup.org/onlinepubs/000095399/basedefs/xbd_chap09.html
+ * http://pubs.opengroup.org/onlinepubs/9699919799/basedefs/V1_chap09.html
  */
 
 grammar RegularExpressionERE;
