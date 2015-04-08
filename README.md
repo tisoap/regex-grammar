@@ -84,7 +84,6 @@ Cada vertente da gramática tem um nível de suporte diferente. Por enquanto nen
 - Não existe validação dos quantificadores `{n}`,`{n,}` e `{n,m}` para garantir que `n > 0` e `m > 0`
 - Não existe validação do quantificador `{n,m}` para garantir que `n < m`
 - Não existe validação de séries de caracteres `A-B` dentro de listas para garantir que `A` precede `B`, dentro do padrão UTF-8
-- Tradução em linguagem natural de quantificadores não implementada
 
 ##TODO
 
