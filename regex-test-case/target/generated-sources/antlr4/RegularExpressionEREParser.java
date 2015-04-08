@@ -1252,17 +1252,17 @@ public class RegularExpressionEREParser extends Parser {
 		public TerminalNode BRACKETOPEN() { return getToken(RegularExpressionEREParser.BRACKETOPEN, 0); }
 		public TerminalNode CIRCUMFLEX() { return getToken(RegularExpressionEREParser.CIRCUMFLEX, 0); }
 		public TerminalNode BRACKETCLOSE() { return getToken(RegularExpressionEREParser.BRACKETCLOSE, 0); }
-		public List<CharactersContext> characters() {
-			return getRuleContexts(CharactersContext.class);
-		}
-		public CharactersContext characters(int i) {
-			return getRuleContext(CharactersContext.class,i);
-		}
 		public List<RangeContext> range() {
 			return getRuleContexts(RangeContext.class);
 		}
 		public RangeContext range(int i) {
 			return getRuleContext(RangeContext.class,i);
+		}
+		public List<CharacterContext> character() {
+			return getRuleContexts(CharacterContext.class);
+		}
+		public CharacterContext character(int i) {
+			return getRuleContext(CharacterContext.class,i);
 		}
 		public NegativeListContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -1304,13 +1304,13 @@ public class RegularExpressionEREParser extends Parser {
 				case 1:
 					{
 					setState(147);
-					characters();
+					range();
 					}
 					break;
 				case 2:
 					{
 					setState(148);
-					range();
+					character();
 					}
 					break;
 				}
@@ -1337,17 +1337,17 @@ public class RegularExpressionEREParser extends Parser {
 	public static class PositiveListContext extends ParserRuleContext {
 		public TerminalNode BRACKETOPEN() { return getToken(RegularExpressionEREParser.BRACKETOPEN, 0); }
 		public TerminalNode BRACKETCLOSE() { return getToken(RegularExpressionEREParser.BRACKETCLOSE, 0); }
-		public List<CharactersContext> characters() {
-			return getRuleContexts(CharactersContext.class);
-		}
-		public CharactersContext characters(int i) {
-			return getRuleContext(CharactersContext.class,i);
-		}
 		public List<RangeContext> range() {
 			return getRuleContexts(RangeContext.class);
 		}
 		public RangeContext range(int i) {
 			return getRuleContext(RangeContext.class,i);
+		}
+		public List<CharacterContext> character() {
+			return getRuleContexts(CharacterContext.class);
+		}
+		public CharacterContext character(int i) {
+			return getRuleContext(CharacterContext.class,i);
 		}
 		public PositiveListContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -1387,13 +1387,13 @@ public class RegularExpressionEREParser extends Parser {
 				case 1:
 					{
 					setState(156);
-					characters();
+					range();
 					}
 					break;
 				case 2:
 					{
 					setState(157);
-					range();
+					character();
 					}
 					break;
 				}
@@ -1663,10 +1663,10 @@ public class RegularExpressionEREParser extends Parser {
 		"\7\21\2\2\u008b\u008a\3\2\2\2\u008c\u008d\3\2\2\2\u008d\u008b\3\2\2\2"+
 		"\u008d\u008e\3\2\2\2\u008e#\3\2\2\2\u008f\u0092\5&\24\2\u0090\u0092\5"+
 		"(\25\2\u0091\u008f\3\2\2\2\u0091\u0090\3\2\2\2\u0092%\3\2\2\2\u0093\u0094"+
-		"\7\t\2\2\u0094\u0097\7\f\2\2\u0095\u0098\5,\27\2\u0096\u0098\5*\26\2\u0097"+
+		"\7\t\2\2\u0094\u0097\7\f\2\2\u0095\u0098\5*\26\2\u0096\u0098\5.\30\2\u0097"+
 		"\u0095\3\2\2\2\u0097\u0096\3\2\2\2\u0098\u0099\3\2\2\2\u0099\u0097\3\2"+
 		"\2\2\u0099\u009a\3\2\2\2\u009a\u009b\3\2\2\2\u009b\u009c\7\n\2\2\u009c"+
-		"\'\3\2\2\2\u009d\u00a0\7\t\2\2\u009e\u00a1\5,\27\2\u009f\u00a1\5*\26\2"+
+		"\'\3\2\2\2\u009d\u00a0\7\t\2\2\u009e\u00a1\5*\26\2\u009f\u00a1\5.\30\2"+
 		"\u00a0\u009e\3\2\2\2\u00a0\u009f\3\2\2\2\u00a1\u00a2\3\2\2\2\u00a2\u00a0"+
 		"\3\2\2\2\u00a2\u00a3\3\2\2\2\u00a3\u00a4\3\2\2\2\u00a4\u00a5\7\n\2\2\u00a5"+
 		")\3\2\2\2\u00a6\u00a7\5.\30\2\u00a7\u00a8\7\13\2\2\u00a8\u00a9\5.\30\2"+

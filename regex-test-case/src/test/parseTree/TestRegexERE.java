@@ -129,8 +129,7 @@ public class TestRegexERE {
 		
 		TestRegexVisitorERE visitor = new TestRegexVisitorERE();
 		
-		String texto = visitor.visit(tree);
-		System.out.println(texto);
+		visitor.visit(tree);
 	}
 	
 	/** 

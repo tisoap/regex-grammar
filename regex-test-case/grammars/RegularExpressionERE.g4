@@ -80,10 +80,10 @@ list : negativeList
      ;
 
 //Uma lista negativa pode ser uma ou mais colecoes de caracteres ou series, com um ^ no comeco, entre colchetes
-negativeList : BRACKETOPEN CIRCUMFLEX (characters|range)+ BRACKETCLOSE;
+negativeList : BRACKETOPEN CIRCUMFLEX (range|character)+ BRACKETCLOSE;
 
 //Uma lista positiva pode ser uma ou mais colecoes de caracteres ou series, entre colchetes
-positiveList : BRACKETOPEN (characters|range)+ BRACKETCLOSE;
+positiveList : BRACKETOPEN (range|character)+ BRACKETCLOSE;
 
 //Uma serie sao dois caracteres separados por um traco
 //TODO Garantir que o primeiro caractere precede o segundo

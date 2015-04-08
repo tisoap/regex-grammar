@@ -1,6 +1,6 @@
 # Gramática Regex
 
-Gramática ANTLR que define expressões regulares. Dividida em duas vertentes: `POSIX ERE` e `PCRE`.
+Gramática ANTLR que define expressões regulares. Dividida em duas vertentes: [POSIX ERE](http://pubs.opengroup.org/onlinepubs/000095399/basedefs/xbd_chap09.html) e [PCRE](http://www.pcre.org/).
 
 Inclui uma aplicação de teste Java que realiza tradução de expressões regulares para linguagem natural em estrutura de árvore, fazendo uso de classes geradas pelo ANTLR.
 
@@ -16,13 +16,13 @@ test-case.jar <modo> [<visualização>]
 
 `<modo>` é um argumento obrigatório que pode ser:
 
-- `-posix`: executa em modo de compatibilidade `POSIX ERE`
-- `-pcre`:  executa em modo de compatibilidade `PCRE`
+- **-posix**: executa em modo de compatibilidade `POSIX ERE`
+- **-pcre**:  executa em modo de compatibilidade `PCRE`
 
 `[<visualização>]` é um argumento opcional que pode ser:
 
-- `-gui`: Exibe a parse tree de modo gráfico
-- `-list`: Exibe a parse tree em forma de listas
+- **-gui**: Exibe a parse tree de modo gráfico
+- **-list**: Exibe a parse tree em forma de listas
 
 Para traduzir uma expressão, execute o JAR com um argumento de modo e digite sua expressão seguida de uma quebra de linha. Exemplo:
 
@@ -103,24 +103,32 @@ Implementar nas gramáticas:
 
 Implementar na aplicação de teste:
 
-- Método de tradução utilizando visitor
 - Tradução de todos os elementos POSIX ERE
 - Validação de elementos
 
 ## Changelog
 
-Padrão `DD/MM/AAAA` para as datas e padrão `X.Y.Z` para o versionamento, onde:
+Padrão *DD/MM/AAAA* para as datas e padrão *X.Y.Z* para o versionamento, onde:
 
-- `X`: Versões finais
-- `Y`: Alterações na gramática
-- `Z`: Alterações no caso de teste
+- **X**: Versões finais
+- **Y**: Alterações na gramática
+- **Z**: Alterações no caso de teste
+
+0.7.4 (07/04/2015)
+
+- Melhorada definição de caracteres dentro de listas
+- Implementada tradução por meio de visitor de:
+	- Grupos
+	- Múltiplas Opções 
+	- Repetições
+	- Listas
 
 0.6.13 (06/04/2015)
 
 - Desativado modo PCRE
 - Desativada tradução por listener
 - Criado método de tradução por visitor
-- Implementada tradução de caracteres alfanuméricos e espaços
+- Implementada tradução por meio de visitor de caracteres alfanuméricos e espaços
 
 0.6.9 (05/04/2015)
 
