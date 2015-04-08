@@ -51,6 +51,8 @@ Cada vertente da gramática tem um nível de suporte diferente. Por enquanto nen
 - Múltiplas opções
 - Posições
 - Quantificadores
+- Classes
+- Ponto
 - Listas
 	- Caracteres
 	- Séries de caracteres
@@ -66,6 +68,9 @@ Cada vertente da gramática tem um nível de suporte diferente. Por enquanto nen
 - Comentários
 - Múltiplas opções
 - Posições
+- Classes
+	- POSIX
+- Ponto
 - Quantificadores
 	- Greedy
 	- Lazy
@@ -108,7 +113,7 @@ Implementar na aplicação de teste:
 
 ## Changelog
 
-Padrão *DD/MM/AAAA* para as datas e padrão *X.Y.Z* para o versionamento, onde:
+Padrão `DD/MM/AAAA` para as datas e padrão `X.Y.Z` para o versionamento, onde:
 
 - **X**: Versões finais
 - **Y**: Alterações na gramática
