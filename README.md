@@ -4,7 +4,7 @@ Gramática ANTLR que define expressões regulares. Dividida em duas vertentes: [
 
 Inclui uma aplicação de teste Java que realiza tradução de expressões regulares para linguagem natural em estrutura de árvore, fazendo uso de classes geradas pelo ANTLR.
 
-Para todos os casos, é assumido o padrão de codificação UTF-8.
+Para todos os casos, é assumido o padrão de codificação Unicode UTF-8. Sendo assim, não será dado suporte a “Collating Sequences” e “Character Equivalents” no padrão POSIX (Veja uma explicação [aqui](http://www.regular-expressions.info/posixbrackets.html)).
 
 ##Aplicação de Teste
 
