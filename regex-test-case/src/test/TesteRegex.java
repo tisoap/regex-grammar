@@ -74,11 +74,8 @@ public class TesteRegex {
 				
 				//TODO Modo PCRE desativado 
 				else if (modo.equals("-pcre"))
+					//new TestRegexPCRE(input, opcao);
 					System.out.println("Modo PCRE temporariamente desativado, utilize POSIX.");
-				
-/*				//Executa em modo PCRE
-				else if (modo.equals("-pcre"))
-					new TestRegexPCRE(input, opcao);*/
 			}
 		}
 		

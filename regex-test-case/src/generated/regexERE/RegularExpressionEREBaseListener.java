@@ -65,18 +65,6 @@ public class RegularExpressionEREBaseListener implements RegularExpressionERELis
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterNumericalGroup(RegularExpressionEREParser.NumericalGroupContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitNumericalGroup(RegularExpressionEREParser.NumericalGroupContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
 	@Override public void enterAnchor(RegularExpressionEREParser.AnchorContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -293,6 +281,18 @@ public class RegularExpressionEREBaseListener implements RegularExpressionERELis
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterListElement(RegularExpressionEREParser.ListElementContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitListElement(RegularExpressionEREParser.ListElementContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterRange(RegularExpressionEREParser.RangeContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -480,6 +480,54 @@ public class RegularExpressionEREBaseListener implements RegularExpressionERELis
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitAnychar(RegularExpressionEREParser.AnycharContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterEscaped(RegularExpressionEREParser.EscapedContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitEscaped(RegularExpressionEREParser.EscapedContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterSpecial(RegularExpressionEREParser.SpecialContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitSpecial(RegularExpressionEREParser.SpecialContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterListEscaped(RegularExpressionEREParser.ListEscapedContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitListEscaped(RegularExpressionEREParser.ListEscapedContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterListEspecial(RegularExpressionEREParser.ListEspecialContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitListEspecial(RegularExpressionEREParser.ListEspecialContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *

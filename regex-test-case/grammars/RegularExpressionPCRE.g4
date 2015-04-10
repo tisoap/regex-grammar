@@ -18,11 +18,12 @@ import RegularExpressionERE;
 //@Override Adciona comentario
 expression : multiple                //Multiplas opcoes
            | comment                 //Um comentario
-           | group                   //Um grupo de captura
            | anchor                  //Uma posicao
            | repetition              //Uma repeticao
            | expression expression   //Varias exprecoes
            | list                    //Uma lista de possiveis caracteres
+           | charclass               //Uma classe de caracteres
+           | anychar                 //Qualquer caractere
            | characters              //Caracteres em sequencia
            
            //Regra especial para ignorar espacamento
@@ -38,15 +39,20 @@ subExpression : group                         //Um grupo de captura
               | comment                       //Comentarios
               | subExpression subExpression   //Varias subexprecoes
               | list                          //Uma lista de possiveis caracteres
+              | charclass                     //Uma classe de caracteres
+              | anychar                       //Qualquer caractere
               | characters                    //Caracteres em sequencia
               ;
 
 //Grupos podem ser divididos em: 
-//@Override Adciona grupos nomeados e de nao captura
+//@Override Adciona divisao de tipos de grupos
 group : numericalGroup  //Grupos de captura numericos
       | namedGroup      //Grupos de captura nomeados
       | noCaptureGroup  //Grupos de nao captura
       ;
+
+//um grupo numerado comeca com '(', contem uma expressao, e termina com ')'
+numericalGroup : OPEN expression CLOSE ;
 
 //Um grupo nomeado inicia com '(?<Nome do grupo>', contem uma expressao, e termina com ')'
 namedGroup : NAMESTART groupName NAMEEND expression CLOSE ;

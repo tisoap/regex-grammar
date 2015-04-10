@@ -35,12 +35,6 @@ public interface RegularExpressionEREVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitGroup(RegularExpressionEREParser.GroupContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link RegularExpressionEREParser#numericalGroup}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitNumericalGroup(RegularExpressionEREParser.NumericalGroupContext ctx);
-	/**
 	 * Visit a parse tree produced by {@link RegularExpressionEREParser#anchor}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
@@ -149,6 +143,12 @@ public interface RegularExpressionEREVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitPositiveList(RegularExpressionEREParser.PositiveListContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link RegularExpressionEREParser#listElement}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitListElement(RegularExpressionEREParser.ListElementContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link RegularExpressionEREParser#range}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
@@ -244,6 +244,30 @@ public interface RegularExpressionEREVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitAnychar(RegularExpressionEREParser.AnycharContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link RegularExpressionEREParser#escaped}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitEscaped(RegularExpressionEREParser.EscapedContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link RegularExpressionEREParser#special}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitSpecial(RegularExpressionEREParser.SpecialContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link RegularExpressionEREParser#listEscaped}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitListEscaped(RegularExpressionEREParser.ListEscapedContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link RegularExpressionEREParser#listEspecial}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitListEspecial(RegularExpressionEREParser.ListEspecialContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link RegularExpressionEREParser#characters}.
 	 * @param ctx the parse tree

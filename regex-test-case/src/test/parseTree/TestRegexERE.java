@@ -9,7 +9,6 @@ import java.io.IOException;
 import org.antlr.v4.runtime.*;
 import org.antlr.v4.runtime.tree.*;
 
-import test.listeners.TestRegexListenerERE;
 import test.visitors.TestRegexVisitorERE;
 
 public class TestRegexERE {
@@ -95,28 +94,6 @@ public class TestRegexERE {
 		
 		System.out.println("");
 		System.out.println(tree.toStringTree());
-		System.out.println("");
-	}
-	
-	/**
-	 * Realiza a traducao da arvore usando um parse tree walker e um listener,
-	 * imprimindo os resultados no console.
-	 * @param tree Uma parse tree
-	 */
-	//TODO Remover traducao por listener
-	@SuppressWarnings("unused")
-	@Deprecated
-	private void traduzirListener(ParseTree tree){
-		
-		// Cria um 'andador' de arvore que pode chamar callbacks
-		ParseTreeWalker walker = new ParseTreeWalker();
-		
-		System.out.println("");
-		
-		// Ande pela arvore, usando o TestRegexListener para escutar os callbacks
-		// e imprimir os resultados na tela
-		walker.walk(new TestRegexListenerERE(), tree);
-		
 		System.out.println("");
 	}
 	

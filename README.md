@@ -47,6 +47,7 @@ Cada vertente da gramática tem um nível de suporte diferente. Por enquanto nen
 ###POSIX ERE:
 	
 - Caracteres alfanuméricos e espaços
+- Caracteres especiais escapados
 - Grupos Numéricos 
 - Múltiplas opções
 - Posições
@@ -61,6 +62,7 @@ Cada vertente da gramática tem um nível de suporte diferente. Por enquanto nen
 ###PCRE:
 
 - Caracteres alfanuméricos e espaços
+- Caracteres especiais escapados
 - Grupos
 	- Numéricos 
 	- Nomeados
@@ -84,6 +86,7 @@ Cada vertente da gramática tem um nível de suporte diferente. Por enquanto nen
 - Não existe validação dos quantificadores `{n}`,`{n,}` e `{n,m}` para garantir que `n > 0` e `m > 0`
 - Não existe validação do quantificador `{n,m}` para garantir que `n < m`
 - Não existe validação de séries de caracteres `A-B` dentro de listas para garantir que `A` precede `B`, dentro do padrão UTF-8
+- Tradução de range contendo caratere escapado imprime a barra invertida, quando não deveria
 
 ##TODO
 
@@ -103,7 +106,6 @@ Implementar nas gramáticas:
 	- Positive Look Behind
 	- Negative Look Behind
 - Suporte a todos os caracteres imprimíveis
-- Suporte a caracteres especiais escapados
 
 Implementar na aplicação de teste:
 
@@ -117,6 +119,16 @@ Padrão `DD/MM/AAAA` para as datas e padrão `X.Y.Z` para o versionamento, onde:
 - **X**: Versões finais
 - **Y**: Alterações na gramática
 - **Z**: Alterações no caso de teste
+
+0.14.3 (10/04/2015)
+
+- Melhorada definição de grupos
+- Melhorada definição de listas
+- Melhorar definição de caracteres
+- Suporte a caracteres especiais escapados
+- Removida completamente tradução por listener
+- Implementada tradução de caracteres especiais escapados
+- Adicionado código fonte do ANTLR4 no projeto em formato zip, para debugs
 
 0.10.3 (08/04/2015)
 

@@ -48,16 +48,6 @@ public interface RegularExpressionEREListener extends ParseTreeListener {
 	 */
 	void exitGroup(RegularExpressionEREParser.GroupContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link RegularExpressionEREParser#numericalGroup}.
-	 * @param ctx the parse tree
-	 */
-	void enterNumericalGroup(RegularExpressionEREParser.NumericalGroupContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link RegularExpressionEREParser#numericalGroup}.
-	 * @param ctx the parse tree
-	 */
-	void exitNumericalGroup(RegularExpressionEREParser.NumericalGroupContext ctx);
-	/**
 	 * Enter a parse tree produced by {@link RegularExpressionEREParser#anchor}.
 	 * @param ctx the parse tree
 	 */
@@ -238,6 +228,16 @@ public interface RegularExpressionEREListener extends ParseTreeListener {
 	 */
 	void exitPositiveList(RegularExpressionEREParser.PositiveListContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link RegularExpressionEREParser#listElement}.
+	 * @param ctx the parse tree
+	 */
+	void enterListElement(RegularExpressionEREParser.ListElementContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link RegularExpressionEREParser#listElement}.
+	 * @param ctx the parse tree
+	 */
+	void exitListElement(RegularExpressionEREParser.ListElementContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link RegularExpressionEREParser#range}.
 	 * @param ctx the parse tree
 	 */
@@ -397,6 +397,46 @@ public interface RegularExpressionEREListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitAnychar(RegularExpressionEREParser.AnycharContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link RegularExpressionEREParser#escaped}.
+	 * @param ctx the parse tree
+	 */
+	void enterEscaped(RegularExpressionEREParser.EscapedContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link RegularExpressionEREParser#escaped}.
+	 * @param ctx the parse tree
+	 */
+	void exitEscaped(RegularExpressionEREParser.EscapedContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link RegularExpressionEREParser#special}.
+	 * @param ctx the parse tree
+	 */
+	void enterSpecial(RegularExpressionEREParser.SpecialContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link RegularExpressionEREParser#special}.
+	 * @param ctx the parse tree
+	 */
+	void exitSpecial(RegularExpressionEREParser.SpecialContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link RegularExpressionEREParser#listEscaped}.
+	 * @param ctx the parse tree
+	 */
+	void enterListEscaped(RegularExpressionEREParser.ListEscapedContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link RegularExpressionEREParser#listEscaped}.
+	 * @param ctx the parse tree
+	 */
+	void exitListEscaped(RegularExpressionEREParser.ListEscapedContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link RegularExpressionEREParser#listEspecial}.
+	 * @param ctx the parse tree
+	 */
+	void enterListEspecial(RegularExpressionEREParser.ListEspecialContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link RegularExpressionEREParser#listEspecial}.
+	 * @param ctx the parse tree
+	 */
+	void exitListEspecial(RegularExpressionEREParser.ListEspecialContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link RegularExpressionEREParser#characters}.
 	 * @param ctx the parse tree

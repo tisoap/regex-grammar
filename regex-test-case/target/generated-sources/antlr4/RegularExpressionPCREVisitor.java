@@ -29,6 +29,12 @@ public interface RegularExpressionPCREVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitGroup(RegularExpressionPCREParser.GroupContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link RegularExpressionPCREParser#numericalGroup}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitNumericalGroup(RegularExpressionPCREParser.NumericalGroupContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link RegularExpressionPCREParser#namedGroup}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
@@ -143,12 +149,6 @@ public interface RegularExpressionPCREVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitMultiple(RegularExpressionPCREParser.MultipleContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link RegularExpressionPCREParser#numericalGroup}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitNumericalGroup(RegularExpressionPCREParser.NumericalGroupContext ctx);
-	/**
 	 * Visit a parse tree produced by {@link RegularExpressionPCREParser#anchor}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
@@ -251,6 +251,12 @@ public interface RegularExpressionPCREVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitPositiveList(RegularExpressionPCREParser.PositiveListContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link RegularExpressionPCREParser#listElement}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitListElement(RegularExpressionPCREParser.ListElementContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link RegularExpressionPCREParser#range}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
@@ -346,6 +352,30 @@ public interface RegularExpressionPCREVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitAnychar(RegularExpressionPCREParser.AnycharContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link RegularExpressionPCREParser#escaped}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitEscaped(RegularExpressionPCREParser.EscapedContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link RegularExpressionPCREParser#special}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitSpecial(RegularExpressionPCREParser.SpecialContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link RegularExpressionPCREParser#listEscaped}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitListEscaped(RegularExpressionPCREParser.ListEscapedContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link RegularExpressionPCREParser#listEspecial}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitListEspecial(RegularExpressionPCREParser.ListEspecialContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link RegularExpressionPCREParser#characters}.
 	 * @param ctx the parse tree

@@ -19,6 +19,7 @@ expression : multiple                //Multiplas opcoes
            | list                    //Uma lista de possiveis caracteres
            | charclass               //Uma classe de caracteres
            | anychar                 //Qualquer caractere
+           | escaped                 //Caracteres escapados
            | characters              //Caracteres em sequencia
            
            //Regra especial para ignorar espacamento
@@ -40,11 +41,8 @@ subExpression : group                         //Um grupo de captura
               | characters                    //Caracteres em sequencia
               ;
 
-//Grupos de captura so podem ser numericos, de acordo com o padrao POSIX
-group : numericalGroup ;
-
-//Um grupo numerado inicia com '(', contem uma expressao, e termina com ')'
-numericalGroup : OPEN expression CLOSE ;
+//Grupos de captura sao expressoes entre parenteses
+group : OPEN expression CLOSE ;
 
 //Uma posicao pode ser de inicio ou fim
 anchor : startAnchor //inicio
@@ -56,13 +54,14 @@ endAnchor   : DOLAR ;      //$
 
 //Um elemento a ser quantificado e o simbolo repetidor
 //O simbolo repetidor se associa a esquerda do elemento quantificado
-repetition : <assoc=right> quantified quantifier;
+repetition : <assoc=right> quantified quantifier ;
 
 //So e possivel quantificar itens individuais
 quantified : group
            | list
            | charclass
            | anychar
+           | escaped
            | character
            ;
 
@@ -94,15 +93,22 @@ list : negativeList
      | positiveList
      ;
 
-//Uma lista negativa pode ser uma ou mais colecoes de caracteres, classes ou series, com um ^ no comeco, entre colchetes
-negativeList : BRACKETOPEN CIRCUMFLEX (range|charclass|character)+ BRACKETCLOSE;
+//Uma lista negativa e qualquer quantidade de elementos de lista entre colchetes, com ^ no comeco
+negativeList : BRACKETOPEN CIRCUMFLEX listElement* BRACKETCLOSE;
 
-//Uma lista positiva pode ser uma ou mais colecoes de caracteres, classes ou series, entre colchetes
-positiveList : BRACKETOPEN (range|charclass|character)+ BRACKETCLOSE;
+//Uma lista positiva e qualquer quantidade de elementos de lista entre colchetes
+positiveList : BRACKETOPEN listElement* BRACKETCLOSE;
+
+//Um elemento de lista pode ser:
+listElement : range        //Uma serie de caracteres
+            | charclass    //Uma classe de caracteres
+            | listEscaped  //Um caractere especial de lista escapado
+            | character    //Um caractere
+            ;
 
 //Uma serie sao dois caracteres separados por um traco
 //TODO Garantir que o primeiro caractere precede o segundo
-range: character DASH character;
+range : (character|listEscaped) DASH (character|listEscaped) ;
 
 //Uma classe de caracteres POSIX e o nome da classe entre [: e :]
 charclass: CLASSOPEN classname CLASSCLOSE;
@@ -140,10 +146,42 @@ xdigit      : XDIGIT     ;
 //O elemento que representa qualquer caractere e o ponto.
 anychar : DOT ;
 
-//Uma colecao de caracteres pode ser um ou mais digitos, letras do alfabeto latino ou espacos
-//A aplicacao nao precisa distinguir cada caractere de uma colecao de caracteres,
-//por isso o uso de tokens.
-characters : (DIGIT|LATIN|SPACE)+ ;
+//Um caractere escapado e uma barra invertida seguida do caractere
+escaped : REVERSESOLIDUS special
+        | REVERSESOLIDUS character
+        ;
+
+//Todos os possiveis caracteres especiais
+special : DOT
+        | QUESTION
+        | PLUS
+        | ASTERISC
+        | CURLYOPEN
+        | CURLYCLOSE
+        | BRACKETOPEN
+        | BRACKETCLOSE
+        | CIRCUMFLEX
+        | DOLAR
+        | PIPE
+        | OPEN
+        | CLOSE
+        | REVERSESOLIDUS
+        ;
+
+//Um caractere escapado e uma barra invertida seguida do caractere
+listEscaped : REVERSESOLIDUS listEspecial
+            | REVERSESOLIDUS character
+            ;
+
+//Todos os possiveis caracteres especiais de lista
+listEspecial : DASH
+             | BRACKETOPEN
+             | BRACKETCLOSE
+             | REVERSESOLIDUS
+             ;
+
+//Uma colecao de caracteres sao um ou mais caracteres
+characters : character+ ;
 
 //Um caractere pode ser um digito, letra do alfabeto latino ou espaco
 character  : (DIGIT|LATIN|SPACE) ;
@@ -151,43 +189,46 @@ character  : (DIGIT|LATIN|SPACE) ;
 
 /** Lexer Rules */
 
-DOT                : '.'          ;
-COMMA              : ','          ;
-QUESTION           : '?'          ;
-PLUS               : '+'          ;
-ASTERISC           : '*'          ;
-CURLYOPEN          : '{'          ;
-CURLYCLOSE         : '}'          ;
-BRACKETOPEN        : '['          ;
-BRACKETCLOSE       : ']'          ;
-DASH               : '-'          ;
-CIRCUMFLEX         : '^'          ;
-DOLAR              : '$'          ;
-PIPE               : '|'          ;
-OPEN               : '('          ;
-CLOSE              : ')'          ;
-CLASSOPEN          : '[:'         ;
-CLASSCLOSE         : ':]'         ;
+SPACE              : ' '  ;
+DOT                : '.'  ;
+COMMA              : ','  ;
+QUESTION           : '?'  ;
+PLUS               : '+'  ;
+ASTERISC           : '*'  ;
+CURLYOPEN          : '{'  ;
+CURLYCLOSE         : '}'  ;
+BRACKETOPEN        : '['  ;
+BRACKETCLOSE       : ']'  ;
+DASH               : '-'  ;
+CIRCUMFLEX         : '^'  ;
+DOLAR              : '$'  ;
+PIPE               : '|'  ;
+OPEN               : '('  ;
+CLOSE              : ')'  ;
+CLASSOPEN          : '[:' ;
+CLASSCLOSE         : ':]' ;
+REVERSESOLIDUS     : '\\' ;
 
 
-ALNUM              : 'alnum'      ;
-ALPHA              : 'alpha'      ;
-BLANK              : 'blank'      ;
-CNTRL              : 'cntrl'      ;
-DIGITCLASS         : 'digit'      ;
-GRAPH              : 'graph'      ;
-LOWER              : 'lower'      ;
-PRINT              : 'print'      ;
-PUNCT              : 'punct'      ;
-SPACECLASS         : 'space'      ;
-UPPER              : 'upper'      ;
-XDIGIT             : 'xdigit'     ;
+ALNUM              : 'alnum'  ;
+ALPHA              : 'alpha'  ;
+BLANK              : 'blank'  ;
+CNTRL              : 'cntrl'  ;
+DIGITCLASS         : 'digit'  ;
+GRAPH              : 'graph'  ;
+LOWER              : 'lower'  ;
+PRINT              : 'print'  ;
+PUNCT              : 'punct'  ;
+SPACECLASS         : 'space'  ;
+UPPER              : 'upper'  ;
+XDIGIT             : 'xdigit' ;
 
 
-SPACE              : ' '          ;
-DIGIT              : [0-9]        ;
-LATIN              : [A-Za-z]     ;
+DIGIT              : [0-9]    ;
+LATIN              : [A-Za-z] ;
 
+//ALL                : [\u0000-\uFFFF] ;
+//PRINTABLE          : [^\x00-\x1F\x80-\x9F] ;
 
 /** Lexer Skip Rules */
 

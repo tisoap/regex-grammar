@@ -8,7 +8,6 @@ public class TestRegexVisitorERE extends RegularExpressionEREBaseVisitor<Void> {
 	
 	private String identacao = "";
 	private int nivelIdentacaoAtual = 0;
-	private int contadorGruposNumericos = 0;
 	
 	
 	/**  ------- Metodos auxiliares  ------- */
@@ -92,24 +91,11 @@ public class TestRegexVisitorERE extends RegularExpressionEREBaseVisitor<Void> {
 		
 		nivelIdentacaoAtual++;
 		
+		menosIdentacao("Grupo:");
+		
 		visitChildren(ctx);
 		
 		nivelIdentacaoAtual--;
-		
-		return null;
-	}
-	
-	/** Quando visita um grupo numerico, aumenta o contador de 
-	 *  grupos numericos, imprime 'Grupo' + o contador 
-	 *  e visita todos os filhos. */
-	@Override
-	public Void visitNumericalGroup(NumericalGroupContext ctx) {
-		
-		contadorGruposNumericos++;
-		
-		menosIdentacao("Grupo " + contadorGruposNumericos + ":");
-		
-		visitChildren(ctx);
 		
 		return null;
 	}
@@ -277,6 +263,39 @@ public class TestRegexVisitorERE extends RegularExpressionEREBaseVisitor<Void> {
 		return null;
 	}
 	
+	/** Quando visita um elemento de lista, visita todos os filhos dele. */
+	@Override
+	public Void visitListElement(ListElementContext ctx) {
+		
+		visitChildren(ctx);
+		
+		return null;
+	}
+	
+	/** Quando visita um caractere escapado, imprime
+	 *  'Literalmente: ' + o caractere. */
+	@Override
+	public Void visitEscaped(EscapedContext ctx) {
+		
+		//O primeiro filho (0) e a barra invertida,
+		//O segundo (1) e o caractere
+		identacao("Literalmente: " + ctx.getChild(1).getText());
+		
+		return null;
+	}
+	
+	/** Quando visita um caractere escapado de lista, imprime
+	 *  'Literalmente: ' + o caractere. */
+	@Override
+	public Void visitListEscaped(ListEscapedContext ctx) {
+		
+		//O primeiro filho (0) e a barra invertida,
+		//O segundo (1) e o caractere
+		identacao("Literalmente: " + ctx.getChild(1).getText());
+		
+		return null;
+	}
+	
 	/** Quando visita uma serie de caracteres, recupera o caractere da esquerda
 	 *  e o caractere da direita, e imprime 'Todos os caracteres entre ESQUERDA e DIREITA'. */
 	@Override
@@ -289,6 +308,8 @@ public class TestRegexVisitorERE extends RegularExpressionEREBaseVisitor<Void> {
 		 * 1: -
 		 * 2: B
 		 */
+		
+		//TODO dar suporte a range de caracteres especiais escapados
 		identacao(
 			"Todos os caracteres entre '" + 
 			ctx.getChild(0).getText() + 
@@ -459,8 +480,7 @@ public class TestRegexVisitorERE extends RegularExpressionEREBaseVisitor<Void> {
 		return null;
 	}
 	
-	/** Quando visita um caractere, imprime 'Caractere: '
-	 *  + o caractere .*/
+	/** Quando visita um caractere, imprime o proprio caractere .*/
 	@Override
 	public Void visitCharacter(CharacterContext ctx) {
 		
