@@ -46,7 +46,7 @@ Cada vertente da gramática tem um nível de suporte diferente. Por enquanto nen
 
 ###POSIX ERE:
 	
-- Caracteres alfanuméricos e espaços
+- Caracteres Unicode
 - Caracteres especiais escapados
 - Grupos Numéricos 
 - Múltiplas opções
@@ -61,7 +61,7 @@ Cada vertente da gramática tem um nível de suporte diferente. Por enquanto nen
 
 ###PCRE:
 
-- Caracteres alfanuméricos e espaços
+- Caracteres Unicode
 - Caracteres especiais escapados
 - Grupos
 	- Numéricos 
@@ -83,14 +83,11 @@ Cada vertente da gramática tem um nível de suporte diferente. Por enquanto nen
 
 ##Bugs Conhecidos
 
-- Não existe validação dos quantificadores `{n}`,`{n,}` e `{n,m}` para garantir que `n > 0` e `m > 0`
-- Não existe validação do quantificador `{n,m}` para garantir que `n < m`
+- Não existe validação dos quantificadores `{n}`,`{n,}` e `{n,m}` para garantir que `n > 0` e `n < m`
 - Não existe validação de séries de caracteres `A-B` dentro de listas para garantir que `A` precede `B`, dentro do padrão UTF-8
 - Tradução de range contendo caratere escapado imprime a barra invertida, quando não deveria
 
 ##TODO
-
-Implementar nas gramáticas:
 
 - Referências
 - Classes de caracteres
@@ -105,12 +102,6 @@ Implementar nas gramáticas:
 	- Negative Look Ahead
 	- Positive Look Behind
 	- Negative Look Behind
-- Suporte a todos os caracteres imprimíveis
-
-Implementar na aplicação de teste:
-
-- Tradução de todos os elementos POSIX ERE
-- Validação de elementos
 
 ## Changelog
 
@@ -119,6 +110,11 @@ Padrão `DD/MM/AAAA` para as datas e padrão `X.Y.Z` para o versionamento, onde:
 - **X**: Versões finais
 - **Y**: Alterações na gramática
 - **Z**: Alterações no caso de teste
+
+1.0 (13/04/2015)
+
+- Suporte a todos os caracteres Unicode
+- Suporte completo ao padrão POSIX ERE (salvo  *Collating Sequences* e *Character Equivalents*)
 
 0.14.3 (10/04/2015)
 
