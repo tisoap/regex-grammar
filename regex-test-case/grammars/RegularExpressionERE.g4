@@ -183,8 +183,10 @@ listEspecial : DASH
 //Uma colecao de caracteres sao um ou mais caracteres
 characters : character+ ;
 
-//Um caractere pode ser um digito, letra do alfabeto latino ou espaco
-character  : (DIGIT|LATIN|SPACE) ;
+//TODO Por motivo de magia negra, utilizar apenas a regra ALL nao funciona.
+//Caracteres podem ser digitos, letras do alfabeto latino, espacos, virgulas,
+//tracos e qualquer outro caractere nao especial.
+character  : (DIGIT|LATIN|SPACE|COMMA|DASH|ALL) ;
 
 
 /** Lexer Rules */
@@ -226,9 +228,7 @@ XDIGIT             : 'xdigit' ;
 
 DIGIT              : [0-9]    ;
 LATIN              : [A-Za-z] ;
-
-//ALL                : [\u0000-\uFFFF] ;
-//PRINTABLE          : [^\x00-\x1F\x80-\x9F] ;
+ALL                : [\u0000-\uFFFF] ;
 
 /** Lexer Skip Rules */
 
