@@ -9,7 +9,8 @@ import java.io.IOException;
 import org.antlr.v4.runtime.*;
 import org.antlr.v4.runtime.tree.*;
 
-import test.errorReporting.VerboseListener;
+import test.error.ErrorHandlerBR;
+import test.error.ErrorListenerVerbose;
 import test.visitor.TestRegexVisitorERE;
 
 public class TestRegexERE {
@@ -78,7 +79,10 @@ public class TestRegexERE {
 		parser.removeErrorListeners();
 		
 		// Adciona um listener de erros customizado
-		parser.addErrorListener(new VerboseListener());
+		parser.addErrorListener(new ErrorListenerVerbose());
+		
+		//Troca o Error Handler padrao por um com mensagens em portugues
+		parser.setErrorHandler(new ErrorHandlerBR());
 		
 		// Cria a ParseTree comecando pela regra inicial 'expression'
 		ExpressionContext expContext = parser.expression();

@@ -35,7 +35,7 @@ public class TesteRegex {
 			opcao = args[0];
 			
 			//Se o argumento nao for -gui ou -list, exibe uma mensagem de erro e sai
-			if (!opcao.equals("-gui") || !opcao.equals("-list")){
+			if (!opcao.equals("-gui") && !opcao.equals("-list")){
 				System.out.println("Argumento de visualizacao invalido, utilize -gui ou -list.");
 				return;
 			}

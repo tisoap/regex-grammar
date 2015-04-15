@@ -59,7 +59,7 @@ Adicionar um argumento de visualização faz com que a expressão não seja trad
 ##TODO
 
 - Verificar recuperação de erros
-- Validação de quantificadores e  séries
+- Validação de quantificadores e séries
 - Terminar tradutor
 - Testes
 
@@ -71,6 +71,9 @@ Padrão `DD/MM/AAAA` para as datas e padrão `X.Y.Z` para o versionamento, onde:
 - **Y**: Alterações na gramática
 - **Z**: Alterações no caso de teste
 
+1.1.3 (15/04/2015)
+
+- Adicionado Error Handler em português
 
 1.1.2 (15/04/2015)
 
