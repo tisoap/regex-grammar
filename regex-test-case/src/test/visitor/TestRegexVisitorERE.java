@@ -1,4 +1,4 @@
-package test.visitors;
+package test.visitor;
 
 import generated.regexERE.RegularExpressionEREBaseVisitor;
 import generated.regexERE.RegularExpressionEREParser.*;

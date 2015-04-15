@@ -19,9 +19,9 @@ public class RegularExpressionEREParser extends Parser {
 		SPACE=1, DOT=2, COMMA=3, QUESTION=4, PLUS=5, ASTERISC=6, CURLYOPEN=7, 
 		CURLYCLOSE=8, BRACKETOPEN=9, BRACKETCLOSE=10, DASH=11, CIRCUMFLEX=12, 
 		DOLAR=13, PIPE=14, OPEN=15, CLOSE=16, CLASSOPEN=17, CLASSCLOSE=18, REVERSESOLIDUS=19, 
-		ALNUM=20, ALPHA=21, BLANK=22, CNTRL=23, DIGITCLASS=24, GRAPH=25, LOWER=26, 
-		PRINT=27, PUNCT=28, SPACECLASS=29, UPPER=30, XDIGIT=31, DIGIT=32, LATIN=33, 
-		ALL=34, WS=35;
+		DIGITCLASS=20, SPACECLASS=21, ALNUM=22, ALPHA=23, BLANK=24, CNTRL=25, 
+		GRAPH=26, LOWER=27, PRINT=28, PUNCT=29, UPPER=30, XDIGIT=31, DIGIT=32, 
+		LATIN=33, OTHER=34, WS=35;
 	public static final int
 		RULE_expression = 0, RULE_multiple = 1, RULE_subExpression = 2, RULE_group = 3, 
 		RULE_anchor = 4, RULE_startAnchor = 5, RULE_endAnchor = 6, RULE_repetition = 7, 
@@ -47,16 +47,17 @@ public class RegularExpressionEREParser extends Parser {
 
 	private static final String[] _LITERAL_NAMES = {
 		null, "' '", "'.'", "','", "'?'", "'+'", "'*'", "'{'", "'}'", "'['", "']'", 
-		"'-'", "'^'", "'$'", "'|'", "'('", "')'", "'[:'", "':]'", "'\\'", "'alnum'", 
-		"'alpha'", "'blank'", "'cntrl'", "'digit'", "'graph'", "'lower'", "'print'", 
-		"'punct'", "'space'", "'upper'", "'xdigit'"
+		"'-'", "'^'", "'$'", "'|'", "'('", "')'", "'[:'", "':]'", "'\\'", "'digit'", 
+		"'space'", "'alnum'", "'alpha'", "'blank'", "'cntrl'", "'graph'", "'lower'", 
+		"'print'", "'punct'", "'upper'", "'xdigit'"
 	};
 	private static final String[] _SYMBOLIC_NAMES = {
 		null, "SPACE", "DOT", "COMMA", "QUESTION", "PLUS", "ASTERISC", "CURLYOPEN", 
 		"CURLYCLOSE", "BRACKETOPEN", "BRACKETCLOSE", "DASH", "CIRCUMFLEX", "DOLAR", 
 		"PIPE", "OPEN", "CLOSE", "CLASSOPEN", "CLASSCLOSE", "REVERSESOLIDUS", 
-		"ALNUM", "ALPHA", "BLANK", "CNTRL", "DIGITCLASS", "GRAPH", "LOWER", "PRINT", 
-		"PUNCT", "SPACECLASS", "UPPER", "XDIGIT", "DIGIT", "LATIN", "ALL", "WS"
+		"DIGITCLASS", "SPACECLASS", "ALNUM", "ALPHA", "BLANK", "CNTRL", "GRAPH", 
+		"LOWER", "PRINT", "PUNCT", "UPPER", "XDIGIT", "DIGIT", "LATIN", "OTHER", 
+		"WS"
 	};
 	public static final Vocabulary VOCABULARY = new VocabularyImpl(_LITERAL_NAMES, _SYMBOLIC_NAMES);
 
@@ -811,7 +812,7 @@ public class RegularExpressionEREParser extends Parser {
 			case DASH:
 			case DIGIT:
 			case LATIN:
-			case ALL:
+			case OTHER:
 				enterOuterAlt(_localctx, 6);
 				{
 				setState(153);
@@ -1495,7 +1496,7 @@ public class RegularExpressionEREParser extends Parser {
 			setState(209);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
-			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << SPACE) | (1L << COMMA) | (1L << DASH) | (1L << CLASSOPEN) | (1L << REVERSESOLIDUS) | (1L << DIGIT) | (1L << LATIN) | (1L << ALL))) != 0)) {
+			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << SPACE) | (1L << COMMA) | (1L << DASH) | (1L << CLASSOPEN) | (1L << REVERSESOLIDUS) | (1L << DIGIT) | (1L << LATIN) | (1L << OTHER))) != 0)) {
 				{
 				{
 				setState(206);
@@ -1561,7 +1562,7 @@ public class RegularExpressionEREParser extends Parser {
 			setState(218);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
-			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << SPACE) | (1L << COMMA) | (1L << DASH) | (1L << CLASSOPEN) | (1L << REVERSESOLIDUS) | (1L << DIGIT) | (1L << LATIN) | (1L << ALL))) != 0)) {
+			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << SPACE) | (1L << COMMA) | (1L << DASH) | (1L << CLASSOPEN) | (1L << REVERSESOLIDUS) | (1L << DIGIT) | (1L << LATIN) | (1L << OTHER))) != 0)) {
 				{
 				{
 				setState(215);
@@ -1712,7 +1713,7 @@ public class RegularExpressionEREParser extends Parser {
 			case DASH:
 			case DIGIT:
 			case LATIN:
-			case ALL:
+			case OTHER:
 				{
 				setState(229);
 				character();
@@ -1736,7 +1737,7 @@ public class RegularExpressionEREParser extends Parser {
 			case DASH:
 			case DIGIT:
 			case LATIN:
-			case ALL:
+			case OTHER:
 				{
 				setState(234);
 				character();
@@ -2833,7 +2834,7 @@ public class RegularExpressionEREParser extends Parser {
 		public TerminalNode SPACE() { return getToken(RegularExpressionEREParser.SPACE, 0); }
 		public TerminalNode COMMA() { return getToken(RegularExpressionEREParser.COMMA, 0); }
 		public TerminalNode DASH() { return getToken(RegularExpressionEREParser.DASH, 0); }
-		public TerminalNode ALL() { return getToken(RegularExpressionEREParser.ALL, 0); }
+		public TerminalNode OTHER() { return getToken(RegularExpressionEREParser.OTHER, 0); }
 		public CharacterContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -2862,7 +2863,7 @@ public class RegularExpressionEREParser extends Parser {
 			{
 			setState(303);
 			_la = _input.LA(1);
-			if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << SPACE) | (1L << COMMA) | (1L << DASH) | (1L << DIGIT) | (1L << LATIN) | (1L << ALL))) != 0)) ) {
+			if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << SPACE) | (1L << COMMA) | (1L << DASH) | (1L << DIGIT) | (1L << LATIN) | (1L << OTHER))) != 0)) ) {
 			_errHandler.recoverInline(this);
 			} else {
 				consume();
@@ -2992,11 +2993,11 @@ public class RegularExpressionEREParser extends Parser {
 		"\3\2\2\2\u0100\u00f7\3\2\2\2\u0100\u00f8\3\2\2\2\u0100\u00f9\3\2\2\2\u0100"+
 		"\u00fa\3\2\2\2\u0100\u00fb\3\2\2\2\u0100\u00fc\3\2\2\2\u0100\u00fd\3\2"+
 		"\2\2\u0100\u00fe\3\2\2\2\u0100\u00ff\3\2\2\2\u0101\65\3\2\2\2\u0102\u0103"+
-		"\7\26\2\2\u0103\67\3\2\2\2\u0104\u0105\7\27\2\2\u01059\3\2\2\2\u0106\u0107"+
-		"\7\30\2\2\u0107;\3\2\2\2\u0108\u0109\7\31\2\2\u0109=\3\2\2\2\u010a\u010b"+
-		"\7\32\2\2\u010b?\3\2\2\2\u010c\u010d\7\33\2\2\u010dA\3\2\2\2\u010e\u010f"+
-		"\7\34\2\2\u010fC\3\2\2\2\u0110\u0111\7\35\2\2\u0111E\3\2\2\2\u0112\u0113"+
-		"\7\36\2\2\u0113G\3\2\2\2\u0114\u0115\7\37\2\2\u0115I\3\2\2\2\u0116\u0117"+
+		"\7\30\2\2\u0103\67\3\2\2\2\u0104\u0105\7\31\2\2\u01059\3\2\2\2\u0106\u0107"+
+		"\7\32\2\2\u0107;\3\2\2\2\u0108\u0109\7\33\2\2\u0109=\3\2\2\2\u010a\u010b"+
+		"\7\26\2\2\u010b?\3\2\2\2\u010c\u010d\7\34\2\2\u010dA\3\2\2\2\u010e\u010f"+
+		"\7\35\2\2\u010fC\3\2\2\2\u0110\u0111\7\36\2\2\u0111E\3\2\2\2\u0112\u0113"+
+		"\7\37\2\2\u0113G\3\2\2\2\u0114\u0115\7\27\2\2\u0115I\3\2\2\2\u0116\u0117"+
 		"\7 \2\2\u0117K\3\2\2\2\u0118\u0119\7!\2\2\u0119M\3\2\2\2\u011a\u011b\7"+
 		"\4\2\2\u011bO\3\2\2\2\u011c\u011d\7\25\2\2\u011d\u0121\5R*\2\u011e\u011f"+
 		"\7\25\2\2\u011f\u0121\5Z.\2\u0120\u011c\3\2\2\2\u0120\u011e\3\2\2\2\u0121"+

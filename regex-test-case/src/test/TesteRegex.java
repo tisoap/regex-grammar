@@ -4,26 +4,19 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-import test.parseTree.TestRegexERE;
-
 //TODO Modo PCRE desativado 
 //import test.parseTree.TestRegexPCRE;
 
 public class TesteRegex {
 	
 	/** 
-	 * Usuario digita pela entrada de texto padrao uma expressao regular,
+	 * Usuario digita pelo console uma expressao regular,
 	 * seguido de uma quebra de linha. Como resultado,
 	 * e imprimido na tela uma versao em estrutura de arvore e linguagem natural da
 	 * expressao. Opcionalmente pode ser exibida uma representacao da parse tree gerada.<br>
 	 * @param args Uma lista de argumentos String[]<br>
 	 * <br>
-	 * Obrigatoriamente deve ser passado um argumento de modo de execucao, e opcionalmente um
-	 * argumento de modo de visualizacao.<br>
-	 * <br>
-	 * Dos argumentos de modo de execucao:<br>
-	 * &nbsp;&nbsp; "-posix" executa em modo de compatibilidade POSIX ERE;<br>
-	 * &nbsp;&nbsp; "-pcre" executa em modo de compatibilidade PCRE;<br>
+	 * Opcionalmente pode ser passado um argumento de modo de visualizacao.<br>
 	 * <br>
 	 * Dos argumentos de visualizacao:<br>
 	 * &nbsp;&nbsp; "-gui" exibe uma representacao grafica da parse tree gerada;<br>
@@ -33,58 +26,31 @@ public class TesteRegex {
 	 * definicoes dos tokens. */
 	public static void main(String[] args) throws IOException {
 		
-		//Se foi passado algum argumento
-		if (args.length > 0){
-			
-			String modo = args[0]; //Salva o 1o argumento
-			String opcao = "";
-			
-			//Se foram passados pelo menos dois argumentos
-			if (args.length > 1) {
-				
-				opcao = args[1]; //Salva o 2o argumento
-				
-				//Mensagem de erro caso o 2o argumento esteja errado
-				if (!opcao.equals("-gui") && !opcao.equals("-list")){
-					System.out.println("");
-					System.out.println("Argumento de visualizacao incorreto.");
-					System.out.println("Utilizae -gui ou -list");
-					System.out.println("");
-					return;
-				}
-			}
-			
-			//Mensagem de erro caso o 1o argumento esteja errado
-			if (!modo.equals("-posix") && !modo.equals("-pcre")) {
-				System.out.println("");
-				System.out.println("Argumento de execucao incorreto.");
-				System.out.println("Utilize -posix ou -pcre");
-				System.out.println("");
-			}
-			
-			else {
-				
-				BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-				String input = br.readLine();
-				br.close();
-				
-				//Executa em modo POSIX ERE
-				if (modo.equals("-posix"))
-					new TestRegexERE(input, opcao);
-				
-				//TODO Modo PCRE desativado 
-				else if (modo.equals("-pcre"))
-					//new TestRegexPCRE(input, opcao);
-					System.out.println("Modo PCRE temporariamente desativado, utilize POSIX.");
-			}
-		}
+		String opcao = "";
 		
-		//Mensagem de erro caso nao existam argumentos
-		else {
-			System.out.println("");
-			System.out.println("Faltou argumento de execucao.");
-			System.out.println("Utilize -posix ou -pcre");
-			System.out.println("");
+		//Se foi passado algum argumento
+		if (args.length > 0) {
+			
+			//Salva o argumento
+			opcao = args[0];
+			
+			//Se o argumento nao for -gui ou -list, exibe uma mensagem de erro e sai
+			if (!opcao.equals("-gui") || !opcao.equals("-list")){
+				System.out.println("Argumento de visualizacao invalido, utilize -gui ou -list.");
+				return;
+			}
 		}
+			
+		//Cria um leitor que recebe o texto da entrada de dados padrao (console)
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		
+		//Leia a entrada ate a 1a quebra de linha e salve em uma String
+		String input = br.readLine();
+		
+		//Fecha o leitor
+		br.close();
+		
+		//Envia o texto recebido o parametro para a classe responsavel em fazer a traducao
+		new TestRegexERE(input, opcao);
 	}
 }

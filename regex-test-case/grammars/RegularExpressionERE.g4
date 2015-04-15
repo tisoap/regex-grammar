@@ -183,10 +183,10 @@ listEspecial : DASH
 //Uma colecao de caracteres sao um ou mais caracteres
 characters : character+ ;
 
-//TODO Por motivo de magia negra, utilizar apenas a regra ALL nao funciona.
+//TODO Por motivo de magia negra, utilizar apenas uma regra para todos os caracteres nao funciona.
 //Caracteres podem ser digitos, letras do alfabeto latino, espacos, virgulas,
-//tracos e qualquer outro caractere nao especial.
-character  : (DIGIT|LATIN|SPACE|COMMA|DASH|ALL) ;
+//tracos e qualquer outro caractere que nao seja especial.
+character  : (DIGIT|LATIN|SPACE|COMMA|DASH|OTHER) ;
 
 
 /** Lexer Rules */
@@ -212,23 +212,26 @@ CLASSCLOSE         : ':]' ;
 REVERSESOLIDUS     : '\\' ;
 
 
-ALNUM              : 'alnum'  ;
-ALPHA              : 'alpha'  ;
-BLANK              : 'blank'  ;
-CNTRL              : 'cntrl'  ;
-DIGITCLASS         : 'digit'  ;
-GRAPH              : 'graph'  ;
-LOWER              : 'lower'  ;
-PRINT              : 'print'  ;
-PUNCT              : 'punct'  ;
-SPACECLASS         : 'space'  ;
-UPPER              : 'upper'  ;
-XDIGIT             : 'xdigit' ;
+DIGITCLASS  : 'digit'  ;
+SPACECLASS  : 'space'  ;
+ALNUM       : 'alnum'  ;
+ALPHA       : 'alpha'  ;
+BLANK       : 'blank'  ;
+CNTRL       : 'cntrl'  ;
+GRAPH       : 'graph'  ;
+LOWER       : 'lower'  ;
+PRINT       : 'print'  ;
+PUNCT       : 'punct'  ;
+UPPER       : 'upper'  ;
+XDIGIT      : 'xdigit' ;
 
 
-DIGIT              : [0-9]    ;
-LATIN              : [A-Za-z] ;
-ALL                : [\u0000-\uFFFF] ;
+DIGIT   :  [0-9]     ;
+LATIN   :  [A-Za-z]  ;
+OTHER   : ~[+*?.()\[\]\\^$|,- A-Za-z0-9] ; //~ siginifica negacao
+
+
+
 
 /** Lexer Skip Rules */
 

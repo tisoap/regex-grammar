@@ -1,6 +1,6 @@
 # Gramática Regex
 
-Gramática ANTLR que define expressões regulares. Dividida em duas vertentes: [POSIX ERE](http://pubs.opengroup.org/onlinepubs/9699919799/basedefs/V1_chap09.html) e [PCRE](http://www.pcre.org/).
+Gramática ANTLR que define expressões regulares no padrão  [POSIX ERE](http://pubs.opengroup.org/onlinepubs/9699919799/basedefs/V1_chap09.html) .
 
 Inclui uma aplicação de teste Java que realiza tradução de expressões regulares para linguagem natural em estrutura de árvore, fazendo uso de classes geradas pelo ANTLR.
 
@@ -11,13 +11,8 @@ Para todos os casos, é assumido o padrão de codificação Unicode UTF-8. Sendo
 O caso de teste é um JAR executável que recebe os seguintes comandos:
 
 ```
-test-case.jar <modo> [<visualização>]
+test-case.jar [<visualização>]
 ```
-
-`<modo>` é um argumento obrigatório que pode ser:
-
-- **-posix**: executa em modo de compatibilidade `POSIX ERE`
-- **-pcre**:  executa em modo de compatibilidade `PCRE`
 
 `[<visualização>]` é um argumento opcional que pode ser:
 
@@ -27,24 +22,20 @@ test-case.jar <modo> [<visualização>]
 Para traduzir uma expressão, execute o JAR com um argumento de modo e digite sua expressão seguida de uma quebra de linha. Exemplo:
 
 ```
-$  java -jar test-case.jar -posix
+$  java -jar test-case.jar
 a(b|c)
 ```
 
 Para gerar uma visualização da parse tree, adicione um argumento de visualização. Exemplo:
 
 ```
-$  java -jar test-case.jar -pcre -gui
+$  java -jar test-case.jar -gui
 a(b|c)
 ```
 
 Adicionar um argumento de visualização faz com que a expressão não seja traduzida para linguagem natural.
 
 ##Suporte
-
-Cada vertente da gramática tem um nível de suporte diferente. Por enquanto nenhuma vertente tem suporte completo de acordo com as definições oficiais.
-
-###POSIX ERE:
 	
 - Caracteres Unicode
 - Caracteres especiais escapados
@@ -59,49 +50,18 @@ Cada vertente da gramática tem um nível de suporte diferente. Por enquanto nen
 	- Séries de caracteres
 	- Listas Negativas
 
-###PCRE:
-
-- Caracteres Unicode
-- Caracteres especiais escapados
-- Grupos
-	- Numéricos 
-	- Nomeados
-	- Não captura
-- Comentários
-- Múltiplas opções
-- Posições
-- Classes
-	- POSIX
-- Ponto
-- Quantificadores
-	- Greedy
-	- Lazy
-- Listas
-	- Caracteres
-	- Séries de caracteres
-	- Listas Negativas
-
 ##Bugs Conhecidos
 
 - Não existe validação dos quantificadores `{n}`,`{n,}` e `{n,m}` para garantir que `n > 0` e `n < m`
 - Não existe validação de séries de caracteres `A-B` dentro de listas para garantir que `A` precede `B`, dentro do padrão UTF-8
-- Tradução de range contendo caratere escapado imprime a barra invertida, quando não deveria
+- Tradução de range contendo caractere escapado imprime a barra invertida, quando não deveria
 
 ##TODO
 
-- Referências
-- Classes de caracteres
-	- Classes positivas
-	- Classes negativas
-	- Unicode
-	- Hexadecimal
-	- ASCII
-	- Controle
-- Lookarouds
-	- Positive Look Ahead
-	- Negative Look Ahead
-	- Positive Look Behind
-	- Negative Look Behind
+- Verificar recuperação de erros
+- Validação de quantificadores e  séries
+- Terminar tradutor
+- Testes
 
 ## Changelog
 
@@ -110,6 +70,13 @@ Padrão `DD/MM/AAAA` para as datas e padrão `X.Y.Z` para o versionamento, onde:
 - **X**: Versões finais
 - **Y**: Alterações na gramática
 - **Z**: Alterações no caso de teste
+
+
+1.1.2 (15/04/2015)
+
+- Melhorada definição de caracteres
+- Removido completamente modo PCRE
+- Adicionado Error Listener customizado
 
 1.0 (13/04/2015)
 

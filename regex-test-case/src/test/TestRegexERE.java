@@ -1,4 +1,4 @@
-package test.parseTree;
+package test;
 
 import generated.regexERE.RegularExpressionERELexer;
 import generated.regexERE.RegularExpressionEREParser;
@@ -9,7 +9,8 @@ import java.io.IOException;
 import org.antlr.v4.runtime.*;
 import org.antlr.v4.runtime.tree.*;
 
-import test.visitors.TestRegexVisitorERE;
+import test.errorReporting.VerboseListener;
+import test.visitor.TestRegexVisitorERE;
 
 public class TestRegexERE {
 	
@@ -48,16 +49,10 @@ public class TestRegexERE {
 			
 			//Caso contrario, traduza a entrada do usuario
 			else traduzirVisitor(expContext);
-			
-			//TODO Traducao por listener desativada
-			//else traduzirListener(expContext);
 		}
 		
 		//Se nao foram passados argumentos, traduza a entrada do usuario
 		else traduzirVisitor(expContext);
-		
-		//TODO Traducao por listener desativada
-		//else traduzirListener(expContext);
 	}
 	 
 	 /** 
@@ -78,12 +73,19 @@ public class TestRegexERE {
 		
 		// Cria um parser que recebe o stream de tokens
 		RegularExpressionEREParser parser = new RegularExpressionEREParser(tokens);
-		setPosixParser(parser);
+		
+		// Remove o listener de erros padrao do parser
+		parser.removeErrorListeners();
+		
+		// Adciona um listener de erros customizado
+		parser.addErrorListener(new VerboseListener());
 		
 		// Cria a ParseTree comecando pela regra inicial 'expression'
 		ExpressionContext expContext = parser.expression();
-		setExpContext(expContext);
 		
+		// Seta as variaveis privadas da classe
+		setPosixParser(parser);
+		setExpContext(expContext);
 	}
 	
 	/**
