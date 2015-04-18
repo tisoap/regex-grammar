@@ -3,10 +3,18 @@
  * (Portable Operating System Interface Extended Regular Expressions)
  * 
  * http://pubs.opengroup.org/onlinepubs/9699919799/basedefs/V1_chap09.html
+ * 
+ * E assumido local UTF-8 para as entradas, entao nao existe implementacao
+ * de “Collating Sequences” e “Character Equivalents”.
  */
 
+//TODO criar regras que definem erros comuns
 grammar RegularExpressionERE;
 
+//Adiciona o nome do pacote nas classes Java geradas
+@header {
+package generated.regexERE;
+}
 
 /** Parser Rules */
 
@@ -53,7 +61,7 @@ startAnchor : CIRCUMFLEX ; //^
 endAnchor   : DOLAR ;      //$
 
 //Um elemento a ser quantificado e o simbolo repetidor
-//O simbolo repetidor se associa a esquerda do elemento quantificado
+//O simbolo repetidor se associa pela esquerda do elemento quantificado
 repetition : <assoc=right> quantified quantifier ;
 
 //So e possivel quantificar itens individuais
@@ -78,10 +86,29 @@ oneOrMore   : PLUS ;      //+
 zeroOrMore  : ASTERISC ;  //*
 conditional : QUESTION ;  //?
 
-//TODO Garantir que n>0 e n<m
-exact       : CURLYOPEN value CURLYCLOSE ; //{n}
-atLeast     : CURLYOPEN value COMMA CURLYCLOSE ; //{n,}
-between     : CURLYOPEN firstValue COMMA lastValue CURLYCLOSE ; //{n,m}
+//Nas regras "exact" e "atLeast", "value" precisa ser um numero inteiro maior
+//que zero. Porem nao e necessario testar se isto e verdadeiro pois
+//a regra "value" e formada por tokens do tipo DIGIT, que abrange apenas
+//os caracteres de digitos, nao incluindo o sinal de negativo.
+exact       : CURLYOPEN value CURLYCLOSE ;        //{n}
+atLeast     : CURLYOPEN value COMMA CURLYCLOSE ;  //{n,}
+
+//Quantificador {n,m}, onde n>=0 e n<=m
+//Para garantir que n<=m, a regra abaixo contem um "predicador semantico"
+//(Semantic Predicate), que e uma condicional em linguagem Java
+//no formato {...}? . A regra so sera verdadeira se a condicional for verdadeira.
+between :
+	
+	//Armazena "firstValue" na variavel local 'a' e "lastValue" na variavel local 'b'
+	CURLYOPEN a=firstValue COMMA b=lastValue CURLYCLOSE
+	
+	//Semantic Predicate
+	{
+		//Converte os textos das variaveis locais para numeros inteiros,
+		//e compara se o primeiro valor e menor ou igual ao segundo
+		Integer.parseInt($a.text) <= Integer.parseInt($b.text)
+	}?
+	;
 
 //Um numero inteiro positivo
 value      : DIGIT+ ;
@@ -89,6 +116,7 @@ firstValue : DIGIT+ ;
 lastValue  : DIGIT+ ;
 
 //Uma lista pode ser positiva ou negativa
+//TODO criar uma Island Grammar para listas
 list : negativeList
      | positiveList
      ;
@@ -183,33 +211,35 @@ listEspecial : DASH
 //Uma colecao de caracteres sao um ou mais caracteres
 characters : character+ ;
 
-//TODO Por motivo de magia negra, utilizar apenas uma regra para todos os caracteres nao funciona.
 //Caracteres podem ser digitos, letras do alfabeto latino, espacos, virgulas,
-//tracos e qualquer outro caractere que nao seja especial.
+//tracos e qualquer outro caractere que nao seja de controle.
+//E necessario definir caracteres desta forma para que a regra OTHER
+//nao entre em conflito com as regras COMMA, DASH, etc... definidas
+//em outras partes da gramatica.
 character  : (DIGIT|LATIN|SPACE|COMMA|DASH|OTHER) ;
 
 
 /** Lexer Rules */
 
-SPACE              : ' '  ;
-DOT                : '.'  ;
-COMMA              : ','  ;
-QUESTION           : '?'  ;
-PLUS               : '+'  ;
-ASTERISC           : '*'  ;
-CURLYOPEN          : '{'  ;
-CURLYCLOSE         : '}'  ;
-BRACKETOPEN        : '['  ;
-BRACKETCLOSE       : ']'  ;
-DASH               : '-'  ;
-CIRCUMFLEX         : '^'  ;
-DOLAR              : '$'  ;
-PIPE               : '|'  ;
-OPEN               : '('  ;
-CLOSE              : ')'  ;
-CLASSOPEN          : '[:' ;
-CLASSCLOSE         : ':]' ;
-REVERSESOLIDUS     : '\\' ;
+SPACE           : ' '  ;
+DOT             : '.'  ;
+COMMA           : ','  ;
+QUESTION        : '?'  ;
+PLUS            : '+'  ;
+ASTERISC        : '*'  ;
+CURLYOPEN       : '{'  ;
+CURLYCLOSE      : '}'  ;
+BRACKETOPEN     : '['  ;
+BRACKETCLOSE    : ']'  ;
+DASH            : '-'  ;
+CIRCUMFLEX      : '^'  ;
+DOLAR           : '$'  ;
+PIPE            : '|'  ;
+OPEN            : '('  ;
+CLOSE           : ')'  ;
+CLASSOPEN       : '[:' ;
+CLASSCLOSE      : ':]' ;
+REVERSESOLIDUS  : '\\' ;
 
 
 DIGITCLASS  : 'digit'  ;
@@ -226,14 +256,18 @@ UPPER       : 'upper'  ;
 XDIGIT      : 'xdigit' ;
 
 
-DIGIT   :  [0-9]     ;
-LATIN   :  [A-Za-z]  ;
-OTHER   : ~[+*?.()\[\]\\^$|,- A-Za-z0-9] ; //~ siginifica negacao
+DIGIT  : [0-9]    ;
+LATIN  : [A-Za-z] ;
 
-
+//Nesta regra ~ siginifica negacao, ou seja: ela inclui todos os
+//caracteres que nao sejam caracteres de controle.
+//Os caracteres de controle sao todos os caracteres Unicode entre
+//0000 e 001F, e entre 007F e 009F.
+OTHER : ~[\u0000-\u001F\u007F-\u009F] ;
 
 
 /** Lexer Skip Rules */
 
-WS : [\r\n\t] -> skip ; //Ignora quebras de linha e tabulacoes
+//Ignora quebras de linha e tabulacoes
+WS : [\r\n\t] -> skip ;
 

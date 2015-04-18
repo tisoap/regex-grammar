@@ -4,9 +4,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-//TODO Modo PCRE desativado 
-//import test.parseTree.TestRegexPCRE;
-
 public class TesteRegex {
 	
 	/** 
@@ -40,7 +37,7 @@ public class TesteRegex {
 				return;
 			}
 		}
-			
+		
 		//Cria um leitor que recebe o texto da entrada de dados padrao (console)
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		
