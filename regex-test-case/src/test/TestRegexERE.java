@@ -16,14 +16,14 @@ import test.visitor.TestRegexVisitorERE;
 public class TestRegexERE {
 	
 	private RegularExpressionEREParser posixParser;
-	private ExpressionContext expContext;
+	private ExpressionContext expressionContext;
 	
 	public RegularExpressionEREParser getPosixParser() {
 		return posixParser;
 	}
 
 	public ExpressionContext getExpContext() {
-		return expContext;
+		return expressionContext;
 	}
 	
 	public void setPosixParser(RegularExpressionEREParser posixParser) {
@@ -31,7 +31,7 @@ public class TestRegexERE {
 	}
 
 	public void setExpContext(ExpressionContext expContext) {
-		this.expContext = expContext;
+		this.expressionContext = expContext;
 	}
 	
 	public TestRegexERE(String input, String opcao) throws IOException {
@@ -43,17 +43,17 @@ public class TestRegexERE {
 		if (!opcao.isEmpty()){
 			
 			//Se o 1o argumento  for '-list', exibe a parse tree em forma de lista
-			if (opcao.equals("-list")) imprimirParseTree(expContext);
+			if (opcao.equals("-list")) imprimirParseTree(expressionContext);
 			
 			//Se o 1o argumento for '-gui', exibe a parse tree de forma grafica
-			else if (opcao.equals("-gui")) parserTreeGui(expContext, posixParser);
+			else if (opcao.equals("-gui")) parserTreeGui(expressionContext, posixParser);
 			
 			//Caso contrario, traduza a entrada do usuario
-			else traduzirVisitor(expContext);
+			else traduzirVisitor(expressionContext);
 		}
 		
 		//Se nao foram passados argumentos, traduza a entrada do usuario
-		else traduzirVisitor(expContext);
+		else traduzirVisitor(expressionContext);
 	}
 	 
 	 /** 

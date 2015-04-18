@@ -1,4 +1,7 @@
 // Generated from RegularExpressionERE.g4 by ANTLR 4.5
+
+package generated.regexERE;
+
 import org.antlr.v4.runtime.misc.NotNull;
 import org.antlr.v4.runtime.tree.ParseTreeVisitor;
 
