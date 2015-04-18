@@ -35,21 +35,6 @@ a(b|c)
 
 Adicionar um argumento de visualização faz com que a expressão não seja traduzida para linguagem natural.
 
-##Suporte
-	
-- Caracteres Unicode
-- Caracteres especiais escapados
-- Grupos Numéricos 
-- Múltiplas opções
-- Posições
-- Quantificadores
-- Classes
-- Ponto
-- Listas
-	- Caracteres
-	- Séries de caracteres
-	- Listas Negativas
-
 ##Bugs Conhecidos
 
 - Não existe validação de séries de caracteres `A-B` dentro de listas para garantir que `A` precede `B`, dentro do padrão UTF-8
@@ -72,12 +57,13 @@ Padrão `DD/MM/AAAA` para as datas e padrão `X.Y.Z` para o versionamento, onde:
 - **Y**: Alterações na gramática
 - **Z**: Alterações no caso de teste
 
-1.3.2 (18/04/2015)
+1.3.3 (18/04/2015)
 
 - Validação do quantificador `{n,m}` garantindo que `n<=m`
 - Melhorada definição de caracteres
 - Inserido o nome de pacote nas classes geradas pela gramática
-- Renomeadas classes da aplicação de teste
+- Nomes de classes e pacotes mais simples
+- Removida pasta `target`, código gerado agora vai direto para o pacote
 
 1.1.3 (15/04/2015)
 
