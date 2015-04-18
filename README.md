@@ -52,14 +52,15 @@ Adicionar um argumento de visualização faz com que a expressão não seja trad
 
 ##Bugs Conhecidos
 
-- Não existe validação dos quantificadores `{n}`,`{n,}` e `{n,m}` para garantir que `n > 0` e `n < m`
 - Não existe validação de séries de caracteres `A-B` dentro de listas para garantir que `A` precede `B`, dentro do padrão UTF-8
-- Tradução de range contendo caractere escapado imprime a barra invertida, quando não deveria
+- Tradução de séries com caracteres escapados imprime a barra invertida
+- Caracteres especiais escapados dentro de listas resultam em falha
 
 ##TODO
 
-- Verificar recuperação de erros
-- Validação de quantificadores e séries
+- Melhorar recuperação de erros
+- Criar uma “Island Grammar” para listas
+- Validação de séries de caracteres
 - Terminar tradutor
 - Testes
 
@@ -70,6 +71,12 @@ Padrão `DD/MM/AAAA` para as datas e padrão `X.Y.Z` para o versionamento, onde:
 - **X**: Versões finais
 - **Y**: Alterações na gramática
 - **Z**: Alterações no caso de teste
+
+1.3.1 (18/04/2015)
+
+- Validação do quantificador `{n,m}` garantindo que `n<=m`
+- Melhorada definição de caracteres
+- Inserido o nome de pacote nas classes geradas pela gramática
 
 1.1.3 (15/04/2015)
 
