@@ -6,6 +6,9 @@
  * 
  * E assumido local UTF-8 para as entradas, entao nao existe implementacao
  * de “Collating Sequences” e “Character Equivalents”.
+ * 
+ * http://www.regular-expressions.info/posixbrackets.html
+ * 
  */
 
 //TODO criar regras que definem erros comuns
@@ -13,7 +16,7 @@ grammar RegularExpressionERE;
 
 //Adiciona o nome do pacote nas classes Java geradas
 @header {
-package generated.regexERE;
+package gerado;
 }
 
 /** Parser Rules */
@@ -85,11 +88,6 @@ quantifier : oneOrMore    //Um ou mais
 oneOrMore   : PLUS ;      //+
 zeroOrMore  : ASTERISC ;  //*
 conditional : QUESTION ;  //?
-
-//Nas regras "exact" e "atLeast", "value" precisa ser um numero inteiro maior
-//que zero. Porem nao e necessario testar se isto e verdadeiro pois
-//a regra "value" e formada por tokens do tipo DIGIT, que abrange apenas
-//os caracteres de digitos, nao incluindo o sinal de negativo.
 exact       : CURLYOPEN value CURLYCLOSE ;        //{n}
 atLeast     : CURLYOPEN value COMMA CURLYCLOSE ;  //{n,}
 
@@ -103,11 +101,12 @@ between :
 	CURLYOPEN a=firstValue COMMA b=lastValue CURLYCLOSE
 	
 	//Semantic Predicate
+	//Converte os textos das variaveis locais para numeros inteiros,
+	//e compara se o primeiro valor e menor ou igual ao segundo
 	{
-		//Converte os textos das variaveis locais para numeros inteiros,
-		//e compara se o primeiro valor e menor ou igual ao segundo
 		Integer.parseInt($a.text) <= Integer.parseInt($b.text)
 	}?
+	
 	;
 
 //Um numero inteiro positivo

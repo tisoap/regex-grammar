@@ -1,4 +1,4 @@
-package test.error;
+package teste.erro;
 
 import org.antlr.v4.runtime.*;
 
@@ -7,7 +7,7 @@ import org.antlr.v4.runtime.*;
  * alem da mensagem de erro usual, imprimir a localizacao 
  * do token problematico.
  */
-public class ErrorListenerVerbose extends BaseErrorListener {
+public class ErrorListenerVerboso extends BaseErrorListener {
 	
 	@Override
 	public void syntaxError(

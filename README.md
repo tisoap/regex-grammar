@@ -72,11 +72,12 @@ Padrão `DD/MM/AAAA` para as datas e padrão `X.Y.Z` para o versionamento, onde:
 - **Y**: Alterações na gramática
 - **Z**: Alterações no caso de teste
 
-1.3.1 (18/04/2015)
+1.3.2 (18/04/2015)
 
 - Validação do quantificador `{n,m}` garantindo que `n<=m`
 - Melhorada definição de caracteres
 - Inserido o nome de pacote nas classes geradas pela gramática
+- Renomeadas classes da aplicação de teste
 
 1.1.3 (15/04/2015)
 

@@ -1,10 +1,10 @@
-package test.visitor;
+package teste;
 
-import generated.regexERE.RegularExpressionEREBaseVisitor;
-import generated.regexERE.RegularExpressionEREParser.*;
+import gerado.RegularExpressionEREBaseVisitor;
+import gerado.RegularExpressionEREParser.*;
 
 
-public class TestRegexVisitorERE extends RegularExpressionEREBaseVisitor<Void> {
+public class Tradutor extends RegularExpressionEREBaseVisitor<Void> {
 	
 	private String identacao = "";
 	private int nivelIdentacaoAtual = 0;
@@ -46,7 +46,9 @@ public class TestRegexVisitorERE extends RegularExpressionEREBaseVisitor<Void> {
 		System.out.println(identacao + texto);
 	}
 	
-	/** Visitors */
+	
+	
+	/**  ------- Visitors  ------- */
 	
 	/** Quando visita uma expressao, visita todos os filhos dela. */
 	@Override
@@ -57,8 +59,7 @@ public class TestRegexVisitorERE extends RegularExpressionEREBaseVisitor<Void> {
 		return null;
 	}
 	
-	/** Quando visita uma subexpressao, aumenta o nivel de identacao
-	 *  e visita todos os filhos dela. */
+	/** Quando visita uma subexpressao, visita todos os filhos dela. */
 	@Override
 	public Void visitSubExpression(SubExpressionContext ctx) {
 		

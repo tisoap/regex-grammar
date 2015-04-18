@@ -1,4 +1,4 @@
-package test.error;
+package teste.erro;
 
 import org.antlr.v4.runtime.DefaultErrorStrategy;
 import org.antlr.v4.runtime.InputMismatchException;
@@ -12,7 +12,7 @@ import org.antlr.v4.runtime.misc.IntervalSet;
  * Error handler que sobrepoe os metodos padrao para utilizar
  * mensagens em portugues.
  */
-public class ErrorHandlerBR extends DefaultErrorStrategy {
+public class ErrorHandlerPortugues extends DefaultErrorStrategy {
 
 	@Override
 	protected void reportNoViableAlternative(

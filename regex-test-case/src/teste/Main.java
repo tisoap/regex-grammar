@@ -1,10 +1,10 @@
-package test;
+package teste;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-public class TesteRegex {
+public class Main {
 	
 	/** 
 	 * Usuario digita pelo console uma expressao regular,
@@ -41,13 +41,13 @@ public class TesteRegex {
 		//Cria um leitor que recebe o texto da entrada de dados padrao (console)
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		
-		//Leia a entrada ate a 1a quebra de linha e salve em uma String
+		//Leia a entrada ate a primeira quebra de linha e salve em uma String
 		String input = br.readLine();
 		
 		//Fecha o leitor
 		br.close();
 		
-		//Envia o texto recebido o parametro para a classe responsavel em fazer a traducao
-		new TestRegexERE(input, opcao);
+		//Envia o texto recebido e o parametro para a classe responsavel em fazer a traducao
+		new Regex(input, opcao);
 	}
 }

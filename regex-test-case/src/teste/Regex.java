@@ -1,19 +1,18 @@
-package test;
+package teste;
 
-import generated.regexERE.RegularExpressionERELexer;
-import generated.regexERE.RegularExpressionEREParser;
-import generated.regexERE.RegularExpressionEREParser.ExpressionContext;
+import gerado.RegularExpressionERELexer;
+import gerado.RegularExpressionEREParser;
+import gerado.RegularExpressionEREParser.ExpressionContext;
 
 import java.io.IOException;
 
 import org.antlr.v4.runtime.*;
 import org.antlr.v4.runtime.tree.*;
 
-import test.error.ErrorHandlerBR;
-import test.error.ErrorListenerVerbose;
-import test.visitor.TestRegexVisitorERE;
+import teste.erro.ErrorHandlerPortugues;
+import teste.erro.ErrorListenerVerboso;
 
-public class TestRegexERE {
+public class Regex {
 	
 	private RegularExpressionEREParser posixParser;
 	private ExpressionContext expressionContext;
@@ -34,7 +33,7 @@ public class TestRegexERE {
 		this.expressionContext = expContext;
 	}
 	
-	public TestRegexERE(String input, String opcao) throws IOException {
+	public Regex(String input, String opcao) throws IOException {
 		 
 		//Recebe uma string do usuario pelo terminal e inicializa a parse tree
 		criarParseTree(input);
@@ -79,10 +78,10 @@ public class TestRegexERE {
 		parser.removeErrorListeners();
 		
 		// Adciona um listener de erros customizado
-		parser.addErrorListener(new ErrorListenerVerbose());
+		parser.addErrorListener(new ErrorListenerVerboso());
 		
 		//Troca o Error Handler padrao por um com mensagens em portugues
-		parser.setErrorHandler(new ErrorHandlerBR());
+		parser.setErrorHandler(new ErrorHandlerPortugues());
 		
 		// Cria a ParseTree comecando pela regra inicial 'expression'
 		ExpressionContext expContext = parser.expression();
@@ -110,7 +109,7 @@ public class TestRegexERE {
 	 */
 	private void traduzirVisitor(ParseTree tree){
 		
-		TestRegexVisitorERE visitor = new TestRegexVisitorERE();
+		Tradutor visitor = new Tradutor();
 		
 		visitor.visit(tree);
 	}
