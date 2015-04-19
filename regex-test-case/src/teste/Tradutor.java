@@ -276,11 +276,20 @@ public class Tradutor extends RegularExpressionEREBaseVisitor<Void> {
 	/** Quando visita um caractere escapado, imprime
 	 *  'Literalmente: ' + o caractere. */
 	@Override
-	public Void visitEscaped(EscapedContext ctx) {
-		
+	public Void visitEscapedSpecial(EscapedSpecialContext ctx) {
 		//O primeiro filho (0) e a barra invertida,
-		//O segundo (1) e o caractere
+		//O segundo  filho (1) e o caractere
 		identacao("Literalmente: " + ctx.getChild(1).getText());
+		
+		return null;
+	}
+	
+	/** Quando visita um caractere escapado, imprime o caractere. */
+	@Override
+	public Void visitEscapedChar(EscapedCharContext ctx) {
+		//O primeiro filho (0) e a barra invertida,
+		//O segundo  filho (1) e o caractere
+		identacao(ctx.getChild(1).getText());
 		
 		return null;
 	}
@@ -303,20 +312,37 @@ public class Tradutor extends RegularExpressionEREBaseVisitor<Void> {
 	public Void visitRange(RangeContext ctx) {
 		
 		/**
-		 * Uma serie tem o formato A-B, onde A e B sao caracteres.
+		 * Uma serie tem o formato A-B, onde A e B sao caracteres comuns
+		 * ou caracteres escapados com \
+		 * 
 		 * Os filhos serao:
 		 * 0: A
 		 * 1: -
 		 * 2: B
 		 */
 		
-		//TODO dar suporte a range de caracteres especiais escapados
-		identacao(
-			"Todos os caracteres entre '" + 
-			ctx.getChild(0).getText() + 
-			"' e '" + 
-			ctx.getChild(2).getText() + 
-			"'");
+		//Recupera os textos
+		String textoA = ctx.getChild(0).getText();
+		String textoB = ctx.getChild(2).getText();
+		
+		//Pega o ultimo caractere dos textos
+		//Isso evita pegar a barra invertida se o caractere for escapado
+		char a = textoA.charAt(textoA.length() - 1);
+		char b = textoB.charAt(textoB.length() - 1);
+		
+		
+		identacao("Todos os caracteres entre '" + a + "' e '" + b + "'");
+		
+		return null;
+	}
+	
+	/**
+	 * Quando visita um caractere de lista, imprime o caractere.
+	 */
+	@Override
+	public Void visitListCharacter(ListCharacterContext ctx) {
+		
+		identacao(ctx.getText());
 		
 		return null;
 	}

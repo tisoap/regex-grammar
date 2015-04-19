@@ -38,13 +38,10 @@ Adicionar um argumento de visualização faz com que a expressão não seja trad
 ##Bugs Conhecidos
 
 - Não existe validação de séries de caracteres `A-B` dentro de listas para garantir que `A` precede `B`, dentro do padrão UTF-8
-- Tradução de séries com caracteres escapados imprime a barra invertida
-- Caracteres especiais escapados dentro de listas resultam em falha
 
 ##TODO
 
 - Melhorar recuperação de erros
-- Criar uma “Island Grammar” para listas
 - Validação de séries de caracteres
 - Terminar tradutor
 - Testes
@@ -56,6 +53,13 @@ Padrão `DD/MM/AAAA` para as datas e padrão `X.Y.Z` para o versionamento, onde:
 - **X**: Versões finais
 - **Y**: Alterações na gramática
 - **Z**: Alterações no caso de teste
+
+1.6.1 (19/04/2015)
+
+- Criada definição de caracteres de lista
+- Melhorada definição de caracteres escapados
+- Adicionado `^` nos caracteres especiais de lista
+- Corrigida tradução de séries com caracteres escapados
 
 1.3.3 (18/04/2015)
 

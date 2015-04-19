@@ -19,6 +19,7 @@ grammar RegularExpressionERE;
 package gerado;
 }
 
+
 /** Parser Rules */
 
 //Definicao de uma exprecao regular, que pode ser:
@@ -115,7 +116,6 @@ firstValue : DIGIT+ ;
 lastValue  : DIGIT+ ;
 
 //Uma lista pode ser positiva ou negativa
-//TODO criar uma Island Grammar para listas
 list : negativeList
      | positiveList
      ;
@@ -127,15 +127,15 @@ negativeList : BRACKETOPEN CIRCUMFLEX listElement* BRACKETCLOSE;
 positiveList : BRACKETOPEN listElement* BRACKETCLOSE;
 
 //Um elemento de lista pode ser:
-listElement : range        //Uma serie de caracteres
-            | charclass    //Uma classe de caracteres
-            | listEscaped  //Um caractere especial de lista escapado
-            | character    //Um caractere
+listElement : range            //Uma serie de caracteres
+            | charclass        //Uma classe de caracteres
+            | listEscaped      //Um caractere especial de lista escapado
+            | listCharacter    //Um caractere
             ;
 
 //Uma serie sao dois caracteres separados por um traco
 //TODO Garantir que o primeiro caractere precede o segundo
-range : (character|listEscaped) DASH (character|listEscaped) ;
+range : (listCharacter|listEscaped) DASH (listCharacter|listEscaped) ;
 
 //Uma classe de caracteres POSIX e o nome da classe entre [: e :]
 charclass: CLASSOPEN classname CLASSCLOSE;
@@ -174,8 +174,8 @@ xdigit      : XDIGIT     ;
 anychar : DOT ;
 
 //Um caractere escapado e uma barra invertida seguida do caractere
-escaped : REVERSESOLIDUS special
-        | REVERSESOLIDUS character
+escaped : REVERSESOLIDUS special    #escapedSpecial
+        | REVERSESOLIDUS character  #escapedChar
         ;
 
 //Todos os possiveis caracteres especiais
@@ -197,25 +197,54 @@ special : DOT
 
 //Um caractere escapado e uma barra invertida seguida do caractere
 listEscaped : REVERSESOLIDUS listEspecial
-            | REVERSESOLIDUS character
+            | REVERSESOLIDUS listCharacter
             ;
 
 //Todos os possiveis caracteres especiais de lista
 listEspecial : DASH
+             | CIRCUMFLEX
              | BRACKETOPEN
              | BRACKETCLOSE
              | REVERSESOLIDUS
              ;
 
+//Qualquer caractere que nao seja de controle.
+//E necessario definir caracteres de lista desta forma
+//para nao haver conflito com outras regras.
+listCharacter  : 
+           ( DIGIT
+           | LATIN
+           | SPACE
+           | COMMA
+           | DOT
+           | QUESTION
+           | PLUS
+           | ASTERISC
+           | CURLYOPEN
+           | CURLYCLOSE
+           | DOLAR
+           | PIPE
+           | OPEN
+           | CLOSE
+           | OTHER
+           )
+           ;
+
 //Uma colecao de caracteres sao um ou mais caracteres
 characters : character+ ;
 
-//Caracteres podem ser digitos, letras do alfabeto latino, espacos, virgulas,
-//tracos e qualquer outro caractere que nao seja de controle.
-//E necessario definir caracteres desta forma para que a regra OTHER
-//nao entre em conflito com as regras COMMA, DASH, etc... definidas
-//em outras partes da gramatica.
-character  : (DIGIT|LATIN|SPACE|COMMA|DASH|OTHER) ;
+//Qualquer caractere que nao seja de controle.
+//E necessario definir caracteres desta forma para que
+//nao entre em conflito com outras regras.
+character  : 
+           ( DIGIT
+           | LATIN
+           | SPACE
+           | COMMA
+           | DASH
+           | OTHER
+           )
+           ;
 
 
 /** Lexer Rules */
@@ -238,7 +267,7 @@ OPEN            : '('  ;
 CLOSE           : ')'  ;
 CLASSOPEN       : '[:' ;
 CLASSCLOSE      : ':]' ;
-REVERSESOLIDUS  : '\\' ;
+REVERSESOLIDUS  : '\\' ;  // Apenas uma barra invertida
 
 
 DIGITCLASS  : 'digit'  ;
@@ -255,8 +284,8 @@ UPPER       : 'upper'  ;
 XDIGIT      : 'xdigit' ;
 
 
-DIGIT  : [0-9]    ;
-LATIN  : [A-Za-z] ;
+DIGIT  : [0-9]    ; //Digitos de 0 a 9
+LATIN  : [A-Za-z] ; //Letras maiusculas e minusculas
 
 //Nesta regra ~ siginifica negacao, ou seja: ela inclui todos os
 //caracteres que nao sejam caracteres de controle.

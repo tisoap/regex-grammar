@@ -111,7 +111,9 @@ public class Regex {
 		
 		Tradutor visitor = new Tradutor();
 		
+		System.out.println("");
 		visitor.visit(tree);
+		System.out.println("");
 	}
 	
 	/** 

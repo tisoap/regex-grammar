@@ -247,11 +247,19 @@ public interface RegularExpressionEREVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitAnychar(RegularExpressionEREParser.AnycharContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link RegularExpressionEREParser#escaped}.
+	 * Visit a parse tree produced by the {@code escapedSpecial}
+	 * labeled alternative in {@link RegularExpressionEREParser#escaped}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitEscaped(RegularExpressionEREParser.EscapedContext ctx);
+	T visitEscapedSpecial(RegularExpressionEREParser.EscapedSpecialContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code escapedChar}
+	 * labeled alternative in {@link RegularExpressionEREParser#escaped}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitEscapedChar(RegularExpressionEREParser.EscapedCharContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link RegularExpressionEREParser#special}.
 	 * @param ctx the parse tree
@@ -270,6 +278,12 @@ public interface RegularExpressionEREVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitListEspecial(RegularExpressionEREParser.ListEspecialContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link RegularExpressionEREParser#listCharacter}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitListCharacter(RegularExpressionEREParser.ListCharacterContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link RegularExpressionEREParser#characters}.
 	 * @param ctx the parse tree
