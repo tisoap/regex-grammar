@@ -35,14 +35,9 @@ a(b|c)
 
 Adicionar um argumento de visualização faz com que a expressão não seja traduzida para linguagem natural.
 
-##Bugs Conhecidos
-
-- Não existe validação de séries de caracteres `A-B` dentro de listas para garantir que `A` precede `B`, dentro do padrão UTF-8
-
 ##TODO
 
 - Melhorar recuperação de erros
-- Validação de séries de caracteres
 - Terminar tradutor
 - Testes
 
