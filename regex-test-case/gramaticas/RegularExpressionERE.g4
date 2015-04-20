@@ -14,13 +14,41 @@
 //TODO criar regras que definem erros comuns
 grammar RegularExpressionERE;
 
+//Utilizar os tokens do lexer 'LexicalRegularExpressionsERE'
+options { tokenVocab=LexicalRegularExpressionsERE; }
+
 //Adiciona o nome do pacote nas classes Java geradas
 @header {
-package gerado;
+	package gerado;
 }
 
-
-/** Parser Rules */
+//Adiciona os metodos de validacao nas classes Java geradas
+@members {
+	
+	/**
+	 * Recebe duas Strings e as converte para inteiros.
+	 * Compara se a primeira e menor ou igual a segunda
+	 * e retorna um boolean.
+	 */
+	protected boolean menorOuIgual(String primeiro, String segundo) {
+		int a = Integer.parseInt(primeiro);
+		int b = Integer.parseInt(segundo);
+		return (a<=b);
+	}
+	
+	/**
+	 * Recebe duas Strings e extrai o primeiro caractere de cada.
+	 * Descobre o numero Unicode dos caracteres, e compara se
+	 * o primeiro e menor ou igual ao segundo. Retorna um boolean.
+	 */
+	protected boolean vemAntesDe(String primeiro, String segundo) {
+		char a = primeiro.charAt(0);
+		char b = segundo.charAt(0);
+		int unicodeA = (int) a;
+		int unicodeB = (int) b;
+		return (unicodeA<=unicodeB);
+	}
+}
 
 //Definicao de uma exprecao regular, que pode ser:
 expression : multiple                //Multiplas opcoes
@@ -41,9 +69,10 @@ expression : multiple                //Multiplas opcoes
 //Multiplas opcoes sao uma ou mais subexprecoes divididas por '|'
 multiple : subExpression (PIPE subExpression)+ ;
 
-//Uma subexpressao e como uma expressao, mas sem multiplas opcoes.
-//Para se ter multiplas opcoes dentro de multiplas opcoes,
-//estas obrigatoriamente devem estar dentro de um grupo.
+/** Uma subexpressao e como uma expressao, mas sem multiplas opcoes.
+ * Para se ter multiplas opcoes dentro de multiplas opcoes,
+ * estas obrigatoriamente devem estar dentro de um grupo. 
+ */
 subExpression : group                         //Um grupo de captura
               | repetition                    //Repeticoes
               | subExpression subExpression   //Varias subexprecoes
@@ -64,8 +93,10 @@ anchor : startAnchor //inicio
 startAnchor : CIRCUMFLEX ; //^
 endAnchor   : DOLAR ;      //$
 
-//Um elemento a ser quantificado e o simbolo repetidor
-//O simbolo repetidor se associa pela esquerda do elemento quantificado
+/**
+ * Um elemento a ser quantificado e o simbolo repetidor
+ * O simbolo repetidor se associa pela esquerda do elemento quantificado
+ */
 repetition : <assoc=right> quantified quantifier ;
 
 //So e possivel quantificar itens individuais
@@ -92,21 +123,20 @@ conditional : QUESTION ;  //?
 exact       : CURLYOPEN value CURLYCLOSE ;        //{n}
 atLeast     : CURLYOPEN value COMMA CURLYCLOSE ;  //{n,}
 
-//Quantificador {n,m}, onde n>=0 e n<=m
-//Para garantir que n<=m, a regra abaixo contem um "predicador semantico"
-//(Semantic Predicate), que e uma condicional em linguagem Java
-//no formato {...}? . A regra so sera verdadeira se a condicional for verdadeira.
+/**
+ * Quantificador {n,m}, onde n>=0 e n<=m
+ * Para garantir que n<=m, a regra abaixo contem um "predicador semantico"
+ * (Semantic Predicate), que e uma condicional em linguagem Java
+ * no formato {...}? . A regra so sera verdadeira se a condicional for verdadeira.
+ */
 between :
 	
 	//Armazena "firstValue" na variavel local 'a' e "lastValue" na variavel local 'b'
 	CURLYOPEN a=firstValue COMMA b=lastValue CURLYCLOSE
 	
 	//Semantic Predicate
-	//Converte os textos das variaveis locais para numeros inteiros,
-	//e compara se o primeiro valor e menor ou igual ao segundo
-	{
-		Integer.parseInt($a.text) <= Integer.parseInt($b.text)
-	}?
+	//Compara se o valor 'a' e menor ou igual ao valor 'b'
+	{menorOuIgual($a.text,$b.text)}?
 	
 	;
 
@@ -121,21 +151,66 @@ list : negativeList
      ;
 
 //Uma lista negativa e qualquer quantidade de elementos de lista entre colchetes, com ^ no comeco
-negativeList : BRACKETOPEN CIRCUMFLEX listElement* BRACKETCLOSE;
+negativeList : LISTOPEN CIRCUMFLEX listFirstElement? listElement*  listLastElement? LISTCLOSE;
 
 //Uma lista positiva e qualquer quantidade de elementos de lista entre colchetes
-positiveList : BRACKETOPEN listElement* BRACKETCLOSE;
+positiveList : LISTOPEN listFirstElement? listElement* listLastElement? LISTCLOSE;
+
+/**
+ * No padrao POSIX ERE, o traco e o fecha colchetes perdem seu significado
+ * especial se eles forem o primeiro elemento da lista
+ */
+listFirstElement : listFirstRange
+                         | LISTCLOSE
+                         | DASH
+                         ;
+
+/**
+ * E possivel que o traco/fecha colchetes seja parte de uma serie de caracteres
+ * Esta e a unica situacao em que o traco pode ser o primeiro elemento em uma
+ * serie de caracteres.
+ */
+listFirstRange : (LISTCLOSE|DASH) DASH (listCharacter|DASH) ;
+
+/**
+ * No padrao POSIX ERE, o traco perde seu significado especial se
+ * ele for o ultimo elemento da lista
+ */
+listLastElement : DASH ;
 
 //Um elemento de lista pode ser:
 listElement : range            //Uma serie de caracteres
             | charclass        //Uma classe de caracteres
-            | listEscaped      //Um caractere especial de lista escapado
             | listCharacter    //Um caractere
             ;
 
-//Uma serie sao dois caracteres separados por um traco
-//TODO Garantir que o primeiro caractere precede o segundo
-range : (listCharacter|listEscaped) DASH (listCharacter|listEscaped) ;
+/**
+ * Uma serie sao dois caracteres separados por um traco.
+ * O proprio caractere de traco pode ser o elemento da direita.
+ * O primeiro caractere deve preceder o segundo. Para garantir isto,
+ * a regra abaixo contem um "predicador semantico" (Semantic Predicate),
+ * que e uma condicional em linguagem Java no formato {...}? .
+ * A regra so sera verdadeira se a condicional for verdadeira.
+ */
+range : 
+	
+	//Armazena o primeiro caractere na variavel local 'a',
+	//e o segundo caractere na variavel local 'b'
+	a=listCharacter DASH b=listCharacter
+	
+	//Semantic Predicate
+	//Compara se o valor 'a' vem antes ou e igual a 'b'
+	{vemAntesDe($a.text,$b.text)}?
+	
+	|
+	
+	//O mesmo que a opcao anterior, mas para o caso especial
+	//de traco como sendo o segundo caractere
+	
+	c=listCharacter DASH d=DASH
+	{vemAntesDe($c.text,$d.text)}?
+	
+	;
 
 //Uma classe de caracteres POSIX e o nome da classe entre [: e :]
 charclass: CLASSOPEN classname CLASSCLOSE;
@@ -185,8 +260,8 @@ special : DOT
         | ASTERISC
         | CURLYOPEN
         | CURLYCLOSE
-        | BRACKETOPEN
-        | BRACKETCLOSE
+        | LISTOPEN
+        | LISTCLOSE
         | CIRCUMFLEX
         | DOLAR
         | PIPE
@@ -195,107 +270,43 @@ special : DOT
         | REVERSESOLIDUS
         ;
 
-//Um caractere escapado e uma barra invertida seguida do caractere
-listEscaped : REVERSESOLIDUS listEspecial
-            | REVERSESOLIDUS listCharacter
-            ;
-
-//Todos os possiveis caracteres especiais de lista
-listEspecial : DASH
-             | CIRCUMFLEX
-             | BRACKETOPEN
-             | BRACKETCLOSE
-             | REVERSESOLIDUS
-             ;
-
-//Qualquer caractere que nao seja de controle.
-//E necessario definir caracteres de lista desta forma
-//para nao haver conflito com outras regras.
-listCharacter  : 
-           ( DIGIT
-           | LATIN
-           | SPACE
-           | COMMA
-           | DOT
-           | QUESTION
-           | PLUS
-           | ASTERISC
-           | CURLYOPEN
-           | CURLYCLOSE
-           | DOLAR
-           | PIPE
-           | OPEN
-           | CLOSE
-           | OTHER
-           )
-           ;
+/**
+ * Qualquer caractere que nao seja de controle.
+ * E necessario definir caracteres de lista desta forma
+ * para nao haver conflito com outras regras.
+ */
+listCharacter : DIGIT
+              | LATIN
+              | SPACE
+              | COMMA
+              | DOT
+              | QUESTION
+              | PLUS
+              | ASTERISC
+              | CURLYOPEN
+              | CURLYCLOSE
+              | LISTOPEN
+              | REVERSESOLIDUS
+              | DOLAR
+              | CIRCUMFLEX
+              | PIPE
+              | OPEN
+              | CLOSE
+              | OTHER
+              ;
 
 //Uma colecao de caracteres sao um ou mais caracteres
 characters : character+ ;
 
-//Qualquer caractere que nao seja de controle.
-//E necessario definir caracteres desta forma para que
-//nao entre em conflito com outras regras.
-character  : 
-           ( DIGIT
-           | LATIN
-           | SPACE
-           | COMMA
-           | DASH
-           | OTHER
-           )
-           ;
-
-
-/** Lexer Rules */
-
-SPACE           : ' '  ;
-DOT             : '.'  ;
-COMMA           : ','  ;
-QUESTION        : '?'  ;
-PLUS            : '+'  ;
-ASTERISC        : '*'  ;
-CURLYOPEN       : '{'  ;
-CURLYCLOSE      : '}'  ;
-BRACKETOPEN     : '['  ;
-BRACKETCLOSE    : ']'  ;
-DASH            : '-'  ;
-CIRCUMFLEX      : '^'  ;
-DOLAR           : '$'  ;
-PIPE            : '|'  ;
-OPEN            : '('  ;
-CLOSE           : ')'  ;
-CLASSOPEN       : '[:' ;
-CLASSCLOSE      : ':]' ;
-REVERSESOLIDUS  : '\\' ;  // Apenas uma barra invertida
-
-
-DIGITCLASS  : 'digit'  ;
-SPACECLASS  : 'space'  ;
-ALNUM       : 'alnum'  ;
-ALPHA       : 'alpha'  ;
-BLANK       : 'blank'  ;
-CNTRL       : 'cntrl'  ;
-GRAPH       : 'graph'  ;
-LOWER       : 'lower'  ;
-PRINT       : 'print'  ;
-PUNCT       : 'punct'  ;
-UPPER       : 'upper'  ;
-XDIGIT      : 'xdigit' ;
-
-
-DIGIT  : [0-9]    ; //Digitos de 0 a 9
-LATIN  : [A-Za-z] ; //Letras maiusculas e minusculas
-
-//Nesta regra ~ siginifica negacao, ou seja: ela inclui todos os
-//caracteres que nao sejam caracteres de controle.
-//Os caracteres de controle sao todos os caracteres Unicode entre
-//0000 e 001F, e entre 007F e 009F.
-OTHER : ~[\u0000-\u001F\u007F-\u009F] ;
-
-
-/** Lexer Skip Rules */
-
-//Ignora quebras de linha e tabulacoes
-WS : [\r\n\t] -> skip ;
-
+/**
+ * Qualquer caractere que nao seja de controle.
+ * E necessario definir caracteres desta forma para que
+ * nao entre em conflito com outras regras.
+ */
+character : DIGIT
+          | LATIN
+          | SPACE
+          | COMMA
+          | DASH
+          | OTHER
+          ;

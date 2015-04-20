@@ -294,18 +294,6 @@ public class Tradutor extends RegularExpressionEREBaseVisitor<Void> {
 		return null;
 	}
 	
-	/** Quando visita um caractere escapado de lista, imprime
-	 *  'Literalmente: ' + o caractere. */
-	@Override
-	public Void visitListEscaped(ListEscapedContext ctx) {
-		
-		//O primeiro filho (0) e a barra invertida,
-		//O segundo (1) e o caractere
-		identacao("Literalmente: " + ctx.getChild(1).getText());
-		
-		return null;
-	}
-	
 	/** Quando visita uma serie de caracteres, recupera o caractere da esquerda
 	 *  e o caractere da direita, e imprime 'Todos os caracteres entre ESQUERDA e DIREITA'. */
 	@Override

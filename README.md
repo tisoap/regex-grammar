@@ -1,10 +1,10 @@
 # Gramática Regex
 
-Gramática ANTLR que define expressões regulares no padrão  [POSIX ERE](http://pubs.opengroup.org/onlinepubs/9699919799/basedefs/V1_chap09.html) .
+Gramática ANTLR que define expressões regulares no padrão  [POSIX ERE (inglês)](http://pubs.opengroup.org/onlinepubs/9699919799/basedefs/V1_chap09.html) .
 
 Inclui uma aplicação de teste Java que realiza tradução de expressões regulares para linguagem natural em estrutura de árvore, fazendo uso de classes geradas pelo ANTLR.
 
-Para todos os casos, é assumido o padrão de codificação Unicode UTF-8. Sendo assim, não será dado suporte a “Collating Sequences” e “Character Equivalents” no padrão POSIX (Veja uma explicação [aqui](http://www.regular-expressions.info/posixbrackets.html)).
+Para todos os casos, é assumido o padrão de codificação Unicode UTF-8. Sendo assim, não será dado suporte a “Collating Sequences” e “Character Equivalents” no padrão POSIX. Veja uma explicação [aqui (inglês)](http://www.regular-expressions.info/posixbrackets.html).
 
 ##Aplicação de Teste
 
@@ -53,6 +53,14 @@ Padrão `DD/MM/AAAA` para as datas e padrão `X.Y.Z` para o versionamento, onde:
 - **X**: Versões finais
 - **Y**: Alterações na gramática
 - **Z**: Alterações no caso de teste
+
+1.11.0 (20/04/2015)
+
+- Gramática separada em Parser e Lexer
+- Criada uma “Island Grammar” para classes de caracteres
+- Corrigida definição de séries
+- Removida definição de caracteres escapados dentro de listas
+- Validação de séries de caracteres
 
 1.6.1 (19/04/2015)
 

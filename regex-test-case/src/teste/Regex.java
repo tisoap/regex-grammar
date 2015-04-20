@@ -1,6 +1,6 @@
 package teste;
 
-import gerado.RegularExpressionERELexer;
+import gerado.LexicalRegularExpressionsERE;
 import gerado.RegularExpressionEREParser;
 import gerado.RegularExpressionEREParser.ExpressionContext;
 
@@ -20,7 +20,7 @@ public class Regex {
 	public RegularExpressionEREParser getPosixParser() {
 		return posixParser;
 	}
-
+	
 	public ExpressionContext getExpContext() {
 		return expressionContext;
 	}
@@ -66,7 +66,7 @@ public class Regex {
 		ANTLRInputStream inputAntrl = new ANTLRInputStream(input);
 		
 		// Cria um lexer que recebe o stream de chars
-		RegularExpressionERELexer lexer = new RegularExpressionERELexer(inputAntrl);
+		LexicalRegularExpressionsERE lexer = new LexicalRegularExpressionsERE(inputAntrl);
 		
 		// Cria um stream de tokens retirados do lexer
 		CommonTokenStream tokens = new CommonTokenStream(lexer);
@@ -80,7 +80,7 @@ public class Regex {
 		// Adciona um listener de erros customizado
 		parser.addErrorListener(new ErrorListenerVerboso());
 		
-		//Troca o Error Handler padrao por um com mensagens em portugues
+		// Troca o Error Handler padrao por um com mensagens em portugues
 		parser.setErrorHandler(new ErrorHandlerPortugues());
 		
 		// Cria a ParseTree comecando pela regra inicial 'expression'

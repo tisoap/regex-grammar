@@ -81,6 +81,5 @@ public class ErrorHandlerPortugues extends DefaultErrorStrategy {
 			" em " + getTokenErrorDisplay(t);
 
 		recognizer.notifyErrorListeners(t, msg, null);
-	}
-	
+	}		
 }

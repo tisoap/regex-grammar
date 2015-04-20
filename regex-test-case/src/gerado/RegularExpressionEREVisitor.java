@@ -1,6 +1,6 @@
 // Generated from RegularExpressionERE.g4 by ANTLR 4.5
 
-package gerado;
+	package gerado;
 
 import org.antlr.v4.runtime.tree.ParseTreeVisitor;
 
@@ -145,6 +145,24 @@ public interface RegularExpressionEREVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitPositiveList(RegularExpressionEREParser.PositiveListContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link RegularExpressionEREParser#listFirstElement}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitListFirstElement(RegularExpressionEREParser.ListFirstElementContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link RegularExpressionEREParser#listFirstRange}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitListFirstRange(RegularExpressionEREParser.ListFirstRangeContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link RegularExpressionEREParser#listLastElement}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitListLastElement(RegularExpressionEREParser.ListLastElementContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link RegularExpressionEREParser#listElement}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
@@ -266,18 +284,6 @@ public interface RegularExpressionEREVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitSpecial(RegularExpressionEREParser.SpecialContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link RegularExpressionEREParser#listEscaped}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitListEscaped(RegularExpressionEREParser.ListEscapedContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link RegularExpressionEREParser#listEspecial}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitListEspecial(RegularExpressionEREParser.ListEspecialContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link RegularExpressionEREParser#listCharacter}.
 	 * @param ctx the parse tree

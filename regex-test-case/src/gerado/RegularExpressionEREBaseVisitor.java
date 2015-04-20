@@ -1,6 +1,6 @@
 // Generated from RegularExpressionERE.g4 by ANTLR 4.5
 
-package gerado;
+	package gerado;
 
 import org.antlr.v4.runtime.tree.AbstractParseTreeVisitor;
 
@@ -173,6 +173,27 @@ public class RegularExpressionEREBaseVisitor<T> extends AbstractParseTreeVisitor
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
+	@Override public T visitListFirstElement(RegularExpressionEREParser.ListFirstElementContext ctx) { return visitChildren(ctx); }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation returns the result of calling
+	 * {@link #visitChildren} on {@code ctx}.</p>
+	 */
+	@Override public T visitListFirstRange(RegularExpressionEREParser.ListFirstRangeContext ctx) { return visitChildren(ctx); }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation returns the result of calling
+	 * {@link #visitChildren} on {@code ctx}.</p>
+	 */
+	@Override public T visitListLastElement(RegularExpressionEREParser.ListLastElementContext ctx) { return visitChildren(ctx); }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation returns the result of calling
+	 * {@link #visitChildren} on {@code ctx}.</p>
+	 */
 	@Override public T visitListElement(RegularExpressionEREParser.ListElementContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
@@ -307,20 +328,6 @@ public class RegularExpressionEREBaseVisitor<T> extends AbstractParseTreeVisitor
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
 	@Override public T visitSpecial(RegularExpressionEREParser.SpecialContext ctx) { return visitChildren(ctx); }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation returns the result of calling
-	 * {@link #visitChildren} on {@code ctx}.</p>
-	 */
-	@Override public T visitListEscaped(RegularExpressionEREParser.ListEscapedContext ctx) { return visitChildren(ctx); }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation returns the result of calling
-	 * {@link #visitChildren} on {@code ctx}.</p>
-	 */
-	@Override public T visitListEspecial(RegularExpressionEREParser.ListEspecialContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
