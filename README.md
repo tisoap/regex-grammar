@@ -39,6 +39,7 @@ Adicionar um argumento de visualização faz com que a expressão não seja trad
 
 - Testes com expressões complexas
 - Generalizar a entrada e retorno de dados do tradutor
+
 ## Changelog
 
 Padrão `DD/MM/AAAA` para as datas e padrão `X.Y.Z` para o versionamento, onde:
