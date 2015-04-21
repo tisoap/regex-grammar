@@ -4,6 +4,8 @@ import gerado.RegularExpressionEREBaseVisitor;
 import gerado.RegularExpressionEREParser.*;
 
 //TODO Mudar o retorno dos visitors para String
+//TODO Melhorar traducao de multiplas opcoes
+//TODO Melhorar traducao de caracteres escapados
 public class Tradutor extends RegularExpressionEREBaseVisitor<Void> {
 	
 	private String identacao = "";
@@ -113,7 +115,7 @@ public class Tradutor extends RegularExpressionEREBaseVisitor<Void> {
 	@Override
 	public Void visitStartAnchor(StartAnchorContext ctx) {
 		
-		identacao("Inicio do texto");
+		identacao("No inicio do texto");
 		
 		return null;
 	}
@@ -122,7 +124,7 @@ public class Tradutor extends RegularExpressionEREBaseVisitor<Void> {
 	@Override
 	public Void visitEndAnchor(EndAnchorContext ctx) {
 		
-		identacao("Fim do texto");
+		identacao("No final do texto");
 		
 		return null;
 	}
@@ -338,12 +340,13 @@ public class Tradutor extends RegularExpressionEREBaseVisitor<Void> {
 		return null;
 	}
 	
-	/** Quando visita um caractere escapado, imprime o caractere. */
+	/** Quando visita um caractere escapado, imprime
+	 * 'Caractere: ' + o caractere. */
 	@Override
 	public Void visitEscapedChar(EscapedCharContext ctx) {
 		//O primeiro filho (0) e a barra invertida,
 		//O segundo  filho (1) e o caractere
-		identacao(ctx.getChild(1).getText());
+		identacao("Caractere: " + ctx.getChild(1).getText());
 		
 		return null;
 	}

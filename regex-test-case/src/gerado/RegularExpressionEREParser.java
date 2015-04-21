@@ -367,6 +367,9 @@ public class RegularExpressionEREParser extends Parser {
 		public GroupContext group() {
 			return getRuleContext(GroupContext.class,0);
 		}
+		public AnchorContext anchor() {
+			return getRuleContext(AnchorContext.class,0);
+		}
 		public RepetitionContext repetition() {
 			return getRuleContext(RepetitionContext.class,0);
 		}
@@ -378,6 +381,9 @@ public class RegularExpressionEREParser extends Parser {
 		}
 		public AnycharContext anychar() {
 			return getRuleContext(AnycharContext.class,0);
+		}
+		public EscapedContext escaped() {
+			return getRuleContext(EscapedContext.class,0);
 		}
 		public CharactersContext characters() {
 			return getRuleContext(CharactersContext.class,0);
@@ -414,7 +420,7 @@ public class RegularExpressionEREParser extends Parser {
 			int _alt;
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(130);
+			setState(132);
 			switch ( getInterpreter().adaptivePredict(_input,3,_ctx) ) {
 			case 1:
 				{
@@ -425,36 +431,48 @@ public class RegularExpressionEREParser extends Parser {
 			case 2:
 				{
 				setState(125);
-				repetition();
+				anchor();
 				}
 				break;
 			case 3:
 				{
 				setState(126);
-				list();
+				repetition();
 				}
 				break;
 			case 4:
 				{
 				setState(127);
-				charclass();
+				list();
 				}
 				break;
 			case 5:
 				{
 				setState(128);
-				anychar();
+				charclass();
 				}
 				break;
 			case 6:
 				{
 				setState(129);
+				anychar();
+				}
+				break;
+			case 7:
+				{
+				setState(130);
+				escaped();
+				}
+				break;
+			case 8:
+				{
+				setState(131);
 				characters();
 				}
 				break;
 			}
 			_ctx.stop = _input.LT(-1);
-			setState(136);
+			setState(138);
 			_errHandler.sync(this);
 			_alt = getInterpreter().adaptivePredict(_input,4,_ctx);
 			while ( _alt!=2 && _alt!=org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER ) {
@@ -465,14 +483,14 @@ public class RegularExpressionEREParser extends Parser {
 					{
 					_localctx = new SubExpressionContext(_parentctx, _parentState);
 					pushNewRecursionContext(_localctx, _startState, RULE_subExpression);
-					setState(132);
-					if (!(precpred(_ctx, 5))) throw new FailedPredicateException(this, "precpred(_ctx, 5)");
-					setState(133);
-					subExpression(6);
+					setState(134);
+					if (!(precpred(_ctx, 6))) throw new FailedPredicateException(this, "precpred(_ctx, 6)");
+					setState(135);
+					subExpression(7);
 					}
 					} 
 				}
-				setState(138);
+				setState(140);
 				_errHandler.sync(this);
 				_alt = getInterpreter().adaptivePredict(_input,4,_ctx);
 			}
@@ -490,17 +508,11 @@ public class RegularExpressionEREParser extends Parser {
 	}
 
 	public static class GroupContext extends ParserRuleContext {
-		public List<TerminalNode> GROUPOPEN() { return getTokens(RegularExpressionEREParser.GROUPOPEN); }
-		public TerminalNode GROUPOPEN(int i) {
-			return getToken(RegularExpressionEREParser.GROUPOPEN, i);
-		}
+		public TerminalNode GROUPOPEN() { return getToken(RegularExpressionEREParser.GROUPOPEN, 0); }
 		public ExpressionContext expression() {
 			return getRuleContext(ExpressionContext.class,0);
 		}
-		public List<TerminalNode> GROUPCLOSE() { return getTokens(RegularExpressionEREParser.GROUPCLOSE); }
-		public TerminalNode GROUPCLOSE(int i) {
-			return getToken(RegularExpressionEREParser.GROUPCLOSE, i);
-		}
+		public TerminalNode GROUPCLOSE() { return getToken(RegularExpressionEREParser.GROUPCLOSE, 0); }
 		public GroupContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -516,94 +528,14 @@ public class RegularExpressionEREParser extends Parser {
 		GroupContext _localctx = new GroupContext(_ctx, getState());
 		enterRule(_localctx, 6, RULE_group);
 		try {
-			int _alt;
-			setState(167);
-			switch ( getInterpreter().adaptivePredict(_input,7,_ctx) ) {
-			case 1:
-				enterOuterAlt(_localctx, 1);
-				{
-				setState(139);
-				match(GROUPOPEN);
-				setState(140);
-				expression(0);
-				setState(141);
-				match(GROUPCLOSE);
-				}
-				break;
-			case 2:
-				enterOuterAlt(_localctx, 2);
-				{
-				setState(143);
-				match(GROUPOPEN);
-				setState(144);
-				expression(0);
-				notifyErrorListeners("Voce esqueceu de fechar um grupo.");
-				}
-				break;
-			case 3:
-				enterOuterAlt(_localctx, 3);
-				{
-				setState(147);
-				match(GROUPOPEN);
-				setState(148);
-				expression(0);
-				setState(149);
-				match(GROUPCLOSE);
-				setState(151); 
-				_errHandler.sync(this);
-				_alt = 1;
-				do {
-					switch (_alt) {
-					case 1:
-						{
-						{
-						setState(150);
-						match(GROUPCLOSE);
-						}
-						}
-						break;
-					default:
-						throw new NoViableAltException(this);
-					}
-					setState(153); 
-					_errHandler.sync(this);
-					_alt = getInterpreter().adaptivePredict(_input,5,_ctx);
-				} while ( _alt!=2 && _alt!=org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER );
-				notifyErrorListeners("Existem fechamentos de grupo a mais.");
-				}
-				break;
-			case 4:
-				enterOuterAlt(_localctx, 4);
-				{
-				setState(157);
-				match(GROUPOPEN);
-				setState(159); 
-				_errHandler.sync(this);
-				_alt = 1;
-				do {
-					switch (_alt) {
-					case 1:
-						{
-						{
-						setState(158);
-						match(GROUPOPEN);
-						}
-						}
-						break;
-					default:
-						throw new NoViableAltException(this);
-					}
-					setState(161); 
-					_errHandler.sync(this);
-					_alt = getInterpreter().adaptivePredict(_input,6,_ctx);
-				} while ( _alt!=2 && _alt!=org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER );
-				setState(163);
-				expression(0);
-				setState(164);
-				match(GROUPCLOSE);
-				notifyErrorListeners("Existem aberturas de grupo a mais.");
-				}
-				break;
+			enterOuterAlt(_localctx, 1);
+			{
+			setState(141);
+			match(GROUPOPEN);
+			setState(142);
+			expression(0);
+			setState(143);
+			match(GROUPCLOSE);
 			}
 		}
 		catch (RecognitionException re) {
@@ -639,19 +571,19 @@ public class RegularExpressionEREParser extends Parser {
 		AnchorContext _localctx = new AnchorContext(_ctx, getState());
 		enterRule(_localctx, 8, RULE_anchor);
 		try {
-			setState(171);
+			setState(147);
 			switch (_input.LA(1)) {
 			case CIRCUMFLEX:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(169);
+				setState(145);
 				startAnchor();
 				}
 				break;
 			case DOLAR:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(170);
+				setState(146);
 				endAnchor();
 				}
 				break;
@@ -689,7 +621,7 @@ public class RegularExpressionEREParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(173);
+			setState(149);
 			match(CIRCUMFLEX);
 			}
 		}
@@ -723,7 +655,7 @@ public class RegularExpressionEREParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(175);
+			setState(151);
 			match(DOLAR);
 			}
 		}
@@ -783,7 +715,7 @@ public class RegularExpressionEREParser extends Parser {
 		enterRule(_localctx, 14, RULE_repetition);
 		try {
 			int _alt;
-			setState(188);
+			setState(164);
 			switch (_input.LA(1)) {
 			case DOT:
 			case COMMA:
@@ -797,9 +729,9 @@ public class RegularExpressionEREParser extends Parser {
 				_localctx = new CorrectRepetitionContext(_localctx);
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(177);
+				setState(153);
 				quantified();
-				setState(178);
+				setState(154);
 				quantifier();
 				}
 				break;
@@ -810,9 +742,9 @@ public class RegularExpressionEREParser extends Parser {
 				_localctx = new WrongRepetitionContext(_localctx);
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(180);
+				setState(156);
 				quantifier();
-				setState(182); 
+				setState(158); 
 				_errHandler.sync(this);
 				_alt = 1;
 				do {
@@ -820,7 +752,7 @@ public class RegularExpressionEREParser extends Parser {
 					case 1:
 						{
 						{
-						setState(181);
+						setState(157);
 						quantifier();
 						}
 						}
@@ -828,9 +760,9 @@ public class RegularExpressionEREParser extends Parser {
 					default:
 						throw new NoViableAltException(this);
 					}
-					setState(184); 
+					setState(160); 
 					_errHandler.sync(this);
-					_alt = getInterpreter().adaptivePredict(_input,9,_ctx);
+					_alt = getInterpreter().adaptivePredict(_input,6,_ctx);
 				} while ( _alt!=2 && _alt!=org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER );
 				notifyErrorListeners("Quantificadores nao podem quantificar outros quantificadores.");
 				}
@@ -884,40 +816,40 @@ public class RegularExpressionEREParser extends Parser {
 		QuantifiedContext _localctx = new QuantifiedContext(_ctx, getState());
 		enterRule(_localctx, 16, RULE_quantified);
 		try {
-			setState(196);
+			setState(172);
 			switch (_input.LA(1)) {
 			case GROUPOPEN:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(190);
+				setState(166);
 				group();
 				}
 				break;
 			case LISTOPEN:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(191);
+				setState(167);
 				list();
 				}
 				break;
 			case CLASSOPEN:
 				enterOuterAlt(_localctx, 3);
 				{
-				setState(192);
+				setState(168);
 				charclass();
 				}
 				break;
 			case DOT:
 				enterOuterAlt(_localctx, 4);
 				{
-				setState(193);
+				setState(169);
 				anychar();
 				}
 				break;
 			case ESCAPE:
 				enterOuterAlt(_localctx, 5);
 				{
-				setState(194);
+				setState(170);
 				escaped();
 				}
 				break;
@@ -927,7 +859,7 @@ public class RegularExpressionEREParser extends Parser {
 			case OTHER:
 				enterOuterAlt(_localctx, 6);
 				{
-				setState(195);
+				setState(171);
 				character();
 				}
 				break;
@@ -980,47 +912,47 @@ public class RegularExpressionEREParser extends Parser {
 		QuantifierContext _localctx = new QuantifierContext(_ctx, getState());
 		enterRule(_localctx, 18, RULE_quantifier);
 		try {
-			setState(204);
-			switch ( getInterpreter().adaptivePredict(_input,12,_ctx) ) {
+			setState(180);
+			switch ( getInterpreter().adaptivePredict(_input,9,_ctx) ) {
 			case 1:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(198);
+				setState(174);
 				oneOrMore();
 				}
 				break;
 			case 2:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(199);
+				setState(175);
 				zeroOrMore();
 				}
 				break;
 			case 3:
 				enterOuterAlt(_localctx, 3);
 				{
-				setState(200);
+				setState(176);
 				conditional();
 				}
 				break;
 			case 4:
 				enterOuterAlt(_localctx, 4);
 				{
-				setState(201);
+				setState(177);
 				exact();
 				}
 				break;
 			case 5:
 				enterOuterAlt(_localctx, 5);
 				{
-				setState(202);
+				setState(178);
 				atLeast();
 				}
 				break;
 			case 6:
 				enterOuterAlt(_localctx, 6);
 				{
-				setState(203);
+				setState(179);
 				between();
 				}
 				break;
@@ -1056,7 +988,7 @@ public class RegularExpressionEREParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(206);
+			setState(182);
 			match(PLUS);
 			}
 		}
@@ -1090,7 +1022,7 @@ public class RegularExpressionEREParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(208);
+			setState(184);
 			match(ASTERISC);
 			}
 		}
@@ -1124,7 +1056,7 @@ public class RegularExpressionEREParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(210);
+			setState(186);
 			match(QUESTION);
 			}
 		}
@@ -1162,11 +1094,11 @@ public class RegularExpressionEREParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(212);
+			setState(188);
 			match(CURLYOPEN);
-			setState(213);
+			setState(189);
 			value();
-			setState(214);
+			setState(190);
 			match(CURLYCLOSE);
 			}
 		}
@@ -1205,13 +1137,13 @@ public class RegularExpressionEREParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(216);
+			setState(192);
 			match(CURLYOPEN);
-			setState(217);
+			setState(193);
 			value();
-			setState(218);
+			setState(194);
 			match(COMMA);
-			setState(219);
+			setState(195);
 			match(CURLYCLOSE);
 			}
 		}
@@ -1255,17 +1187,17 @@ public class RegularExpressionEREParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(221);
+			setState(197);
 			match(CURLYOPEN);
-			setState(222);
+			setState(198);
 			((BetweenContext)_localctx).a = firstValue();
-			setState(223);
+			setState(199);
 			match(COMMA);
-			setState(224);
+			setState(200);
 			((BetweenContext)_localctx).b = lastValue();
-			setState(225);
+			setState(201);
 			match(CURLYCLOSE);
-			setState(226);
+			setState(202);
 			if (!(menorOuIgual((((BetweenContext)_localctx).a!=null?_input.getText(((BetweenContext)_localctx).a.start,((BetweenContext)_localctx).a.stop):null),(((BetweenContext)_localctx).b!=null?_input.getText(((BetweenContext)_localctx).b.start,((BetweenContext)_localctx).b.stop):null)))) throw new FailedPredicateException(this, "menorOuIgual($a.text,$b.text)");
 			}
 		}
@@ -1303,17 +1235,17 @@ public class RegularExpressionEREParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(229); 
+			setState(205); 
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			do {
 				{
 				{
-				setState(228);
+				setState(204);
 				match(DIGIT);
 				}
 				}
-				setState(231); 
+				setState(207); 
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			} while ( _la==DIGIT );
@@ -1353,17 +1285,17 @@ public class RegularExpressionEREParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(234); 
+			setState(210); 
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			do {
 				{
 				{
-				setState(233);
+				setState(209);
 				match(DIGIT);
 				}
 				}
-				setState(236); 
+				setState(212); 
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			} while ( _la==DIGIT );
@@ -1403,17 +1335,17 @@ public class RegularExpressionEREParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(239); 
+			setState(215); 
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			do {
 				{
 				{
-				setState(238);
+				setState(214);
 				match(DIGIT);
 				}
 				}
-				setState(241); 
+				setState(217); 
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			} while ( _la==DIGIT );
@@ -1431,14 +1363,8 @@ public class RegularExpressionEREParser extends Parser {
 	}
 
 	public static class ListContext extends ParserRuleContext {
-		public List<TerminalNode> LISTOPEN() { return getTokens(RegularExpressionEREParser.LISTOPEN); }
-		public TerminalNode LISTOPEN(int i) {
-			return getToken(RegularExpressionEREParser.LISTOPEN, i);
-		}
-		public List<TerminalNode> LISTCLOSE() { return getTokens(RegularExpressionEREParser.LISTCLOSE); }
-		public TerminalNode LISTCLOSE(int i) {
-			return getToken(RegularExpressionEREParser.LISTCLOSE, i);
-		}
+		public TerminalNode LISTOPEN() { return getToken(RegularExpressionEREParser.LISTOPEN, 0); }
+		public TerminalNode LISTCLOSE() { return getToken(RegularExpressionEREParser.LISTCLOSE, 0); }
 		public NegativeListContext negativeList() {
 			return getRuleContext(NegativeListContext.class,0);
 		}
@@ -1460,146 +1386,27 @@ public class RegularExpressionEREParser extends Parser {
 		ListContext _localctx = new ListContext(_ctx, getState());
 		enterRule(_localctx, 38, RULE_list);
 		try {
-			int _alt;
-			setState(283);
-			switch ( getInterpreter().adaptivePredict(_input,22,_ctx) ) {
+			enterOuterAlt(_localctx, 1);
+			{
+			setState(219);
+			match(LISTOPEN);
+			setState(222);
+			switch ( getInterpreter().adaptivePredict(_input,13,_ctx) ) {
 			case 1:
-				enterOuterAlt(_localctx, 1);
 				{
-				setState(243);
-				match(LISTOPEN);
-				setState(246);
-				switch ( getInterpreter().adaptivePredict(_input,16,_ctx) ) {
-				case 1:
-					{
-					setState(244);
-					negativeList();
-					}
-					break;
-				case 2:
-					{
-					setState(245);
-					positiveList();
-					}
-					break;
-				}
-				setState(248);
-				match(LISTCLOSE);
+				setState(220);
+				negativeList();
 				}
 				break;
 			case 2:
-				enterOuterAlt(_localctx, 2);
 				{
-				setState(250);
-				match(LISTOPEN);
-				setState(253);
-				switch ( getInterpreter().adaptivePredict(_input,17,_ctx) ) {
-				case 1:
-					{
-					setState(251);
-					negativeList();
-					}
-					break;
-				case 2:
-					{
-					setState(252);
-					positiveList();
-					}
-					break;
-				}
-				notifyErrorListeners("Voce esqueceu de fechar uma lista.");
+				setState(221);
+				positiveList();
 				}
 				break;
-			case 3:
-				enterOuterAlt(_localctx, 3);
-				{
-				setState(257);
-				match(LISTOPEN);
-				setState(260);
-				switch ( getInterpreter().adaptivePredict(_input,18,_ctx) ) {
-				case 1:
-					{
-					setState(258);
-					negativeList();
-					}
-					break;
-				case 2:
-					{
-					setState(259);
-					positiveList();
-					}
-					break;
-				}
-				setState(262);
-				match(LISTCLOSE);
-				setState(264); 
-				_errHandler.sync(this);
-				_alt = 1;
-				do {
-					switch (_alt) {
-					case 1:
-						{
-						{
-						setState(263);
-						match(LISTCLOSE);
-						}
-						}
-						break;
-					default:
-						throw new NoViableAltException(this);
-					}
-					setState(266); 
-					_errHandler.sync(this);
-					_alt = getInterpreter().adaptivePredict(_input,19,_ctx);
-				} while ( _alt!=2 && _alt!=org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER );
-				notifyErrorListeners("Existem fechamentos de lista a mais.");
-				}
-				break;
-			case 4:
-				enterOuterAlt(_localctx, 4);
-				{
-				setState(270);
-				match(LISTOPEN);
-				setState(272); 
-				_errHandler.sync(this);
-				_alt = 1;
-				do {
-					switch (_alt) {
-					case 1:
-						{
-						{
-						setState(271);
-						match(LISTOPEN);
-						}
-						}
-						break;
-					default:
-						throw new NoViableAltException(this);
-					}
-					setState(274); 
-					_errHandler.sync(this);
-					_alt = getInterpreter().adaptivePredict(_input,20,_ctx);
-				} while ( _alt!=2 && _alt!=org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER );
-				setState(278);
-				switch ( getInterpreter().adaptivePredict(_input,21,_ctx) ) {
-				case 1:
-					{
-					setState(276);
-					negativeList();
-					}
-					break;
-				case 2:
-					{
-					setState(277);
-					positiveList();
-					}
-					break;
-				}
-				setState(280);
-				match(LISTCLOSE);
-				notifyErrorListeners("Existem aberturas de lista a mais.");
-				}
-				break;
+			}
+			setState(224);
+			match(LISTCLOSE);
 			}
 		}
 		catch (RecognitionException re) {
@@ -1641,46 +1448,44 @@ public class RegularExpressionEREParser extends Parser {
 	public final NegativeListContext negativeList() throws RecognitionException {
 		NegativeListContext _localctx = new NegativeListContext(_ctx, getState());
 		enterRule(_localctx, 40, RULE_negativeList);
+		int _la;
 		try {
-			int _alt;
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(285);
+			setState(226);
 			match(CIRCUMFLEX);
-			setState(287);
-			switch ( getInterpreter().adaptivePredict(_input,23,_ctx) ) {
+			setState(228);
+			switch ( getInterpreter().adaptivePredict(_input,14,_ctx) ) {
 			case 1:
 				{
-				setState(286);
+				setState(227);
 				listFirstElement();
 				}
 				break;
 			}
-			setState(292);
+			setState(233);
 			_errHandler.sync(this);
-			_alt = getInterpreter().adaptivePredict(_input,24,_ctx);
-			while ( _alt!=2 && _alt!=org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER ) {
-				if ( _alt==1 ) {
-					{
-					{
-					setState(289);
-					listElement();
-					}
-					} 
-				}
-				setState(294);
-				_errHandler.sync(this);
-				_alt = getInterpreter().adaptivePredict(_input,24,_ctx);
-			}
-			setState(296);
-			switch ( getInterpreter().adaptivePredict(_input,25,_ctx) ) {
-			case 1:
+			_la = _input.LA(1);
+			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << DOT) | (1L << COMMA) | (1L << QUESTION) | (1L << PLUS) | (1L << ASTERISC) | (1L << CURLYOPEN) | (1L << CURLYCLOSE) | (1L << LISTOPEN) | (1L << CIRCUMFLEX) | (1L << DOLAR) | (1L << PIPE) | (1L << GROUPOPEN) | (1L << GROUPCLOSE) | (1L << ESCAPE) | (1L << DIGIT) | (1L << CLASSOPEN) | (1L << OTHER))) != 0)) {
 				{
-				setState(295);
+				{
+				setState(230);
+				listElement();
+				}
+				}
+				setState(235);
+				_errHandler.sync(this);
+				_la = _input.LA(1);
+			}
+			setState(237);
+			_la = _input.LA(1);
+			if (_la==DASH) {
+				{
+				setState(236);
 				listLastElement();
 				}
-				break;
 			}
+
 			}
 		}
 		catch (RecognitionException re) {
@@ -1721,44 +1526,42 @@ public class RegularExpressionEREParser extends Parser {
 	public final PositiveListContext positiveList() throws RecognitionException {
 		PositiveListContext _localctx = new PositiveListContext(_ctx, getState());
 		enterRule(_localctx, 42, RULE_positiveList);
+		int _la;
 		try {
-			int _alt;
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(299);
-			switch ( getInterpreter().adaptivePredict(_input,26,_ctx) ) {
+			setState(240);
+			switch ( getInterpreter().adaptivePredict(_input,17,_ctx) ) {
 			case 1:
 				{
-				setState(298);
+				setState(239);
 				listFirstElement();
 				}
 				break;
 			}
-			setState(304);
+			setState(245);
 			_errHandler.sync(this);
-			_alt = getInterpreter().adaptivePredict(_input,27,_ctx);
-			while ( _alt!=2 && _alt!=org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER ) {
-				if ( _alt==1 ) {
-					{
-					{
-					setState(301);
-					listElement();
-					}
-					} 
-				}
-				setState(306);
-				_errHandler.sync(this);
-				_alt = getInterpreter().adaptivePredict(_input,27,_ctx);
-			}
-			setState(308);
-			switch ( getInterpreter().adaptivePredict(_input,28,_ctx) ) {
-			case 1:
+			_la = _input.LA(1);
+			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << DOT) | (1L << COMMA) | (1L << QUESTION) | (1L << PLUS) | (1L << ASTERISC) | (1L << CURLYOPEN) | (1L << CURLYCLOSE) | (1L << LISTOPEN) | (1L << CIRCUMFLEX) | (1L << DOLAR) | (1L << PIPE) | (1L << GROUPOPEN) | (1L << GROUPCLOSE) | (1L << ESCAPE) | (1L << DIGIT) | (1L << CLASSOPEN) | (1L << OTHER))) != 0)) {
 				{
-				setState(307);
+				{
+				setState(242);
+				listElement();
+				}
+				}
+				setState(247);
+				_errHandler.sync(this);
+				_la = _input.LA(1);
+			}
+			setState(249);
+			_la = _input.LA(1);
+			if (_la==DASH) {
+				{
+				setState(248);
 				listLastElement();
 				}
-				break;
 			}
+
 			}
 		}
 		catch (RecognitionException re) {
@@ -1797,26 +1600,26 @@ public class RegularExpressionEREParser extends Parser {
 		ListElementContext _localctx = new ListElementContext(_ctx, getState());
 		enterRule(_localctx, 44, RULE_listElement);
 		try {
-			setState(313);
-			switch ( getInterpreter().adaptivePredict(_input,29,_ctx) ) {
+			setState(254);
+			switch ( getInterpreter().adaptivePredict(_input,20,_ctx) ) {
 			case 1:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(310);
+				setState(251);
 				range();
 				}
 				break;
 			case 2:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(311);
+				setState(252);
 				charclass();
 				}
 				break;
 			case 3:
 				enterOuterAlt(_localctx, 3);
 				{
-				setState(312);
+				setState(253);
 				listCharacter();
 				}
 				break;
@@ -1863,31 +1666,31 @@ public class RegularExpressionEREParser extends Parser {
 		RangeContext _localctx = new RangeContext(_ctx, getState());
 		enterRule(_localctx, 46, RULE_range);
 		try {
-			setState(325);
-			switch ( getInterpreter().adaptivePredict(_input,30,_ctx) ) {
+			setState(266);
+			switch ( getInterpreter().adaptivePredict(_input,21,_ctx) ) {
 			case 1:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(315);
+				setState(256);
 				((RangeContext)_localctx).a = listCharacter();
-				setState(316);
+				setState(257);
 				match(DASH);
-				setState(317);
+				setState(258);
 				((RangeContext)_localctx).b = listCharacter();
-				setState(318);
+				setState(259);
 				if (!(vemAntesDe((((RangeContext)_localctx).a!=null?_input.getText(((RangeContext)_localctx).a.start,((RangeContext)_localctx).a.stop):null),(((RangeContext)_localctx).b!=null?_input.getText(((RangeContext)_localctx).b.start,((RangeContext)_localctx).b.stop):null)))) throw new FailedPredicateException(this, "vemAntesDe($a.text,$b.text)");
 				}
 				break;
 			case 2:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(320);
+				setState(261);
 				((RangeContext)_localctx).c = listCharacter();
-				setState(321);
+				setState(262);
 				match(DASH);
-				setState(322);
+				setState(263);
 				((RangeContext)_localctx).d = match(DASH);
-				setState(323);
+				setState(264);
 				if (!(vemAntesDe((((RangeContext)_localctx).c!=null?_input.getText(((RangeContext)_localctx).c.start,((RangeContext)_localctx).c.stop):null),(((RangeContext)_localctx).d!=null?((RangeContext)_localctx).d.getText():null)))) throw new FailedPredicateException(this, "vemAntesDe($c.text,$d.text)");
 				}
 				break;
@@ -1926,19 +1729,19 @@ public class RegularExpressionEREParser extends Parser {
 		ListFirstElementContext _localctx = new ListFirstElementContext(_ctx, getState());
 		enterRule(_localctx, 48, RULE_listFirstElement);
 		try {
-			setState(329);
-			switch ( getInterpreter().adaptivePredict(_input,31,_ctx) ) {
+			setState(270);
+			switch ( getInterpreter().adaptivePredict(_input,22,_ctx) ) {
 			case 1:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(327);
+				setState(268);
 				listFirstRange();
 				}
 				break;
 			case 2:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(328);
+				setState(269);
 				listNoSpecial();
 				}
 				break;
@@ -1976,7 +1779,7 @@ public class RegularExpressionEREParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(331);
+			setState(272);
 			_la = _input.LA(1);
 			if ( !(_la==LISTCLOSE || _la==DASH) ) {
 			_errHandler.recoverInline(this);
@@ -2024,53 +1827,53 @@ public class RegularExpressionEREParser extends Parser {
 		ListFirstRangeContext _localctx = new ListFirstRangeContext(_ctx, getState());
 		enterRule(_localctx, 52, RULE_listFirstRange);
 		try {
-			setState(349);
-			switch ( getInterpreter().adaptivePredict(_input,32,_ctx) ) {
+			setState(290);
+			switch ( getInterpreter().adaptivePredict(_input,23,_ctx) ) {
 			case 1:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(333);
+				setState(274);
 				match(LISTCLOSE);
-				setState(334);
+				setState(275);
 				match(DASH);
-				setState(335);
+				setState(276);
 				match(DASH);
 				}
 				break;
 			case 2:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(336);
+				setState(277);
 				match(DASH);
-				setState(337);
+				setState(278);
 				match(DASH);
-				setState(338);
+				setState(279);
 				match(DASH);
 				}
 				break;
 			case 3:
 				enterOuterAlt(_localctx, 3);
 				{
-				setState(339);
+				setState(280);
 				((ListFirstRangeContext)_localctx).a = match(LISTCLOSE);
-				setState(340);
+				setState(281);
 				match(DASH);
-				setState(341);
+				setState(282);
 				((ListFirstRangeContext)_localctx).b = listCharacter();
-				setState(342);
+				setState(283);
 				if (!(vemAntesDe((((ListFirstRangeContext)_localctx).a!=null?((ListFirstRangeContext)_localctx).a.getText():null),(((ListFirstRangeContext)_localctx).b!=null?_input.getText(((ListFirstRangeContext)_localctx).b.start,((ListFirstRangeContext)_localctx).b.stop):null)))) throw new FailedPredicateException(this, "vemAntesDe($a.text,$b.text)");
 				}
 				break;
 			case 4:
 				enterOuterAlt(_localctx, 4);
 				{
-				setState(344);
+				setState(285);
 				((ListFirstRangeContext)_localctx).c = match(DASH);
-				setState(345);
+				setState(286);
 				match(DASH);
-				setState(346);
+				setState(287);
 				((ListFirstRangeContext)_localctx).d = listCharacter();
-				setState(347);
+				setState(288);
 				if (!(vemAntesDe((((ListFirstRangeContext)_localctx).c!=null?((ListFirstRangeContext)_localctx).c.getText():null),(((ListFirstRangeContext)_localctx).d!=null?_input.getText(((ListFirstRangeContext)_localctx).d.start,((ListFirstRangeContext)_localctx).d.stop):null)))) throw new FailedPredicateException(this, "vemAntesDe($c.text,$d.text)");
 				}
 				break;
@@ -2106,7 +1909,7 @@ public class RegularExpressionEREParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(351);
+			setState(292);
 			match(DASH);
 			}
 		}
@@ -2156,7 +1959,7 @@ public class RegularExpressionEREParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(353);
+			setState(294);
 			_la = _input.LA(1);
 			if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << DOT) | (1L << COMMA) | (1L << QUESTION) | (1L << PLUS) | (1L << ASTERISC) | (1L << CURLYOPEN) | (1L << CURLYCLOSE) | (1L << LISTOPEN) | (1L << CIRCUMFLEX) | (1L << DOLAR) | (1L << PIPE) | (1L << GROUPOPEN) | (1L << GROUPCLOSE) | (1L << ESCAPE) | (1L << DIGIT) | (1L << OTHER))) != 0)) ) {
 			_errHandler.recoverInline(this);
@@ -2199,11 +2002,11 @@ public class RegularExpressionEREParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(355);
+			setState(296);
 			match(CLASSOPEN);
-			setState(356);
+			setState(297);
 			classname();
-			setState(357);
+			setState(298);
 			match(CLASSCLOSE);
 			}
 		}
@@ -2270,89 +2073,89 @@ public class RegularExpressionEREParser extends Parser {
 		ClassnameContext _localctx = new ClassnameContext(_ctx, getState());
 		enterRule(_localctx, 60, RULE_classname);
 		try {
-			setState(371);
+			setState(312);
 			switch (_input.LA(1)) {
 			case ALNUM:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(359);
+				setState(300);
 				alnum();
 				}
 				break;
 			case ALPHA:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(360);
+				setState(301);
 				alpha();
 				}
 				break;
 			case BLANK:
 				enterOuterAlt(_localctx, 3);
 				{
-				setState(361);
+				setState(302);
 				blank();
 				}
 				break;
 			case CNTRL:
 				enterOuterAlt(_localctx, 4);
 				{
-				setState(362);
+				setState(303);
 				cntrl();
 				}
 				break;
 			case DIGITCLASS:
 				enterOuterAlt(_localctx, 5);
 				{
-				setState(363);
+				setState(304);
 				digitclass();
 				}
 				break;
 			case GRAPH:
 				enterOuterAlt(_localctx, 6);
 				{
-				setState(364);
+				setState(305);
 				graph();
 				}
 				break;
 			case LOWER:
 				enterOuterAlt(_localctx, 7);
 				{
-				setState(365);
+				setState(306);
 				lower();
 				}
 				break;
 			case PRINT:
 				enterOuterAlt(_localctx, 8);
 				{
-				setState(366);
+				setState(307);
 				print();
 				}
 				break;
 			case PUNCT:
 				enterOuterAlt(_localctx, 9);
 				{
-				setState(367);
+				setState(308);
 				punct();
 				}
 				break;
 			case SPACECLASS:
 				enterOuterAlt(_localctx, 10);
 				{
-				setState(368);
+				setState(309);
 				spaceclass();
 				}
 				break;
 			case UPPER:
 				enterOuterAlt(_localctx, 11);
 				{
-				setState(369);
+				setState(310);
 				upper();
 				}
 				break;
 			case XDIGIT:
 				enterOuterAlt(_localctx, 12);
 				{
-				setState(370);
+				setState(311);
 				xdigit();
 				}
 				break;
@@ -2390,7 +2193,7 @@ public class RegularExpressionEREParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(373);
+			setState(314);
 			match(ALNUM);
 			}
 		}
@@ -2424,7 +2227,7 @@ public class RegularExpressionEREParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(375);
+			setState(316);
 			match(ALPHA);
 			}
 		}
@@ -2458,7 +2261,7 @@ public class RegularExpressionEREParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(377);
+			setState(318);
 			match(BLANK);
 			}
 		}
@@ -2492,7 +2295,7 @@ public class RegularExpressionEREParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(379);
+			setState(320);
 			match(CNTRL);
 			}
 		}
@@ -2526,7 +2329,7 @@ public class RegularExpressionEREParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(381);
+			setState(322);
 			match(DIGITCLASS);
 			}
 		}
@@ -2560,7 +2363,7 @@ public class RegularExpressionEREParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(383);
+			setState(324);
 			match(GRAPH);
 			}
 		}
@@ -2594,7 +2397,7 @@ public class RegularExpressionEREParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(385);
+			setState(326);
 			match(LOWER);
 			}
 		}
@@ -2628,7 +2431,7 @@ public class RegularExpressionEREParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(387);
+			setState(328);
 			match(PRINT);
 			}
 		}
@@ -2662,7 +2465,7 @@ public class RegularExpressionEREParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(389);
+			setState(330);
 			match(PUNCT);
 			}
 		}
@@ -2696,7 +2499,7 @@ public class RegularExpressionEREParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(391);
+			setState(332);
 			match(SPACECLASS);
 			}
 		}
@@ -2730,7 +2533,7 @@ public class RegularExpressionEREParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(393);
+			setState(334);
 			match(UPPER);
 			}
 		}
@@ -2764,7 +2567,7 @@ public class RegularExpressionEREParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(395);
+			setState(336);
 			match(XDIGIT);
 			}
 		}
@@ -2798,7 +2601,7 @@ public class RegularExpressionEREParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(397);
+			setState(338);
 			match(DOT);
 			}
 		}
@@ -2853,15 +2656,15 @@ public class RegularExpressionEREParser extends Parser {
 		EscapedContext _localctx = new EscapedContext(_ctx, getState());
 		enterRule(_localctx, 88, RULE_escaped);
 		try {
-			setState(403);
-			switch ( getInterpreter().adaptivePredict(_input,34,_ctx) ) {
+			setState(344);
+			switch ( getInterpreter().adaptivePredict(_input,25,_ctx) ) {
 			case 1:
 				_localctx = new EscapedSpecialContext(_localctx);
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(399);
+				setState(340);
 				match(ESCAPE);
-				setState(400);
+				setState(341);
 				special();
 				}
 				break;
@@ -2869,9 +2672,9 @@ public class RegularExpressionEREParser extends Parser {
 				_localctx = new EscapedCharContext(_localctx);
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(401);
+				setState(342);
 				match(ESCAPE);
-				setState(402);
+				setState(343);
 				character();
 				}
 				break;
@@ -2921,7 +2724,7 @@ public class RegularExpressionEREParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(405);
+			setState(346);
 			_la = _input.LA(1);
 			if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << DOT) | (1L << QUESTION) | (1L << PLUS) | (1L << ASTERISC) | (1L << CURLYOPEN) | (1L << CURLYCLOSE) | (1L << LISTOPEN) | (1L << LISTCLOSE) | (1L << CIRCUMFLEX) | (1L << DOLAR) | (1L << PIPE) | (1L << GROUPOPEN) | (1L << GROUPCLOSE) | (1L << ESCAPE))) != 0)) ) {
 			_errHandler.recoverInline(this);
@@ -2966,7 +2769,7 @@ public class RegularExpressionEREParser extends Parser {
 			int _alt;
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(408); 
+			setState(349); 
 			_errHandler.sync(this);
 			_alt = 1;
 			do {
@@ -2974,7 +2777,7 @@ public class RegularExpressionEREParser extends Parser {
 				case 1:
 					{
 					{
-					setState(407);
+					setState(348);
 					character();
 					}
 					}
@@ -2982,9 +2785,9 @@ public class RegularExpressionEREParser extends Parser {
 				default:
 					throw new NoViableAltException(this);
 				}
-				setState(410); 
+				setState(351); 
 				_errHandler.sync(this);
-				_alt = getInterpreter().adaptivePredict(_input,35,_ctx);
+				_alt = getInterpreter().adaptivePredict(_input,26,_ctx);
 			} while ( _alt!=2 && _alt!=org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER );
 			}
 		}
@@ -3022,7 +2825,7 @@ public class RegularExpressionEREParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(412);
+			setState(353);
 			_la = _input.LA(1);
 			if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << COMMA) | (1L << DASH) | (1L << DIGIT) | (1L << OTHER))) != 0)) ) {
 			_errHandler.recoverInline(this);
@@ -3067,7 +2870,7 @@ public class RegularExpressionEREParser extends Parser {
 	private boolean subExpression_sempred(SubExpressionContext _localctx, int predIndex) {
 		switch (predIndex) {
 		case 1:
-			return precpred(_ctx, 5);
+			return precpred(_ctx, 6);
 		}
 		return true;
 	}
@@ -3098,7 +2901,7 @@ public class RegularExpressionEREParser extends Parser {
 	}
 
 	public static final String _serializedATN =
-		"\3\u0430\ud6d1\u8206\uad2d\u4417\uaef1\u8d80\uaadd\3#\u01a1\4\2\t\2\4"+
+		"\3\u0430\ud6d1\u8206\uad2d\u4417\uaef1\u8d80\uaadd\3#\u0166\4\2\t\2\4"+
 		"\3\t\3\4\4\t\4\4\5\t\5\4\6\t\6\4\7\t\7\4\b\t\b\4\t\t\t\4\n\t\n\4\13\t"+
 		"\13\4\f\t\f\4\r\t\r\4\16\t\16\4\17\t\17\4\20\t\20\4\21\t\21\4\22\t\22"+
 		"\4\23\t\23\4\24\t\24\4\25\t\25\4\26\t\26\4\27\t\27\4\30\t\30\4\31\t\31"+
@@ -3106,148 +2909,122 @@ public class RegularExpressionEREParser extends Parser {
 		"\t!\4\"\t\"\4#\t#\4$\t$\4%\t%\4&\t&\4\'\t\'\4(\t(\4)\t)\4*\t*\4+\t+\4"+
 		",\t,\4-\t-\4.\t.\4/\t/\4\60\t\60\4\61\t\61\3\2\3\2\3\2\3\2\3\2\3\2\3\2"+
 		"\3\2\3\2\3\2\3\2\5\2n\n\2\3\2\3\2\7\2r\n\2\f\2\16\2u\13\2\3\3\3\3\3\3"+
-		"\6\3z\n\3\r\3\16\3{\3\4\3\4\3\4\3\4\3\4\3\4\3\4\5\4\u0085\n\4\3\4\3\4"+
-		"\7\4\u0089\n\4\f\4\16\4\u008c\13\4\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5"+
-		"\3\5\3\5\3\5\6\5\u009a\n\5\r\5\16\5\u009b\3\5\3\5\3\5\3\5\6\5\u00a2\n"+
-		"\5\r\5\16\5\u00a3\3\5\3\5\3\5\3\5\5\5\u00aa\n\5\3\6\3\6\5\6\u00ae\n\6"+
-		"\3\7\3\7\3\b\3\b\3\t\3\t\3\t\3\t\3\t\6\t\u00b9\n\t\r\t\16\t\u00ba\3\t"+
-		"\3\t\5\t\u00bf\n\t\3\n\3\n\3\n\3\n\3\n\3\n\5\n\u00c7\n\n\3\13\3\13\3\13"+
-		"\3\13\3\13\3\13\5\13\u00cf\n\13\3\f\3\f\3\r\3\r\3\16\3\16\3\17\3\17\3"+
-		"\17\3\17\3\20\3\20\3\20\3\20\3\20\3\21\3\21\3\21\3\21\3\21\3\21\3\21\3"+
-		"\22\6\22\u00e8\n\22\r\22\16\22\u00e9\3\23\6\23\u00ed\n\23\r\23\16\23\u00ee"+
-		"\3\24\6\24\u00f2\n\24\r\24\16\24\u00f3\3\25\3\25\3\25\5\25\u00f9\n\25"+
-		"\3\25\3\25\3\25\3\25\3\25\5\25\u0100\n\25\3\25\3\25\3\25\3\25\3\25\5\25"+
-		"\u0107\n\25\3\25\3\25\6\25\u010b\n\25\r\25\16\25\u010c\3\25\3\25\3\25"+
-		"\3\25\6\25\u0113\n\25\r\25\16\25\u0114\3\25\3\25\5\25\u0119\n\25\3\25"+
-		"\3\25\3\25\5\25\u011e\n\25\3\26\3\26\5\26\u0122\n\26\3\26\7\26\u0125\n"+
-		"\26\f\26\16\26\u0128\13\26\3\26\5\26\u012b\n\26\3\27\5\27\u012e\n\27\3"+
-		"\27\7\27\u0131\n\27\f\27\16\27\u0134\13\27\3\27\5\27\u0137\n\27\3\30\3"+
-		"\30\3\30\5\30\u013c\n\30\3\31\3\31\3\31\3\31\3\31\3\31\3\31\3\31\3\31"+
-		"\3\31\5\31\u0148\n\31\3\32\3\32\5\32\u014c\n\32\3\33\3\33\3\34\3\34\3"+
-		"\34\3\34\3\34\3\34\3\34\3\34\3\34\3\34\3\34\3\34\3\34\3\34\3\34\3\34\5"+
-		"\34\u0160\n\34\3\35\3\35\3\36\3\36\3\37\3\37\3\37\3\37\3 \3 \3 \3 \3 "+
-		"\3 \3 \3 \3 \3 \3 \3 \5 \u0176\n \3!\3!\3\"\3\"\3#\3#\3$\3$\3%\3%\3&\3"+
-		"&\3\'\3\'\3(\3(\3)\3)\3*\3*\3+\3+\3,\3,\3-\3-\3.\3.\3.\3.\5.\u0196\n."+
-		"\3/\3/\3\60\6\60\u019b\n\60\r\60\16\60\u019c\3\61\3\61\3\61\2\4\2\6\62"+
-		"\2\4\6\b\n\f\16\20\22\24\26\30\32\34\36 \"$&(*,.\60\62\64\668:<>@BDFH"+
-		"JLNPRTVXZ\\^`\2\6\3\2\13\f\5\2\3\n\r\23\25\25\5\2\3\3\5\13\r\22\6\2\4"+
-		"\4\f\f\23\23\25\25\u01b9\2m\3\2\2\2\4v\3\2\2\2\6\u0084\3\2\2\2\b\u00a9"+
-		"\3\2\2\2\n\u00ad\3\2\2\2\f\u00af\3\2\2\2\16\u00b1\3\2\2\2\20\u00be\3\2"+
-		"\2\2\22\u00c6\3\2\2\2\24\u00ce\3\2\2\2\26\u00d0\3\2\2\2\30\u00d2\3\2\2"+
-		"\2\32\u00d4\3\2\2\2\34\u00d6\3\2\2\2\36\u00da\3\2\2\2 \u00df\3\2\2\2\""+
-		"\u00e7\3\2\2\2$\u00ec\3\2\2\2&\u00f1\3\2\2\2(\u011d\3\2\2\2*\u011f\3\2"+
-		"\2\2,\u012d\3\2\2\2.\u013b\3\2\2\2\60\u0147\3\2\2\2\62\u014b\3\2\2\2\64"+
-		"\u014d\3\2\2\2\66\u015f\3\2\2\28\u0161\3\2\2\2:\u0163\3\2\2\2<\u0165\3"+
-		"\2\2\2>\u0175\3\2\2\2@\u0177\3\2\2\2B\u0179\3\2\2\2D\u017b\3\2\2\2F\u017d"+
-		"\3\2\2\2H\u017f\3\2\2\2J\u0181\3\2\2\2L\u0183\3\2\2\2N\u0185\3\2\2\2P"+
-		"\u0187\3\2\2\2R\u0189\3\2\2\2T\u018b\3\2\2\2V\u018d\3\2\2\2X\u018f\3\2"+
-		"\2\2Z\u0195\3\2\2\2\\\u0197\3\2\2\2^\u019a\3\2\2\2`\u019e\3\2\2\2bc\b"+
-		"\2\1\2cn\5\b\5\2dn\5\4\3\2en\5\n\6\2fn\5\20\t\2gn\5(\25\2hn\5<\37\2in"+
-		"\5X-\2jn\5Z.\2kn\5^\60\2ln\7\26\2\2mb\3\2\2\2md\3\2\2\2me\3\2\2\2mf\3"+
-		"\2\2\2mg\3\2\2\2mh\3\2\2\2mi\3\2\2\2mj\3\2\2\2mk\3\2\2\2ml\3\2\2\2ns\3"+
-		"\2\2\2op\f\t\2\2pr\5\2\2\nqo\3\2\2\2ru\3\2\2\2sq\3\2\2\2st\3\2\2\2t\3"+
-		"\3\2\2\2us\3\2\2\2vy\5\6\4\2wx\7\17\2\2xz\5\6\4\2yw\3\2\2\2z{\3\2\2\2"+
-		"{y\3\2\2\2{|\3\2\2\2|\5\3\2\2\2}~\b\4\1\2~\u0085\5\b\5\2\177\u0085\5\20"+
-		"\t\2\u0080\u0085\5(\25\2\u0081\u0085\5<\37\2\u0082\u0085\5X-\2\u0083\u0085"+
-		"\5^\60\2\u0084}\3\2\2\2\u0084\177\3\2\2\2\u0084\u0080\3\2\2\2\u0084\u0081"+
-		"\3\2\2\2\u0084\u0082\3\2\2\2\u0084\u0083\3\2\2\2\u0085\u008a\3\2\2\2\u0086"+
-		"\u0087\f\7\2\2\u0087\u0089\5\6\4\b\u0088\u0086\3\2\2\2\u0089\u008c\3\2"+
-		"\2\2\u008a\u0088\3\2\2\2\u008a\u008b\3\2\2\2\u008b\7\3\2\2\2\u008c\u008a"+
-		"\3\2\2\2\u008d\u008e\7\20\2\2\u008e\u008f\5\2\2\2\u008f\u0090\7\21\2\2"+
-		"\u0090\u00aa\3\2\2\2\u0091\u0092\7\20\2\2\u0092\u0093\5\2\2\2\u0093\u0094"+
-		"\b\5\1\2\u0094\u00aa\3\2\2\2\u0095\u0096\7\20\2\2\u0096\u0097\5\2\2\2"+
-		"\u0097\u0099\7\21\2\2\u0098\u009a\7\21\2\2\u0099\u0098\3\2\2\2\u009a\u009b"+
-		"\3\2\2\2\u009b\u0099\3\2\2\2\u009b\u009c\3\2\2\2\u009c\u009d\3\2\2\2\u009d"+
-		"\u009e\b\5\1\2\u009e\u00aa\3\2\2\2\u009f\u00a1\7\20\2\2\u00a0\u00a2\7"+
-		"\20\2\2\u00a1\u00a0\3\2\2\2\u00a2\u00a3\3\2\2\2\u00a3\u00a1\3\2\2\2\u00a3"+
-		"\u00a4\3\2\2\2\u00a4\u00a5\3\2\2\2\u00a5\u00a6\5\2\2\2\u00a6\u00a7\7\21"+
-		"\2\2\u00a7\u00a8\b\5\1\2\u00a8\u00aa\3\2\2\2\u00a9\u008d\3\2\2\2\u00a9"+
-		"\u0091\3\2\2\2\u00a9\u0095\3\2\2\2\u00a9\u009f\3\2\2\2\u00aa\t\3\2\2\2"+
-		"\u00ab\u00ae\5\f\7\2\u00ac\u00ae\5\16\b\2\u00ad\u00ab\3\2\2\2\u00ad\u00ac"+
-		"\3\2\2\2\u00ae\13\3\2\2\2\u00af\u00b0\7\r\2\2\u00b0\r\3\2\2\2\u00b1\u00b2"+
-		"\7\16\2\2\u00b2\17\3\2\2\2\u00b3\u00b4\5\22\n\2\u00b4\u00b5\5\24\13\2"+
-		"\u00b5\u00bf\3\2\2\2\u00b6\u00b8\5\24\13\2\u00b7\u00b9\5\24\13\2\u00b8"+
-		"\u00b7\3\2\2\2\u00b9\u00ba\3\2\2\2\u00ba\u00b8\3\2\2\2\u00ba\u00bb\3\2"+
-		"\2\2\u00bb\u00bc\3\2\2\2\u00bc\u00bd\b\t\1\2\u00bd\u00bf\3\2\2\2\u00be"+
-		"\u00b3\3\2\2\2\u00be\u00b6\3\2\2\2\u00bf\21\3\2\2\2\u00c0\u00c7\5\b\5"+
-		"\2\u00c1\u00c7\5(\25\2\u00c2\u00c7\5<\37\2\u00c3\u00c7\5X-\2\u00c4\u00c7"+
-		"\5Z.\2\u00c5\u00c7\5`\61\2\u00c6\u00c0\3\2\2\2\u00c6\u00c1\3\2\2\2\u00c6"+
-		"\u00c2\3\2\2\2\u00c6\u00c3\3\2\2\2\u00c6\u00c4\3\2\2\2\u00c6\u00c5\3\2"+
-		"\2\2\u00c7\23\3\2\2\2\u00c8\u00cf\5\26\f\2\u00c9\u00cf\5\30\r\2\u00ca"+
-		"\u00cf\5\32\16\2\u00cb\u00cf\5\34\17\2\u00cc\u00cf\5\36\20\2\u00cd\u00cf"+
-		"\5 \21\2\u00ce\u00c8\3\2\2\2\u00ce\u00c9\3\2\2\2\u00ce\u00ca\3\2\2\2\u00ce"+
-		"\u00cb\3\2\2\2\u00ce\u00cc\3\2\2\2\u00ce\u00cd\3\2\2\2\u00cf\25\3\2\2"+
-		"\2\u00d0\u00d1\7\6\2\2\u00d1\27\3\2\2\2\u00d2\u00d3\7\7\2\2\u00d3\31\3"+
-		"\2\2\2\u00d4\u00d5\7\5\2\2\u00d5\33\3\2\2\2\u00d6\u00d7\7\b\2\2\u00d7"+
-		"\u00d8\5\"\22\2\u00d8\u00d9\7\t\2\2\u00d9\35\3\2\2\2\u00da\u00db\7\b\2"+
-		"\2\u00db\u00dc\5\"\22\2\u00dc\u00dd\7\4\2\2\u00dd\u00de\7\t\2\2\u00de"+
-		"\37\3\2\2\2\u00df\u00e0\7\b\2\2\u00e0\u00e1\5$\23\2\u00e1\u00e2\7\4\2"+
-		"\2\u00e2\u00e3\5&\24\2\u00e3\u00e4\7\t\2\2\u00e4\u00e5\6\21\4\3\u00e5"+
-		"!\3\2\2\2\u00e6\u00e8\7\23\2\2\u00e7\u00e6\3\2\2\2\u00e8\u00e9\3\2\2\2"+
-		"\u00e9\u00e7\3\2\2\2\u00e9\u00ea\3\2\2\2\u00ea#\3\2\2\2\u00eb\u00ed\7"+
-		"\23\2\2\u00ec\u00eb\3\2\2\2\u00ed\u00ee\3\2\2\2\u00ee\u00ec\3\2\2\2\u00ee"+
-		"\u00ef\3\2\2\2\u00ef%\3\2\2\2\u00f0\u00f2\7\23\2\2\u00f1\u00f0\3\2\2\2"+
-		"\u00f2\u00f3\3\2\2\2\u00f3\u00f1\3\2\2\2\u00f3\u00f4\3\2\2\2\u00f4\'\3"+
-		"\2\2\2\u00f5\u00f8\7\n\2\2\u00f6\u00f9\5*\26\2\u00f7\u00f9\5,\27\2\u00f8"+
-		"\u00f6\3\2\2\2\u00f8\u00f7\3\2\2\2\u00f9\u00fa\3\2\2\2\u00fa\u00fb\7\13"+
-		"\2\2\u00fb\u011e\3\2\2\2\u00fc\u00ff\7\n\2\2\u00fd\u0100\5*\26\2\u00fe"+
-		"\u0100\5,\27\2\u00ff\u00fd\3\2\2\2\u00ff\u00fe\3\2\2\2\u0100\u0101\3\2"+
-		"\2\2\u0101\u0102\b\25\1\2\u0102\u011e\3\2\2\2\u0103\u0106\7\n\2\2\u0104"+
-		"\u0107\5*\26\2\u0105\u0107\5,\27\2\u0106\u0104\3\2\2\2\u0106\u0105\3\2"+
-		"\2\2\u0107\u0108\3\2\2\2\u0108\u010a\7\13\2\2\u0109\u010b\7\13\2\2\u010a"+
-		"\u0109\3\2\2\2\u010b\u010c\3\2\2\2\u010c\u010a\3\2\2\2\u010c\u010d\3\2"+
-		"\2\2\u010d\u010e\3\2\2\2\u010e\u010f\b\25\1\2\u010f\u011e\3\2\2\2\u0110"+
-		"\u0112\7\n\2\2\u0111\u0113\7\n\2\2\u0112\u0111\3\2\2\2\u0113\u0114\3\2"+
-		"\2\2\u0114\u0112\3\2\2\2\u0114\u0115\3\2\2\2\u0115\u0118\3\2\2\2\u0116"+
-		"\u0119\5*\26\2\u0117\u0119\5,\27\2\u0118\u0116\3\2\2\2\u0118\u0117\3\2"+
-		"\2\2\u0119\u011a\3\2\2\2\u011a\u011b\7\13\2\2\u011b\u011c\b\25\1\2\u011c"+
-		"\u011e\3\2\2\2\u011d\u00f5\3\2\2\2\u011d\u00fc\3\2\2\2\u011d\u0103\3\2"+
-		"\2\2\u011d\u0110\3\2\2\2\u011e)\3\2\2\2\u011f\u0121\7\r\2\2\u0120\u0122"+
-		"\5\62\32\2\u0121\u0120\3\2\2\2\u0121\u0122\3\2\2\2\u0122\u0126\3\2\2\2"+
-		"\u0123\u0125\5.\30\2\u0124\u0123\3\2\2\2\u0125\u0128\3\2\2\2\u0126\u0124"+
-		"\3\2\2\2\u0126\u0127\3\2\2\2\u0127\u012a\3\2\2\2\u0128\u0126\3\2\2\2\u0129"+
-		"\u012b\58\35\2\u012a\u0129\3\2\2\2\u012a\u012b\3\2\2\2\u012b+\3\2\2\2"+
-		"\u012c\u012e\5\62\32\2\u012d\u012c\3\2\2\2\u012d\u012e\3\2\2\2\u012e\u0132"+
-		"\3\2\2\2\u012f\u0131\5.\30\2\u0130\u012f\3\2\2\2\u0131\u0134\3\2\2\2\u0132"+
-		"\u0130\3\2\2\2\u0132\u0133\3\2\2\2\u0133\u0136\3\2\2\2\u0134\u0132\3\2"+
-		"\2\2\u0135\u0137\58\35\2\u0136\u0135\3\2\2\2\u0136\u0137\3\2\2\2\u0137"+
-		"-\3\2\2\2\u0138\u013c\5\60\31\2\u0139\u013c\5<\37\2\u013a\u013c\5:\36"+
-		"\2\u013b\u0138\3\2\2\2\u013b\u0139\3\2\2\2\u013b\u013a\3\2\2\2\u013c/"+
-		"\3\2\2\2\u013d\u013e\5:\36\2\u013e\u013f\7\f\2\2\u013f\u0140\5:\36\2\u0140"+
-		"\u0141\6\31\5\3\u0141\u0148\3\2\2\2\u0142\u0143\5:\36\2\u0143\u0144\7"+
-		"\f\2\2\u0144\u0145\7\f\2\2\u0145\u0146\6\31\6\3\u0146\u0148\3\2\2\2\u0147"+
-		"\u013d\3\2\2\2\u0147\u0142\3\2\2\2\u0148\61\3\2\2\2\u0149\u014c\5\66\34"+
-		"\2\u014a\u014c\5\64\33\2\u014b\u0149\3\2\2\2\u014b\u014a\3\2\2\2\u014c"+
-		"\63\3\2\2\2\u014d\u014e\t\2\2\2\u014e\65\3\2\2\2\u014f\u0150\7\13\2\2"+
-		"\u0150\u0151\7\f\2\2\u0151\u0160\7\f\2\2\u0152\u0153\7\f\2\2\u0153\u0154"+
-		"\7\f\2\2\u0154\u0160\7\f\2\2\u0155\u0156\7\13\2\2\u0156\u0157\7\f\2\2"+
-		"\u0157\u0158\5:\36\2\u0158\u0159\6\34\7\3\u0159\u0160\3\2\2\2\u015a\u015b"+
-		"\7\f\2\2\u015b\u015c\7\f\2\2\u015c\u015d\5:\36\2\u015d\u015e\6\34\b\3"+
-		"\u015e\u0160\3\2\2\2\u015f\u014f\3\2\2\2\u015f\u0152\3\2\2\2\u015f\u0155"+
-		"\3\2\2\2\u015f\u015a\3\2\2\2\u0160\67\3\2\2\2\u0161\u0162\7\f\2\2\u0162"+
-		"9\3\2\2\2\u0163\u0164\t\3\2\2\u0164;\3\2\2\2\u0165\u0166\7\24\2\2\u0166"+
-		"\u0167\5> \2\u0167\u0168\7#\2\2\u0168=\3\2\2\2\u0169\u0176\5@!\2\u016a"+
-		"\u0176\5B\"\2\u016b\u0176\5D#\2\u016c\u0176\5F$\2\u016d\u0176\5H%\2\u016e"+
-		"\u0176\5J&\2\u016f\u0176\5L\'\2\u0170\u0176\5N(\2\u0171\u0176\5P)\2\u0172"+
-		"\u0176\5R*\2\u0173\u0176\5T+\2\u0174\u0176\5V,\2\u0175\u0169\3\2\2\2\u0175"+
-		"\u016a\3\2\2\2\u0175\u016b\3\2\2\2\u0175\u016c\3\2\2\2\u0175\u016d\3\2"+
-		"\2\2\u0175\u016e\3\2\2\2\u0175\u016f\3\2\2\2\u0175\u0170\3\2\2\2\u0175"+
-		"\u0171\3\2\2\2\u0175\u0172\3\2\2\2\u0175\u0173\3\2\2\2\u0175\u0174\3\2"+
-		"\2\2\u0176?\3\2\2\2\u0177\u0178\7\31\2\2\u0178A\3\2\2\2\u0179\u017a\7"+
-		"\32\2\2\u017aC\3\2\2\2\u017b\u017c\7\33\2\2\u017cE\3\2\2\2\u017d\u017e"+
-		"\7\34\2\2\u017eG\3\2\2\2\u017f\u0180\7\27\2\2\u0180I\3\2\2\2\u0181\u0182"+
-		"\7\35\2\2\u0182K\3\2\2\2\u0183\u0184\7\36\2\2\u0184M\3\2\2\2\u0185\u0186"+
-		"\7\37\2\2\u0186O\3\2\2\2\u0187\u0188\7 \2\2\u0188Q\3\2\2\2\u0189\u018a"+
-		"\7\30\2\2\u018aS\3\2\2\2\u018b\u018c\7!\2\2\u018cU\3\2\2\2\u018d\u018e"+
-		"\7\"\2\2\u018eW\3\2\2\2\u018f\u0190\7\3\2\2\u0190Y\3\2\2\2\u0191\u0192"+
-		"\7\22\2\2\u0192\u0196\5\\/\2\u0193\u0194\7\22\2\2\u0194\u0196\5`\61\2"+
-		"\u0195\u0191\3\2\2\2\u0195\u0193\3\2\2\2\u0196[\3\2\2\2\u0197\u0198\t"+
-		"\4\2\2\u0198]\3\2\2\2\u0199\u019b\5`\61\2\u019a\u0199\3\2\2\2\u019b\u019c"+
-		"\3\2\2\2\u019c\u019a\3\2\2\2\u019c\u019d\3\2\2\2\u019d_\3\2\2\2\u019e"+
-		"\u019f\t\5\2\2\u019fa\3\2\2\2&ms{\u0084\u008a\u009b\u00a3\u00a9\u00ad"+
-		"\u00ba\u00be\u00c6\u00ce\u00e9\u00ee\u00f3\u00f8\u00ff\u0106\u010c\u0114"+
-		"\u0118\u011d\u0121\u0126\u012a\u012d\u0132\u0136\u013b\u0147\u014b\u015f"+
-		"\u0175\u0195\u019c";
+		"\6\3z\n\3\r\3\16\3{\3\4\3\4\3\4\3\4\3\4\3\4\3\4\3\4\3\4\5\4\u0087\n\4"+
+		"\3\4\3\4\7\4\u008b\n\4\f\4\16\4\u008e\13\4\3\5\3\5\3\5\3\5\3\6\3\6\5\6"+
+		"\u0096\n\6\3\7\3\7\3\b\3\b\3\t\3\t\3\t\3\t\3\t\6\t\u00a1\n\t\r\t\16\t"+
+		"\u00a2\3\t\3\t\5\t\u00a7\n\t\3\n\3\n\3\n\3\n\3\n\3\n\5\n\u00af\n\n\3\13"+
+		"\3\13\3\13\3\13\3\13\3\13\5\13\u00b7\n\13\3\f\3\f\3\r\3\r\3\16\3\16\3"+
+		"\17\3\17\3\17\3\17\3\20\3\20\3\20\3\20\3\20\3\21\3\21\3\21\3\21\3\21\3"+
+		"\21\3\21\3\22\6\22\u00d0\n\22\r\22\16\22\u00d1\3\23\6\23\u00d5\n\23\r"+
+		"\23\16\23\u00d6\3\24\6\24\u00da\n\24\r\24\16\24\u00db\3\25\3\25\3\25\5"+
+		"\25\u00e1\n\25\3\25\3\25\3\26\3\26\5\26\u00e7\n\26\3\26\7\26\u00ea\n\26"+
+		"\f\26\16\26\u00ed\13\26\3\26\5\26\u00f0\n\26\3\27\5\27\u00f3\n\27\3\27"+
+		"\7\27\u00f6\n\27\f\27\16\27\u00f9\13\27\3\27\5\27\u00fc\n\27\3\30\3\30"+
+		"\3\30\5\30\u0101\n\30\3\31\3\31\3\31\3\31\3\31\3\31\3\31\3\31\3\31\3\31"+
+		"\5\31\u010d\n\31\3\32\3\32\5\32\u0111\n\32\3\33\3\33\3\34\3\34\3\34\3"+
+		"\34\3\34\3\34\3\34\3\34\3\34\3\34\3\34\3\34\3\34\3\34\3\34\3\34\5\34\u0125"+
+		"\n\34\3\35\3\35\3\36\3\36\3\37\3\37\3\37\3\37\3 \3 \3 \3 \3 \3 \3 \3 "+
+		"\3 \3 \3 \3 \5 \u013b\n \3!\3!\3\"\3\"\3#\3#\3$\3$\3%\3%\3&\3&\3\'\3\'"+
+		"\3(\3(\3)\3)\3*\3*\3+\3+\3,\3,\3-\3-\3.\3.\3.\3.\5.\u015b\n.\3/\3/\3\60"+
+		"\6\60\u0160\n\60\r\60\16\60\u0161\3\61\3\61\3\61\2\4\2\6\62\2\4\6\b\n"+
+		"\f\16\20\22\24\26\30\32\34\36 \"$&(*,.\60\62\64\668:<>@BDFHJLNPRTVXZ\\"+
+		"^`\2\6\3\2\13\f\5\2\3\n\r\23\25\25\5\2\3\3\5\13\r\22\6\2\4\4\f\f\23\23"+
+		"\25\25\u0173\2m\3\2\2\2\4v\3\2\2\2\6\u0086\3\2\2\2\b\u008f\3\2\2\2\n\u0095"+
+		"\3\2\2\2\f\u0097\3\2\2\2\16\u0099\3\2\2\2\20\u00a6\3\2\2\2\22\u00ae\3"+
+		"\2\2\2\24\u00b6\3\2\2\2\26\u00b8\3\2\2\2\30\u00ba\3\2\2\2\32\u00bc\3\2"+
+		"\2\2\34\u00be\3\2\2\2\36\u00c2\3\2\2\2 \u00c7\3\2\2\2\"\u00cf\3\2\2\2"+
+		"$\u00d4\3\2\2\2&\u00d9\3\2\2\2(\u00dd\3\2\2\2*\u00e4\3\2\2\2,\u00f2\3"+
+		"\2\2\2.\u0100\3\2\2\2\60\u010c\3\2\2\2\62\u0110\3\2\2\2\64\u0112\3\2\2"+
+		"\2\66\u0124\3\2\2\28\u0126\3\2\2\2:\u0128\3\2\2\2<\u012a\3\2\2\2>\u013a"+
+		"\3\2\2\2@\u013c\3\2\2\2B\u013e\3\2\2\2D\u0140\3\2\2\2F\u0142\3\2\2\2H"+
+		"\u0144\3\2\2\2J\u0146\3\2\2\2L\u0148\3\2\2\2N\u014a\3\2\2\2P\u014c\3\2"+
+		"\2\2R\u014e\3\2\2\2T\u0150\3\2\2\2V\u0152\3\2\2\2X\u0154\3\2\2\2Z\u015a"+
+		"\3\2\2\2\\\u015c\3\2\2\2^\u015f\3\2\2\2`\u0163\3\2\2\2bc\b\2\1\2cn\5\b"+
+		"\5\2dn\5\4\3\2en\5\n\6\2fn\5\20\t\2gn\5(\25\2hn\5<\37\2in\5X-\2jn\5Z."+
+		"\2kn\5^\60\2ln\7\26\2\2mb\3\2\2\2md\3\2\2\2me\3\2\2\2mf\3\2\2\2mg\3\2"+
+		"\2\2mh\3\2\2\2mi\3\2\2\2mj\3\2\2\2mk\3\2\2\2ml\3\2\2\2ns\3\2\2\2op\f\t"+
+		"\2\2pr\5\2\2\nqo\3\2\2\2ru\3\2\2\2sq\3\2\2\2st\3\2\2\2t\3\3\2\2\2us\3"+
+		"\2\2\2vy\5\6\4\2wx\7\17\2\2xz\5\6\4\2yw\3\2\2\2z{\3\2\2\2{y\3\2\2\2{|"+
+		"\3\2\2\2|\5\3\2\2\2}~\b\4\1\2~\u0087\5\b\5\2\177\u0087\5\n\6\2\u0080\u0087"+
+		"\5\20\t\2\u0081\u0087\5(\25\2\u0082\u0087\5<\37\2\u0083\u0087\5X-\2\u0084"+
+		"\u0087\5Z.\2\u0085\u0087\5^\60\2\u0086}\3\2\2\2\u0086\177\3\2\2\2\u0086"+
+		"\u0080\3\2\2\2\u0086\u0081\3\2\2\2\u0086\u0082\3\2\2\2\u0086\u0083\3\2"+
+		"\2\2\u0086\u0084\3\2\2\2\u0086\u0085\3\2\2\2\u0087\u008c\3\2\2\2\u0088"+
+		"\u0089\f\b\2\2\u0089\u008b\5\6\4\t\u008a\u0088\3\2\2\2\u008b\u008e\3\2"+
+		"\2\2\u008c\u008a\3\2\2\2\u008c\u008d\3\2\2\2\u008d\7\3\2\2\2\u008e\u008c"+
+		"\3\2\2\2\u008f\u0090\7\20\2\2\u0090\u0091\5\2\2\2\u0091\u0092\7\21\2\2"+
+		"\u0092\t\3\2\2\2\u0093\u0096\5\f\7\2\u0094\u0096\5\16\b\2\u0095\u0093"+
+		"\3\2\2\2\u0095\u0094\3\2\2\2\u0096\13\3\2\2\2\u0097\u0098\7\r\2\2\u0098"+
+		"\r\3\2\2\2\u0099\u009a\7\16\2\2\u009a\17\3\2\2\2\u009b\u009c\5\22\n\2"+
+		"\u009c\u009d\5\24\13\2\u009d\u00a7\3\2\2\2\u009e\u00a0\5\24\13\2\u009f"+
+		"\u00a1\5\24\13\2\u00a0\u009f\3\2\2\2\u00a1\u00a2\3\2\2\2\u00a2\u00a0\3"+
+		"\2\2\2\u00a2\u00a3\3\2\2\2\u00a3\u00a4\3\2\2\2\u00a4\u00a5\b\t\1\2\u00a5"+
+		"\u00a7\3\2\2\2\u00a6\u009b\3\2\2\2\u00a6\u009e\3\2\2\2\u00a7\21\3\2\2"+
+		"\2\u00a8\u00af\5\b\5\2\u00a9\u00af\5(\25\2\u00aa\u00af\5<\37\2\u00ab\u00af"+
+		"\5X-\2\u00ac\u00af\5Z.\2\u00ad\u00af\5`\61\2\u00ae\u00a8\3\2\2\2\u00ae"+
+		"\u00a9\3\2\2\2\u00ae\u00aa\3\2\2\2\u00ae\u00ab\3\2\2\2\u00ae\u00ac\3\2"+
+		"\2\2\u00ae\u00ad\3\2\2\2\u00af\23\3\2\2\2\u00b0\u00b7\5\26\f\2\u00b1\u00b7"+
+		"\5\30\r\2\u00b2\u00b7\5\32\16\2\u00b3\u00b7\5\34\17\2\u00b4\u00b7\5\36"+
+		"\20\2\u00b5\u00b7\5 \21\2\u00b6\u00b0\3\2\2\2\u00b6\u00b1\3\2\2\2\u00b6"+
+		"\u00b2\3\2\2\2\u00b6\u00b3\3\2\2\2\u00b6\u00b4\3\2\2\2\u00b6\u00b5\3\2"+
+		"\2\2\u00b7\25\3\2\2\2\u00b8\u00b9\7\6\2\2\u00b9\27\3\2\2\2\u00ba\u00bb"+
+		"\7\7\2\2\u00bb\31\3\2\2\2\u00bc\u00bd\7\5\2\2\u00bd\33\3\2\2\2\u00be\u00bf"+
+		"\7\b\2\2\u00bf\u00c0\5\"\22\2\u00c0\u00c1\7\t\2\2\u00c1\35\3\2\2\2\u00c2"+
+		"\u00c3\7\b\2\2\u00c3\u00c4\5\"\22\2\u00c4\u00c5\7\4\2\2\u00c5\u00c6\7"+
+		"\t\2\2\u00c6\37\3\2\2\2\u00c7\u00c8\7\b\2\2\u00c8\u00c9\5$\23\2\u00c9"+
+		"\u00ca\7\4\2\2\u00ca\u00cb\5&\24\2\u00cb\u00cc\7\t\2\2\u00cc\u00cd\6\21"+
+		"\4\3\u00cd!\3\2\2\2\u00ce\u00d0\7\23\2\2\u00cf\u00ce\3\2\2\2\u00d0\u00d1"+
+		"\3\2\2\2\u00d1\u00cf\3\2\2\2\u00d1\u00d2\3\2\2\2\u00d2#\3\2\2\2\u00d3"+
+		"\u00d5\7\23\2\2\u00d4\u00d3\3\2\2\2\u00d5\u00d6\3\2\2\2\u00d6\u00d4\3"+
+		"\2\2\2\u00d6\u00d7\3\2\2\2\u00d7%\3\2\2\2\u00d8\u00da\7\23\2\2\u00d9\u00d8"+
+		"\3\2\2\2\u00da\u00db\3\2\2\2\u00db\u00d9\3\2\2\2\u00db\u00dc\3\2\2\2\u00dc"+
+		"\'\3\2\2\2\u00dd\u00e0\7\n\2\2\u00de\u00e1\5*\26\2\u00df\u00e1\5,\27\2"+
+		"\u00e0\u00de\3\2\2\2\u00e0\u00df\3\2\2\2\u00e1\u00e2\3\2\2\2\u00e2\u00e3"+
+		"\7\13\2\2\u00e3)\3\2\2\2\u00e4\u00e6\7\r\2\2\u00e5\u00e7\5\62\32\2\u00e6"+
+		"\u00e5\3\2\2\2\u00e6\u00e7\3\2\2\2\u00e7\u00eb\3\2\2\2\u00e8\u00ea\5."+
+		"\30\2\u00e9\u00e8\3\2\2\2\u00ea\u00ed\3\2\2\2\u00eb\u00e9\3\2\2\2\u00eb"+
+		"\u00ec\3\2\2\2\u00ec\u00ef\3\2\2\2\u00ed\u00eb\3\2\2\2\u00ee\u00f0\58"+
+		"\35\2\u00ef\u00ee\3\2\2\2\u00ef\u00f0\3\2\2\2\u00f0+\3\2\2\2\u00f1\u00f3"+
+		"\5\62\32\2\u00f2\u00f1\3\2\2\2\u00f2\u00f3\3\2\2\2\u00f3\u00f7\3\2\2\2"+
+		"\u00f4\u00f6\5.\30\2\u00f5\u00f4\3\2\2\2\u00f6\u00f9\3\2\2\2\u00f7\u00f5"+
+		"\3\2\2\2\u00f7\u00f8\3\2\2\2\u00f8\u00fb\3\2\2\2\u00f9\u00f7\3\2\2\2\u00fa"+
+		"\u00fc\58\35\2\u00fb\u00fa\3\2\2\2\u00fb\u00fc\3\2\2\2\u00fc-\3\2\2\2"+
+		"\u00fd\u0101\5\60\31\2\u00fe\u0101\5<\37\2\u00ff\u0101\5:\36\2\u0100\u00fd"+
+		"\3\2\2\2\u0100\u00fe\3\2\2\2\u0100\u00ff\3\2\2\2\u0101/\3\2\2\2\u0102"+
+		"\u0103\5:\36\2\u0103\u0104\7\f\2\2\u0104\u0105\5:\36\2\u0105\u0106\6\31"+
+		"\5\3\u0106\u010d\3\2\2\2\u0107\u0108\5:\36\2\u0108\u0109\7\f\2\2\u0109"+
+		"\u010a\7\f\2\2\u010a\u010b\6\31\6\3\u010b\u010d\3\2\2\2\u010c\u0102\3"+
+		"\2\2\2\u010c\u0107\3\2\2\2\u010d\61\3\2\2\2\u010e\u0111\5\66\34\2\u010f"+
+		"\u0111\5\64\33\2\u0110\u010e\3\2\2\2\u0110\u010f\3\2\2\2\u0111\63\3\2"+
+		"\2\2\u0112\u0113\t\2\2\2\u0113\65\3\2\2\2\u0114\u0115\7\13\2\2\u0115\u0116"+
+		"\7\f\2\2\u0116\u0125\7\f\2\2\u0117\u0118\7\f\2\2\u0118\u0119\7\f\2\2\u0119"+
+		"\u0125\7\f\2\2\u011a\u011b\7\13\2\2\u011b\u011c\7\f\2\2\u011c\u011d\5"+
+		":\36\2\u011d\u011e\6\34\7\3\u011e\u0125\3\2\2\2\u011f\u0120\7\f\2\2\u0120"+
+		"\u0121\7\f\2\2\u0121\u0122\5:\36\2\u0122\u0123\6\34\b\3\u0123\u0125\3"+
+		"\2\2\2\u0124\u0114\3\2\2\2\u0124\u0117\3\2\2\2\u0124\u011a\3\2\2\2\u0124"+
+		"\u011f\3\2\2\2\u0125\67\3\2\2\2\u0126\u0127\7\f\2\2\u01279\3\2\2\2\u0128"+
+		"\u0129\t\3\2\2\u0129;\3\2\2\2\u012a\u012b\7\24\2\2\u012b\u012c\5> \2\u012c"+
+		"\u012d\7#\2\2\u012d=\3\2\2\2\u012e\u013b\5@!\2\u012f\u013b\5B\"\2\u0130"+
+		"\u013b\5D#\2\u0131\u013b\5F$\2\u0132\u013b\5H%\2\u0133\u013b\5J&\2\u0134"+
+		"\u013b\5L\'\2\u0135\u013b\5N(\2\u0136\u013b\5P)\2\u0137\u013b\5R*\2\u0138"+
+		"\u013b\5T+\2\u0139\u013b\5V,\2\u013a\u012e\3\2\2\2\u013a\u012f\3\2\2\2"+
+		"\u013a\u0130\3\2\2\2\u013a\u0131\3\2\2\2\u013a\u0132\3\2\2\2\u013a\u0133"+
+		"\3\2\2\2\u013a\u0134\3\2\2\2\u013a\u0135\3\2\2\2\u013a\u0136\3\2\2\2\u013a"+
+		"\u0137\3\2\2\2\u013a\u0138\3\2\2\2\u013a\u0139\3\2\2\2\u013b?\3\2\2\2"+
+		"\u013c\u013d\7\31\2\2\u013dA\3\2\2\2\u013e\u013f\7\32\2\2\u013fC\3\2\2"+
+		"\2\u0140\u0141\7\33\2\2\u0141E\3\2\2\2\u0142\u0143\7\34\2\2\u0143G\3\2"+
+		"\2\2\u0144\u0145\7\27\2\2\u0145I\3\2\2\2\u0146\u0147\7\35\2\2\u0147K\3"+
+		"\2\2\2\u0148\u0149\7\36\2\2\u0149M\3\2\2\2\u014a\u014b\7\37\2\2\u014b"+
+		"O\3\2\2\2\u014c\u014d\7 \2\2\u014dQ\3\2\2\2\u014e\u014f\7\30\2\2\u014f"+
+		"S\3\2\2\2\u0150\u0151\7!\2\2\u0151U\3\2\2\2\u0152\u0153\7\"\2\2\u0153"+
+		"W\3\2\2\2\u0154\u0155\7\3\2\2\u0155Y\3\2\2\2\u0156\u0157\7\22\2\2\u0157"+
+		"\u015b\5\\/\2\u0158\u0159\7\22\2\2\u0159\u015b\5`\61\2\u015a\u0156\3\2"+
+		"\2\2\u015a\u0158\3\2\2\2\u015b[\3\2\2\2\u015c\u015d\t\4\2\2\u015d]\3\2"+
+		"\2\2\u015e\u0160\5`\61\2\u015f\u015e\3\2\2\2\u0160\u0161\3\2\2\2\u0161"+
+		"\u015f\3\2\2\2\u0161\u0162\3\2\2\2\u0162_\3\2\2\2\u0163\u0164\t\5\2\2"+
+		"\u0164a\3\2\2\2\35ms{\u0086\u008c\u0095\u00a2\u00a6\u00ae\u00b6\u00d1"+
+		"\u00d6\u00db\u00e0\u00e6\u00eb\u00ef\u00f2\u00f7\u00fb\u0100\u010c\u0110"+
+		"\u0124\u013a\u015a\u0161";
 	public static final ATN _ATN =
 		new ATNDeserializer().deserialize(_serializedATN.toCharArray());
 	static {

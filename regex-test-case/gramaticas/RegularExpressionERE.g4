@@ -73,27 +73,18 @@ multiple : subExpression (PIPE subExpression)+ ;
  * estas obrigatoriamente devem estar dentro de um grupo. 
  */
 subExpression : group                         //Um grupo de captura
+              | anchor                        //Uma posicao
               | repetition                    //Repeticoes
               | subExpression subExpression   //Varias subexprecoes
               | list                          //Uma lista de possiveis caracteres
               | charclass                     //Uma classe de caracteres
               | anychar                       //Qualquer caractere
+              | escaped                       //Caracteres escapados
               | characters                    //Caracteres em sequencia
               ;
 
 //Grupos de captura sao expressoes entre parenteses
-group : GROUPOPEN expression GROUPCLOSE
-      
-        //Erros
-      | GROUPOPEN expression
-        {notifyErrorListeners("Voce esqueceu de fechar um grupo.");}
-        
-      | GROUPOPEN expression GROUPCLOSE GROUPCLOSE+
-        {notifyErrorListeners("Existem fechamentos de grupo a mais.");}
-        
-      | GROUPOPEN GROUPOPEN+ expression GROUPCLOSE
-        {notifyErrorListeners("Existem aberturas de grupo a mais.");}
-      ;
+group : GROUPOPEN expression GROUPCLOSE;
 
 //Uma posicao pode ser de inicio ou fim
 anchor : startAnchor //inicio
@@ -163,18 +154,8 @@ firstValue : DIGIT+ ;
 lastValue  : DIGIT+ ;
 
 //Uma lista pode ser positiva ou negativa, e fica entre colchetes
-list : LISTOPEN (negativeList|positiveList) LISTCLOSE
-     
-       //Erros
-     | LISTOPEN (negativeList|positiveList)
-       {notifyErrorListeners("Voce esqueceu de fechar uma lista.");}
-     
-     | LISTOPEN (negativeList|positiveList) LISTCLOSE LISTCLOSE+
-       {notifyErrorListeners("Existem fechamentos de lista a mais.");}
-     
-     | LISTOPEN LISTOPEN+ (negativeList|positiveList) LISTCLOSE
-       {notifyErrorListeners("Existem aberturas de lista a mais.");}
-     ;
+list : LISTOPEN (negativeList|positiveList) LISTCLOSE ;
+
 /**
  * Uma lista negativa e qualquer quantidade de elementos de lista, com ^ no comeco.
  * Pode ou nao conter elementos especiais no inicio e no fim.
