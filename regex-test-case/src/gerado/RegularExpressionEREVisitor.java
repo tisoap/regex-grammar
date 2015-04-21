@@ -55,11 +55,19 @@ public interface RegularExpressionEREVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitEndAnchor(RegularExpressionEREParser.EndAnchorContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link RegularExpressionEREParser#repetition}.
+	 * Visit a parse tree produced by the {@code correctRepetition}
+	 * labeled alternative in {@link RegularExpressionEREParser#repetition}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitRepetition(RegularExpressionEREParser.RepetitionContext ctx);
+	T visitCorrectRepetition(RegularExpressionEREParser.CorrectRepetitionContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code wrongRepetition}
+	 * labeled alternative in {@link RegularExpressionEREParser#repetition}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitWrongRepetition(RegularExpressionEREParser.WrongRepetitionContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link RegularExpressionEREParser#quantified}.
 	 * @param ctx the parse tree
@@ -145,11 +153,29 @@ public interface RegularExpressionEREVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitPositiveList(RegularExpressionEREParser.PositiveListContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link RegularExpressionEREParser#listElement}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitListElement(RegularExpressionEREParser.ListElementContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link RegularExpressionEREParser#range}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitRange(RegularExpressionEREParser.RangeContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link RegularExpressionEREParser#listFirstElement}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
 	T visitListFirstElement(RegularExpressionEREParser.ListFirstElementContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link RegularExpressionEREParser#listNoSpecial}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitListNoSpecial(RegularExpressionEREParser.ListNoSpecialContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link RegularExpressionEREParser#listFirstRange}.
 	 * @param ctx the parse tree
@@ -163,17 +189,11 @@ public interface RegularExpressionEREVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitListLastElement(RegularExpressionEREParser.ListLastElementContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link RegularExpressionEREParser#listElement}.
+	 * Visit a parse tree produced by {@link RegularExpressionEREParser#listCharacter}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitListElement(RegularExpressionEREParser.ListElementContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link RegularExpressionEREParser#range}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitRange(RegularExpressionEREParser.RangeContext ctx);
+	T visitListCharacter(RegularExpressionEREParser.ListCharacterContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link RegularExpressionEREParser#charclass}.
 	 * @param ctx the parse tree
@@ -284,12 +304,6 @@ public interface RegularExpressionEREVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitSpecial(RegularExpressionEREParser.SpecialContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link RegularExpressionEREParser#listCharacter}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitListCharacter(RegularExpressionEREParser.ListCharacterContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link RegularExpressionEREParser#characters}.
 	 * @param ctx the parse tree

@@ -2,29 +2,25 @@
  * Lexer para expressoes regulares, padrao POSIX ERE.
  */
 
-lexer grammar LexicalRegularExpressionsERE;
+lexer grammar RegularExpressionERELexer;
 
-SPACE           : ' '  ;
-DOT             : '.'  ;
-COMMA           : ','  ;
-QUESTION        : '?'  ;
-PLUS            : '+'  ;
-ASTERISC        : '*'  ;
-CURLYOPEN       : '{'  ;
-CURLYCLOSE      : '}'  ;
-LISTOPEN        : '['  ;
-LISTCLOSE       : ']'  ;
-DASH            : '-'  ;
-CIRCUMFLEX      : '^'  ;
-DOLAR           : '$'  ;
-PIPE            : '|'  ;
-OPEN            : '('  ;
-CLOSE           : ')'  ;
-REVERSESOLIDUS  : '\\' ;  //OBS: Apenas uma barra invertida
-
-
-DIGIT  : [0-9]    ; //Digitos de 0 a 9
-LATIN  : [A-Za-z] ; //Letras maiusculas e minusculas
+DOT             : '.'   ;
+COMMA           : ','   ;
+QUESTION        : '?'   ;
+PLUS            : '+'   ;
+ASTERISC        : '*'   ;
+CURLYOPEN       : '{'   ;
+CURLYCLOSE      : '}'   ;
+LISTOPEN        : '['   ;
+LISTCLOSE       : ']'   ;
+DASH            : '-'   ;
+CIRCUMFLEX      : '^'   ;
+DOLAR           : '$'   ;
+PIPE            : '|'   ;
+GROUPOPEN       : '('   ;
+GROUPCLOSE      : ')'   ;
+ESCAPE          : '\\'  ;  //OBS: Apenas uma barra invertida
+DIGIT           : [0-9] ;  //Digitos de 0 a 9
 
 
 //Entra no modo CLASS quando encontra a abertura de uma classe

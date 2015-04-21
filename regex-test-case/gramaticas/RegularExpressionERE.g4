@@ -11,11 +11,10 @@
  * 
  */
 
-//TODO criar regras que definem erros comuns
 grammar RegularExpressionERE;
 
-//Utilizar os tokens do lexer 'LexicalRegularExpressionsERE'
-options { tokenVocab=LexicalRegularExpressionsERE; }
+//Utilizar os tokens do lexer 'RegularExpressionsERELexer'
+options { tokenVocab=RegularExpressionERELexer; }
 
 //Adiciona o nome do pacote nas classes Java geradas
 @header {
@@ -51,8 +50,8 @@ options { tokenVocab=LexicalRegularExpressionsERE; }
 }
 
 //Definicao de uma exprecao regular, que pode ser:
-expression : multiple                //Multiplas opcoes
-           | group                   //Um grupo de captura
+expression : group                   //Um grupo
+           | multiple                //Multiplas opcoes
            | anchor                  //Uma posicao
            | repetition              //Uma repeticao
            | expression expression   //Varias exprecoes
@@ -62,7 +61,7 @@ expression : multiple                //Multiplas opcoes
            | escaped                 //Caracteres escapados
            | characters              //Caracteres em sequencia
            
-           //Regra especial para ignorar espacamento
+           //Regra especial para ignorar quebras de linha e tabulacoes
            | WS
            ;
 
@@ -83,7 +82,18 @@ subExpression : group                         //Um grupo de captura
               ;
 
 //Grupos de captura sao expressoes entre parenteses
-group : OPEN expression CLOSE ;
+group : GROUPOPEN expression GROUPCLOSE
+      
+        //Erros
+      | GROUPOPEN expression
+        {notifyErrorListeners("Voce esqueceu de fechar um grupo.");}
+        
+      | GROUPOPEN expression GROUPCLOSE GROUPCLOSE+
+        {notifyErrorListeners("Existem fechamentos de grupo a mais.");}
+        
+      | GROUPOPEN GROUPOPEN+ expression GROUPCLOSE
+        {notifyErrorListeners("Existem aberturas de grupo a mais.");}
+      ;
 
 //Uma posicao pode ser de inicio ou fim
 anchor : startAnchor //inicio
@@ -94,10 +104,17 @@ startAnchor : CIRCUMFLEX ; //^
 endAnchor   : DOLAR ;      //$
 
 /**
- * Um elemento a ser quantificado e o simbolo repetidor
- * O simbolo repetidor se associa pela esquerda do elemento quantificado
+ * Um elemento a ser quantificado e o simbolo repetidor.
+ * O simbolo repetidor se associa pela esquerda do elemento quantificado.
  */
-repetition : <assoc=right> quantified quantifier ;
+repetition : <assoc=right> quantified quantifier
+             #correctRepetition
+           
+             //Erro
+           | quantifier quantifier+ 
+             {notifyErrorListeners("Quantificadores nao podem quantificar outros quantificadores.");}
+             #wrongRepetition
+           ;
 
 //So e possivel quantificar itens individuais
 quantified : group
@@ -117,7 +134,7 @@ quantifier : oneOrMore    //Um ou mais
            | between      //Entre uma quantidade X e Y
            ;
 
-oneOrMore   : PLUS ;      //+
+oneOrMore   : PLUS     ;  //+
 zeroOrMore  : ASTERISC ;  //*
 conditional : QUESTION ;  //?
 exact       : CURLYOPEN value CURLYCLOSE ;        //{n}
@@ -127,7 +144,7 @@ atLeast     : CURLYOPEN value COMMA CURLYCLOSE ;  //{n,}
  * Quantificador {n,m}, onde n>=0 e n<=m
  * Para garantir que n<=m, a regra abaixo contem um "predicador semantico"
  * (Semantic Predicate), que e uma condicional em linguagem Java
- * no formato {...}? . A regra so sera verdadeira se a condicional for verdadeira.
+ * no formato {...}?. A regra so sera verdadeira se a condicional for verdadeira.
  */
 between :
 	
@@ -145,38 +162,31 @@ value      : DIGIT+ ;
 firstValue : DIGIT+ ;
 lastValue  : DIGIT+ ;
 
-//Uma lista pode ser positiva ou negativa
-list : negativeList
-     | positiveList
+//Uma lista pode ser positiva ou negativa, e fica entre colchetes
+list : LISTOPEN (negativeList|positiveList) LISTCLOSE
+     
+       //Erros
+     | LISTOPEN (negativeList|positiveList)
+       {notifyErrorListeners("Voce esqueceu de fechar uma lista.");}
+     
+     | LISTOPEN (negativeList|positiveList) LISTCLOSE LISTCLOSE+
+       {notifyErrorListeners("Existem fechamentos de lista a mais.");}
+     
+     | LISTOPEN LISTOPEN+ (negativeList|positiveList) LISTCLOSE
+       {notifyErrorListeners("Existem aberturas de lista a mais.");}
      ;
-
-//Uma lista negativa e qualquer quantidade de elementos de lista entre colchetes, com ^ no comeco
-negativeList : LISTOPEN CIRCUMFLEX listFirstElement? listElement*  listLastElement? LISTCLOSE;
-
-//Uma lista positiva e qualquer quantidade de elementos de lista entre colchetes
-positiveList : LISTOPEN listFirstElement? listElement* listLastElement? LISTCLOSE;
+/**
+ * Uma lista negativa e qualquer quantidade de elementos de lista, com ^ no comeco.
+ * Pode ou nao conter elementos especiais no inicio e no fim.
+ */
+negativeList : CIRCUMFLEX listFirstElement? listElement*  listLastElement? ;
 
 /**
- * No padrao POSIX ERE, o traco e o fecha colchetes perdem seu significado
- * especial se eles forem o primeiro elemento da lista
+ * Uma lista positiva e qualquer quantidade de elementos de lista
+ * Pode ou nao conter elementos especiais no inicio e no fim.
  */
-listFirstElement : listFirstRange
-                         | LISTCLOSE
-                         | DASH
-                         ;
+positiveList : listFirstElement? listElement* listLastElement? ;
 
-/**
- * E possivel que o traco/fecha colchetes seja parte de uma serie de caracteres
- * Esta e a unica situacao em que o traco pode ser o primeiro elemento em uma
- * serie de caracteres.
- */
-listFirstRange : (LISTCLOSE|DASH) DASH (listCharacter|DASH) ;
-
-/**
- * No padrao POSIX ERE, o traco perde seu significado especial se
- * ele for o ultimo elemento da lista
- */
-listLastElement : DASH ;
 
 //Um elemento de lista pode ser:
 listElement : range            //Uma serie de caracteres
@@ -186,7 +196,10 @@ listElement : range            //Uma serie de caracteres
 
 /**
  * Uma serie sao dois caracteres separados por um traco.
- * O proprio caractere de traco pode ser o elemento da direita.
+ * 
+ * O proprio caractere de traco pode ser o elemento da direita,
+ * mas nao da esquerda.
+ * 
  * O primeiro caractere deve preceder o segundo. Para garantir isto,
  * a regra abaixo contem um "predicador semantico" (Semantic Predicate),
  * que e uma condicional em linguagem Java no formato {...}? .
@@ -211,6 +224,65 @@ range :
 	{vemAntesDe($c.text,$d.text)}?
 	
 	;
+
+/**
+ * O primeiro elemento da lista pode ser um caractere que 
+ * perdeu seu significado especial, ou este mesmo caractere
+ * porem dentro de uma serie.
+ */
+listFirstElement : listFirstRange
+                 | listNoSpecial
+                 ;
+
+/**
+ * No padrao POSIX ERE, o traco e o fecha colchetes perdem seu significado
+ * especial se eles forem o primeiro elemento da lista.
+ */
+listNoSpecial : LISTCLOSE
+              | DASH
+              ;
+
+/**
+ * E possivel que o traco ou fecha colchetes que reside no primeiro elemento da lista
+ * seja parte de uma serie de caracteres.
+ * 
+ * Esta e a unica situacao em que o traco pode ser o primeiro elemento em uma
+ * serie de caracteres.
+ */
+listFirstRange : LISTCLOSE    DASH  DASH            //serie valida em UTF-8
+               | DASH         DASH  DASH            //serie valida em UTF-8
+               | a=LISTCLOSE  DASH  b=listCharacter {vemAntesDe($a.text,$b.text)}?
+               | c=DASH       DASH  d=listCharacter {vemAntesDe($c.text,$d.text)}?
+               ;
+
+/**
+ * No padrao POSIX ERE, o traco perde seu significado especial se
+ * ele for o ultimo elemento da lista.
+ */
+listLastElement : DASH ;
+
+/**
+ * Qualquer caractere que nao seja de controle.
+ * E necessario definir caracteres de lista desta forma
+ * para nao haver conflito com outras regras.
+ */
+listCharacter : DIGIT
+              | COMMA
+              | DOT
+              | QUESTION
+              | PLUS
+              | ASTERISC
+              | CURLYOPEN
+              | CURLYCLOSE
+              | LISTOPEN
+              | ESCAPE
+              | DOLAR
+              | CIRCUMFLEX
+              | PIPE
+              | GROUPOPEN
+              | GROUPCLOSE
+              | OTHER
+              ;
 
 //Uma classe de caracteres POSIX e o nome da classe entre [: e :]
 charclass: CLASSOPEN classname CLASSCLOSE;
@@ -245,12 +317,13 @@ spaceclass  : SPACECLASS ;
 upper       : UPPER      ;
 xdigit      : XDIGIT     ;
 
-//O elemento que representa qualquer caractere e o ponto.
+
+//O elemento que representa qualquer caractere
 anychar : DOT ;
 
 //Um caractere escapado e uma barra invertida seguida do caractere
-escaped : REVERSESOLIDUS special    #escapedSpecial
-        | REVERSESOLIDUS character  #escapedChar
+escaped : ESCAPE special    #escapedSpecial
+        | ESCAPE character  #escapedChar
         ;
 
 //Todos os possiveis caracteres especiais
@@ -265,35 +338,10 @@ special : DOT
         | CIRCUMFLEX
         | DOLAR
         | PIPE
-        | OPEN
-        | CLOSE
-        | REVERSESOLIDUS
+        | GROUPOPEN
+        | GROUPCLOSE
+        | ESCAPE
         ;
-
-/**
- * Qualquer caractere que nao seja de controle.
- * E necessario definir caracteres de lista desta forma
- * para nao haver conflito com outras regras.
- */
-listCharacter : DIGIT
-              | LATIN
-              | SPACE
-              | COMMA
-              | DOT
-              | QUESTION
-              | PLUS
-              | ASTERISC
-              | CURLYOPEN
-              | CURLYCLOSE
-              | LISTOPEN
-              | REVERSESOLIDUS
-              | DOLAR
-              | CIRCUMFLEX
-              | PIPE
-              | OPEN
-              | CLOSE
-              | OTHER
-              ;
 
 //Uma colecao de caracteres sao um ou mais caracteres
 characters : character+ ;
@@ -304,8 +352,6 @@ characters : character+ ;
  * nao entre em conflito com outras regras.
  */
 character : DIGIT
-          | LATIN
-          | SPACE
           | COMMA
           | DASH
           | OTHER

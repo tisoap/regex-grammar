@@ -1,6 +1,6 @@
 package teste;
 
-import gerado.LexicalRegularExpressionsERE;
+import gerado.RegularExpressionERELexer;
 import gerado.RegularExpressionEREParser;
 import gerado.RegularExpressionEREParser.ExpressionContext;
 
@@ -10,8 +10,10 @@ import org.antlr.v4.runtime.*;
 import org.antlr.v4.runtime.tree.*;
 
 import teste.erro.ErrorHandlerPortugues;
-import teste.erro.ErrorListenerVerboso;
 
+//TODO Mudar construtor para metodo normal
+//TODO Criar metodo que retorna um Transfer Object
+//TODO Criar metodo que responde se a criacao da arvore deu certo
 public class Regex {
 	
 	private RegularExpressionEREParser posixParser;
@@ -66,19 +68,13 @@ public class Regex {
 		ANTLRInputStream inputAntrl = new ANTLRInputStream(input);
 		
 		// Cria um lexer que recebe o stream de chars
-		LexicalRegularExpressionsERE lexer = new LexicalRegularExpressionsERE(inputAntrl);
+		RegularExpressionERELexer lexer = new RegularExpressionERELexer(inputAntrl);
 		
 		// Cria um stream de tokens retirados do lexer
 		CommonTokenStream tokens = new CommonTokenStream(lexer);
 		
 		// Cria um parser que recebe o stream de tokens
 		RegularExpressionEREParser parser = new RegularExpressionEREParser(tokens);
-		
-		// Remove o listener de erros padrao do parser
-		parser.removeErrorListeners();
-		
-		// Adciona um listener de erros customizado
-		parser.addErrorListener(new ErrorListenerVerboso());
 		
 		// Troca o Error Handler padrao por um com mensagens em portugues
 		parser.setErrorHandler(new ErrorHandlerPortugues());

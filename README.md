@@ -37,10 +37,8 @@ Adicionar um argumento de visualização faz com que a expressão não seja trad
 
 ##TODO
 
-- Melhorar recuperação de erros
-- Terminar tradutor
-- Testes
-
+- Testes com expressões complexas
+- Generalizar a entrada e retorno de dados do tradutor
 ## Changelog
 
 Padrão `DD/MM/AAAA` para as datas e padrão `X.Y.Z` para o versionamento, onde:
@@ -48,6 +46,14 @@ Padrão `DD/MM/AAAA` para as datas e padrão `X.Y.Z` para o versionamento, onde:
 - **X**: Versões finais
 - **Y**: Alterações na gramática
 - **Z**: Alterações no caso de teste
+
+1.14.2 (21/04/2015)
+
+- Erros comuns com mensagens em português
+- Removidas regras não utilizadas
+- Corrigida definição de listas
+- Corrigida tradução de listas
+- Removido Error Listener customizado
 
 1.11.0 (20/04/2015)
 

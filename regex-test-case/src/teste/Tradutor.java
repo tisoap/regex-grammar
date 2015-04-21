@@ -3,12 +3,11 @@ package teste;
 import gerado.RegularExpressionEREBaseVisitor;
 import gerado.RegularExpressionEREParser.*;
 
-
+//TODO Mudar o retorno dos visitors para String
 public class Tradutor extends RegularExpressionEREBaseVisitor<Void> {
 	
 	private String identacao = "";
 	private int nivelIdentacaoAtual = 0;
-	
 	
 	/**  ------- Metodos auxiliares  ------- */
 	
@@ -128,10 +127,13 @@ public class Tradutor extends RegularExpressionEREBaseVisitor<Void> {
 		return null;
 	}
 	
-	/** Quando visita uma repeticao, aumenta o nivel de identacao e
-	 *  visita o simbolo quantificador seguido da expressao quantificada. */
+	/**
+	 * Quando visita uma repeticao (que esteja correta), aumenta o
+	 * nivel de identacao e visita o quantificaor e a parte quantificada,
+	 * nesta ordem.
+	 */
 	@Override
-	public Void visitRepetition(RepetitionContext ctx) {
+	public Void visitCorrectRepetition(CorrectRepetitionContext ctx) {
 		
 		nivelIdentacaoAtual++;
 		
@@ -183,7 +185,7 @@ public class Tradutor extends RegularExpressionEREBaseVisitor<Void> {
 	}
 	
 	/** Quando visita o quantificador {n}, recupera o valor de n
-	 *  e imprime 'Exatamente ' + valor + 'ocorrencias de:'. */
+	 *  e imprime 'Exatamente n ocorrencias de:'. */
 	@Override
 	public Void visitExact(ExactContext ctx) {
 		
@@ -193,7 +195,7 @@ public class Tradutor extends RegularExpressionEREBaseVisitor<Void> {
 	}
 	
 	/** Quando visita o quantificador {n,}, recupera o valor de n
-	 *  e imprime 'Pelo menos ' + n + 'ocorrencias de:'. */
+	 *  e imprime 'Pelo menos n ocorrencias de:'. */
 	@Override
 	public Void visitAtLeast(AtLeastContext ctx) {
 		
@@ -203,7 +205,7 @@ public class Tradutor extends RegularExpressionEREBaseVisitor<Void> {
 	}
 	
 	/** Quando visita o quantificador {n,m}, recupera os valores de n e m
-	 *  e imprime 'Entre ' + n + ' e ' + m + 'ocorrencias de:'. */
+	 *  e imprime 'Entre n e m ocorrencias de:'. */
 	@Override
 	public Void visitBetween(BetweenContext ctx) {
 		
@@ -264,11 +266,63 @@ public class Tradutor extends RegularExpressionEREBaseVisitor<Void> {
 		return null;
 	}
 	
-	/** Quando visita um elemento de lista, visita todos os filhos dele. */
+	/**
+	 * Quando visita um primeiro elemento de lista,
+	 * visita todos os filhos dele.
+	 */
+	@Override
+	public Void visitListFirstElement(ListFirstElementContext ctx) {
+		
+		visitChildren(ctx);
+		
+		return null;
+	}
+	
+	/**
+	 * Quando visita um caractere de lista que perdeu seu significado,
+	 * imprime 'Literalmente: ' + o caractere.
+	 */
+	@Override
+	public Void visitListNoSpecial(ListNoSpecialContext ctx) {
+		
+		identacao("Literalmente: " + ctx.getText());
+		
+		return null;
+	}
+	
+	/** Quando visita uma serie de caracteres especial, recupera o caractere da esquerda
+	 *  e o caractere da direita, e imprime 'Todos os caracteres entre ESQUERDA e DIREITA'.
+	 */
+	@Override
+	public Void visitListFirstRange(ListFirstRangeContext ctx) {
+		
+		String a = ctx.getChild(0).getText();
+		String b = ctx.getChild(2).getText();
+		
+		identacao("Todos os caracteres entre '" + a + "' e '" + b + "'");
+		
+		return null;
+	}
+	
+	/** 
+	 * Quando visita um elemento de lista, visita todos os filhos dele. 
+	 */
 	@Override
 	public Void visitListElement(ListElementContext ctx) {
 		
 		visitChildren(ctx);
+		
+		return null;
+	}
+	
+	/**
+	 * Quando visita o ultimo caractere de uma lista que perdeu
+	 * seu significado especial, imprime 'Literalmente: ' + o caractere.
+	 */
+	@Override
+	public Void visitListLastElement(ListLastElementContext ctx) {
+		
+		identacao("Literalmente: " + ctx.getText());
 		
 		return null;
 	}
@@ -301,7 +355,6 @@ public class Tradutor extends RegularExpressionEREBaseVisitor<Void> {
 		
 		/**
 		 * Uma serie tem o formato A-B, onde A e B sao caracteres comuns
-		 * ou caracteres escapados com \
 		 * 
 		 * Os filhos serao:
 		 * 0: A
@@ -310,14 +363,8 @@ public class Tradutor extends RegularExpressionEREBaseVisitor<Void> {
 		 */
 		
 		//Recupera os textos
-		String textoA = ctx.getChild(0).getText();
-		String textoB = ctx.getChild(2).getText();
-		
-		//Pega o ultimo caractere dos textos
-		//Isso evita pegar a barra invertida se o caractere for escapado
-		char a = textoA.charAt(textoA.length() - 1);
-		char b = textoB.charAt(textoB.length() - 1);
-		
+		String a = ctx.getChild(0).getText();
+		String b = ctx.getChild(2).getText();
 		
 		identacao("Todos os caracteres entre '" + a + "' e '" + b + "'");
 		
