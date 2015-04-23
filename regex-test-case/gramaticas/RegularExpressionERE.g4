@@ -230,10 +230,10 @@ listNoSpecial : LISTCLOSE
  * Esta e a unica situacao em que o traco pode ser o primeiro elemento em uma
  * serie de caracteres.
  */
-listFirstRange : LISTCLOSE    DASH  DASH            //serie valida em UTF-8
-               | DASH         DASH  DASH            //serie valida em UTF-8
-               | a=LISTCLOSE  DASH  b=listCharacter {vemAntesDe($a.text,$b.text)}?
-               | c=DASH       DASH  d=listCharacter {vemAntesDe($c.text,$d.text)}?
+listFirstRange : a=LISTCLOSE  DASH  b=DASH          {vemAntesDe($a.text,$b.text)}?
+               | DASH         DASH  DASH            //serie valida em qualquer local
+               | c=LISTCLOSE  DASH  d=listCharacter {vemAntesDe($c.text,$d.text)}?
+               | e=DASH       DASH  f=listCharacter {vemAntesDe($e.text,$f.text)}?
                ;
 
 /**

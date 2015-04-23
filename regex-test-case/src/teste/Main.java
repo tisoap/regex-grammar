@@ -20,7 +20,10 @@ public class Main {
 	 * &nbsp;&nbsp; "-list" exibe a parse tree em forma de lista;<br>
 	 * <br>
 	 * @throws IOException A execucao depende da existencia de arquivos de texto com as
-	 * definicoes dos tokens. */
+	 * definicoes dos tokens.
+	 * 
+	 * @author Tiso
+	 */
 	public static void main(String[] args) throws IOException {
 		
 		String opcao = "";
@@ -28,7 +31,7 @@ public class Main {
 		//Se foi passado algum argumento
 		if (args.length > 0) {
 			
-			//Salva o argumento
+			//Armazena o argumento
 			opcao = args[0];
 			
 			//Se o argumento nao for -gui ou -list, exibe uma mensagem de erro e sai
@@ -38,7 +41,7 @@ public class Main {
 			}
 		}
 		
-		//Cria um leitor que recebe o texto da entrada de dados padrao (console)
+		//Cria um leitor que le a entrada padrao, no caso o console
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		
 		//Leia a entrada ate a primeira quebra de linha e salve em uma String
@@ -47,7 +50,37 @@ public class Main {
 		//Fecha o leitor
 		br.close();
 		
-		//Envia o texto recebido e o parametro para a classe responsavel em fazer a traducao
-		new Regex(input, opcao);
+		//Envia o texto recebido para a classe Regex
+		Regex regex = new Regex(input);
+		
+		
+		try {
+			
+			//Tenta validar o texto
+			regex.validar();
+			
+		} catch (Exception e) {
+			
+			//Se o texto nao for uma expressao valida,
+			//exibe uma mensagem de erro e sai
+			
+			System.err.println("A expressao regular nao e valida.");
+			return;
+		}
+		
+		//Se foi passado o parametro '-gui'
+		if (opcao.equals("-gui"))
+			//Exibe a parse tree em uma janela
+			regex.parserTreeGui();
+		
+		//Se foi passado o parametro '-list'
+		else if (opcao.equals("-list"))
+			//Imprime a parse tree no console
+			regex.parseTreeList();
+		
+		//Se nenhum parametro foi passado
+		else
+			//Traduz a expressao para linguagem natural
+			regex.traduzir();
 	}
 }

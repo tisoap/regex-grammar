@@ -7,121 +7,225 @@ import gerado.RegularExpressionEREParser.ExpressionContext;
 import java.io.IOException;
 
 import org.antlr.v4.runtime.*;
-import org.antlr.v4.runtime.tree.*;
-
 import teste.erro.ErrorHandlerPortugues;
 
-//TODO Mudar construtor para metodo normal
 //TODO Criar metodo que retorna um Transfer Object
-//TODO Criar metodo que responde se a criacao da arvore deu certo
+
+/**
+ * Realiza a validacao e traducao para linguagem natural de
+ * uma Expressao regular.
+ * 
+ * @author Tiso
+ *
+ */
 public class Regex {
 	
-	private RegularExpressionEREParser posixParser;
-	private ExpressionContext expressionContext;
+	// ----- VARIAVEIS ----- 
 	
-	public RegularExpressionEREParser getPosixParser() {
-		return posixParser;
-	}
+	/** String com a expressao regular enviada pelo usuario. */
+	private String regularExpresion;
 	
-	public ExpressionContext getExpContext() {
-		return expressionContext;
-	}
+	/** Instancia do stream de caracteres criado a partir do texto
+	 *  da expressao regular.*/
+	private ANTLRInputStream input;
 	
-	public void setPosixParser(RegularExpressionEREParser posixParser) {
-		this.posixParser = posixParser;
+	/** Instancia do lexer da gramatica de expressoes regulares. */
+	private RegularExpressionERELexer lexer;
+	
+	/** Instancia dos tokens reconhecidos pelo lexer. */
+	private CommonTokenStream tokens;
+	
+	/** Instancia do parser da gramatica de expressoes regulares. */
+	private RegularExpressionEREParser parser;
+	
+	/** Instancia da parse tree resultante da avaliacao do parser. */
+	private ExpressionContext parseTreeContext = null;
+	
+	/** Instancia da classe responsavel pela traducao. */
+	private Tradutor tradutor;
+	
+	
+	// ----- GETTERS ----- 
+	
+	public RegularExpressionEREParser getParser() {
+		return parser;
 	}
 
-	public void setExpContext(ExpressionContext expContext) {
-		this.expressionContext = expContext;
+	/** Sera nulo se o metodo validar() nao foi executado. */
+	public ExpressionContext getParseTreeContext() {
+		return parseTreeContext;
+	}
+
+	public String getRegularExpresion() {
+		return regularExpresion;
+	}
+
+	public ANTLRInputStream getInput() {
+		return input;
+	}
+
+	public RegularExpressionERELexer getLexer() {
+		return lexer;
+	}
+
+	public CommonTokenStream getTokens() {
+		return tokens;
 	}
 	
-	public Regex(String input, String opcao) throws IOException {
-		 
-		//Recebe uma string do usuario pelo terminal e inicializa a parse tree
-		criarParseTree(input);
-		
-		//Checa se foram passados argumentos
-		if (!opcao.isEmpty()){
-			
-			//Se o 1o argumento  for '-list', exibe a parse tree em forma de lista
-			if (opcao.equals("-list")) imprimirParseTree(expressionContext);
-			
-			//Se o 1o argumento for '-gui', exibe a parse tree de forma grafica
-			else if (opcao.equals("-gui")) parserTreeGui(expressionContext, posixParser);
-			
-			//Caso contrario, traduza a entrada do usuario
-			else traduzirVisitor(expressionContext);
-		}
-		
-		//Se nao foram passados argumentos, traduza a entrada do usuario
-		else traduzirVisitor(expressionContext);
+	/** Sera nulo se o metodo traduzir() nao foi executado. */
+	public Tradutor getVisitor() {
+		return tradutor;
 	}
-	 
-	 /** 
-	  * Inicializa o parser, lexer, e cria a parse tree a partir da
-	  * entrada do usuario.
-	 * @throws IOException
-	  */
-	private void criarParseTree(String input) throws IOException {
+	
+	
+	// ----- SETTERS ----- 
+	
+	public void setParser(RegularExpressionEREParser parser) {
+		this.parser = parser;
+	}
+
+	public void setParseTreeContext(ExpressionContext parseTreeContext) {
+		this.parseTreeContext = parseTreeContext;
+	}
+
+	public void setRegularExpresion(String regularExpresion) {
+		this.regularExpresion = regularExpresion;
+	}
+
+	public void setInput(ANTLRInputStream input) {
+		this.input = input;
+	}
+
+	public void setLexer(RegularExpressionERELexer lexer) {
+		this.lexer = lexer;
+	}
+
+	public void setTokens(CommonTokenStream tokens) {
+		this.tokens = tokens;
+	}
+	
+	public void setVisitor(Tradutor visitor) {
+		this.tradutor = visitor;
+	}
+	
+	
+	// ----- CONSTRUTOR ----- 
+	
+	/**
+	 * Construtor que inicializa as variaveis da classe.
+	 * 
+	 * @param input Uma String que contem uma expressao regular
+	 */
+	public Regex(String input){
+		
+		//Armazena a expressao recebida
+		setRegularExpresion(input);
+		
+		
+		try {
+			//Tenta incializar o parser e o lexer 
+			inicializar();
+		
+		} catch (IOException e) {
+			
+			//Imprime uma mensagem de erro se nao conseguir carregar os arquivos necessarios
+			
+			System.err.println("Erro de disco ao tentar carregar os arquivos '.tokens'");
+			e.printStackTrace();
+		}
+	}
+	
+	
+	// ----- METODOS ----- 
+	
+	/** 
+	 * Inicializa o parser e o lexer.
+	 * 
+	 * @throws IOException 
+	 *  Este metodo utiliza arquivos texto '.tokens'
+	 *  com informacoes sobre os tokens aceitos pela gramatica.
+	 */
+	private void inicializar()
+			throws IOException {
 		
 		// Cria um stream de chars a partir de um texto digitado pelo usuario
-		ANTLRInputStream inputAntrl = new ANTLRInputStream(input);
+		input  = new ANTLRInputStream(regularExpresion);
 		
 		// Cria um lexer que recebe o stream de chars
-		RegularExpressionERELexer lexer = new RegularExpressionERELexer(inputAntrl);
+		lexer  = new RegularExpressionERELexer(input);
 		
 		// Cria um stream de tokens retirados do lexer
-		CommonTokenStream tokens = new CommonTokenStream(lexer);
+		tokens = new CommonTokenStream(lexer);
 		
 		// Cria um parser que recebe o stream de tokens
-		RegularExpressionEREParser parser = new RegularExpressionEREParser(tokens);
+		parser = new RegularExpressionEREParser(tokens);
 		
-		// Troca o Error Handler padrao por um com mensagens em portugues
+		// Troca o Error Handler padrao do parser por um com mensagens em portugues
 		parser.setErrorHandler(new ErrorHandlerPortugues());
-		
-		// Cria a ParseTree comecando pela regra inicial 'expression'
-		ExpressionContext expContext = parser.expression();
-		
-		// Seta as variaveis privadas da classe
-		setPosixParser(parser);
-		setExpContext(expContext);
 	}
 	
 	/**
-	 * Imprime a parse tree no console em forma de listas estilo LISP
-	 * @param tree Uma parse tree
+	 * Avalia a expressao regular recebida.
+	 * Se estiver correta, inicializa a parse tree.
+	 * Se estiver errada, levanta uma excecao.
+	 * 
+	 * @throws Exception
 	 */
-	private void imprimirParseTree(ParseTree tree){
+	public void validar()
+			throws Exception {
+		
+		//Tenta criar a parse tree, comencando pela regra inicial 'expression'
+		parseTreeContext = parser.expression();
+	}
+	
+	/**
+	 * Realiza a traducao da expressao, fazendo uso da parse tree
+	 * gerada pelo metodo validar().
+	 */
+	public void traduzir(){
+		
+		//Cria uma nova instancia da classe responsavel pela traducao
+		tradutor = new Tradutor();
 		
 		System.out.println("");
-		System.out.println(tree.toStringTree());
+		
+		if (parseTreeContext.equals(null))
+			System.err.println("Necessario ter executado o metodo validar() antes de traduzir.");
+		else
+			//Inicia a traducao da expressao, utilizando a parse tree
+			tradutor.visit(parseTreeContext);
+		
 		System.out.println("");
 	}
 	
 	/**
-	 * Realiza a traducao da arvore usando um parse tree visitor,
-	 * imprimindo os resultados no console.
-	 * @param tree Uma parse tree
+	 * Imprime a parse tree no console em forma
+	 * de listas estilo LISP. Para testes apenas.
 	 */
-	private void traduzirVisitor(ParseTree tree){
-		
-		Tradutor visitor = new Tradutor();
+	public void parseTreeList(){
 		
 		System.out.println("");
-		visitor.visit(tree);
+		
+		if (parseTreeContext.equals(null))
+			System.err.println("Necessario ter executado o metodo validar() antes de imprimir a lista.");
+		else
+			System.out.println(parseTreeContext.toStringTree());
+		
 		System.out.println("");
 	}
 	
 	/** 
 	 * Exibe uma janela com uma representacao grafica da parse tree.
-	 * @param tree A parse tree
-	 * @param parser O parser que gerou a parse tree
+	 * Para testes apenas.
 	 */
-	private void parserTreeGui(ExpressionContext tree, RegularExpressionEREParser parser){
+	public void parserTreeGui(){
 		
-		//http://stackoverflow.com/questions/29353114/running-antrl-testrig-gui-from-within-a-java-application
-		//http:/www.antlr.org/api/JavaTool/org/antlr/v4/runtime/RuleContext.html#inspect%28org.antlr.v4.runtime.Parser%29
-		tree.inspect(parser);
+		if (parseTreeContext.equals(null))
+			System.err.println("Necessario ter executado o metodo validar() antes de exibir a parse tree.");
+		else
+			//http://stackoverflow.com/questions/29353114/running-antrl-testrig-gui-from-within-a-java-application
+			//http:/www.antlr.org/api/JavaTool/org/antlr/v4/runtime/RuleContext.html#inspect%28org.antlr.v4.runtime.Parser%29
+			parseTreeContext.inspect(parser);
 	}
-
+	
 }

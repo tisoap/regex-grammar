@@ -48,6 +48,13 @@ Padrão `DD/MM/AAAA` para as datas e padrão `X.Y.Z` para o versionamento, onde:
 - **Y**: Alterações na gramática
 - **Z**: Alterações no caso de teste
 
+1.14.6 (23/04/2015)
+
+- Abstraída a variável de opção de visualização da classe Regex para a Main
+- Removida criação da parse tree do construtor
+- Criado método validar() que cria a parse tree
+- Error Handler não suprime mais as exceções 
+
 1.14.2 (21/04/2015)
 
 - Erros comuns com mensagens em português

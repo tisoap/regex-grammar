@@ -4,16 +4,35 @@ import org.antlr.v4.runtime.DefaultErrorStrategy;
 import org.antlr.v4.runtime.InputMismatchException;
 import org.antlr.v4.runtime.NoViableAltException;
 import org.antlr.v4.runtime.Parser;
+import org.antlr.v4.runtime.RecognitionException;
 import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.TokenStream;
 import org.antlr.v4.runtime.misc.IntervalSet;
 
 /**
  * Error handler que sobrepoe os metodos padrao para utilizar
- * mensagens em portugues.
+ * mensagens em portugues e a levantar execoes em qualquer erro.
  */
 public class ErrorHandlerPortugues extends DefaultErrorStrategy {
-
+	
+	@Override
+	public void recover(Parser recognizer, RecognitionException e) {
+		throw new RuntimeException(e);
+	}
+	
+	@Override
+	public Token recoverInline(Parser recognizer)
+			throws RecognitionException {
+		
+		throw new RuntimeException(new InputMismatchException(recognizer));
+	}
+	
+	@Override
+	public void sync(Parser recognizer) throws RecognitionException {
+		//nada
+	}
+	
+	
 	@Override
 	protected void reportNoViableAlternative(
 			Parser recognizer,
