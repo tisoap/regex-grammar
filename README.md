@@ -48,8 +48,9 @@ Padrão `DD/MM/AAAA` para as datas e padrão `X.Y.Z` para o versionamento, onde:
 - **Y**: Alterações na gramática
 - **Z**: Alterações no caso de teste
 
-1.14.6 (23/04/2015)
+1.15.4 (23/04/2015)
 
+- Corrigido caso onde `[]--]` era identificado como um lista valida
 - Abstraída a variável de opção de visualização da classe Regex para a Main
 - Removida criação da parse tree do construtor
 - Criado método validar() que cria a parse tree
