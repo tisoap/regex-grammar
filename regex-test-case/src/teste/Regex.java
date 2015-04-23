@@ -9,8 +9,6 @@ import java.io.IOException;
 import org.antlr.v4.runtime.*;
 import teste.erro.ErrorHandlerPortugues;
 
-//TODO Criar metodo que retorna um Transfer Object
-
 /**
  * Realiza a validacao e traducao para linguagem natural de
  * uma Expressao regular.

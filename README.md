@@ -48,6 +48,12 @@ Padrão `DD/MM/AAAA` para as datas e padrão `X.Y.Z` para o versionamento, onde:
 - **Y**: Alterações na gramática
 - **Z**: Alterações no caso de teste
 
+1.16.2  (23/04/2015)
+
+- Caracteres escapados agora fazem parte da regra de coleção de caracteres
+- Corrigida tradução de caracteres escapados
+- Corrigida tradução de múltiplas opções
+
 1.15.4 (23/04/2015)
 
 - Corrigido caso onde `[]--]` era identificado como um lista valida

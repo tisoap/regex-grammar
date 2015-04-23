@@ -58,7 +58,6 @@ expression : group                   //Um grupo
            | list                    //Uma lista de possiveis caracteres
            | charclass               //Uma classe de caracteres
            | anychar                 //Qualquer caractere
-           | escaped                 //Caracteres escapados
            | characters              //Caracteres em sequencia
            
            //Regra especial para ignorar quebras de linha e tabulacoes
@@ -79,7 +78,6 @@ subExpression : group                         //Um grupo de captura
               | list                          //Uma lista de possiveis caracteres
               | charclass                     //Uma classe de caracteres
               | anychar                       //Qualquer caractere
-              | escaped                       //Caracteres escapados
               | characters                    //Caracteres em sequencia
               ;
 
@@ -324,8 +322,8 @@ special : DOT
         | ESCAPE
         ;
 
-//Uma colecao de caracteres sao um ou mais caracteres
-characters : character+ ;
+//Uma colecao de caracteres sao um ou mais caracteres comuns ou escapados
+characters : (character|escaped)+ ;
 
 /**
  * Qualquer caractere que nao seja de controle.

@@ -4,14 +4,14 @@ import gerado.RegularExpressionEREBaseVisitor;
 import gerado.RegularExpressionEREParser.*;
 
 //TODO Mudar o retorno dos visitors para String
-//TODO Melhorar traducao de multiplas opcoes
-//TODO Melhorar traducao de caracteres escapados
 public class Tradutor extends RegularExpressionEREBaseVisitor<Void> {
 	
 	private String identacao = "";
 	private int nivelIdentacaoAtual = 0;
+	private int contadorGrupos = 0;
+	private int contadorOpcoes;
 	
-	/**  ------- Metodos auxiliares  ------- */
+	//  ------- Metodos auxiliares  ------- 
 	
 	/** 
 	 * Cria uma identacao de espacos de acordo com o nivel desejado.
@@ -47,22 +47,40 @@ public class Tradutor extends RegularExpressionEREBaseVisitor<Void> {
 		System.out.println(identacao + texto);
 	}
 	
+	/**
+	 * Remove todas as ocorrencias de um caractere epecifico
+	 * dentro de um texto.
+	 * 
+	 * @param texto O texto que deve ser alterado
+	 * @param caractere O caractere que deve ser removido
+	 * @return Um novo texto que nao contem o caractere escolhido
+	 */
+    public String removeCaractere(String texto, char caractere) {
+    	
+        StringBuffer buffer = new StringBuffer(texto.length());
+        
+        buffer.setLength(texto.length());
+        
+        int posicaoAtual = 0;
+        
+        for (int i=0; i<texto.length(); i++){
+        	
+            char caractereAtual = texto.charAt(i);
+            
+            if(caractereAtual != caractere) buffer.setCharAt(posicaoAtual++, caractereAtual);
+            
+        }
+        
+        return buffer.toString();
+    }
 	
 	
-	/**  ------- Visitors  ------- */
+	
+	//  ------- Visitors  -------
 	
 	/** Quando visita uma expressao, visita todos os filhos dela. */
 	@Override
 	public Void visitExpression(ExpressionContext ctx) {
-		
-		visitChildren(ctx);
-		
-		return null;
-	}
-	
-	/** Quando visita uma subexpressao, visita todos os filhos dela. */
-	@Override
-	public Void visitSubExpression(SubExpressionContext ctx) {
 		
 		visitChildren(ctx);
 		
@@ -76,7 +94,46 @@ public class Tradutor extends RegularExpressionEREBaseVisitor<Void> {
 		
 		nivelIdentacaoAtual++;
 		
-		menosIdentacao("Uma das alternativas: ");
+		/** Salva o contador de opcoes atual e zera ele.
+		 *  Necessario pois pode existir multiplas opcoes
+		 *  dentro de um grupo que faz parte de multiplas
+		 *  opcoes.
+		 */
+		int temp = contadorOpcoes;
+		contadorOpcoes = 0;
+		
+		menosIdentacao("Uma das opcoes: ");
+		
+		visitChildren(ctx);
+		
+		nivelIdentacaoAtual--;
+		
+		//Retorna o contador ao seu estado original
+		contadorOpcoes = temp;
+		
+		return null;
+	}
+	
+	/** Quando visita uma subexpressao, aumenta o nivel de identacao
+	 * aumenta o contador de opcoes e imprime 'Opcao n:'.*/
+	@Override
+	public Void visitSubExpression(SubExpressionContext ctx) {
+		
+		nivelIdentacaoAtual++;
+		
+		/** Testa se este no da arvore e do mesmo tipo do pai
+		 *  Necessario pois uma subExpression pode ser varias
+		 *  subExpressions, e nao queremos aumentar o contador
+		 *  nessa situacao
+		 */
+		int pai = ctx.getParent().getRuleIndex();
+		int filho = ctx.getRuleIndex();
+		
+		//Se o pai nao for uma SubExpression, aumenta o contador
+		if (pai != filho){
+			contadorOpcoes++;
+			menosIdentacao("Opcao " + contadorOpcoes + ":");
+		}
 		
 		visitChildren(ctx);
 		
@@ -86,14 +143,17 @@ public class Tradutor extends RegularExpressionEREBaseVisitor<Void> {
 	}
 	
 	
-	/** Quando visita um grupo, aumenta o nivel de identacao
+	/** Quando visita um grupo, aumenta o nivel de identacao,
+	 *  aumenta o contador de grupos, imprime 'Grupo n:'
 	 *  e visita todos os filhos. */
 	@Override
 	public Void visitGroup(GroupContext ctx) {
 		
 		nivelIdentacaoAtual++;
 		
-		menosIdentacao("Grupo:");
+		contadorGrupos ++;
+		
+		menosIdentacao("Grupo " + contadorGrupos + ":");
 		
 		visitChildren(ctx);
 		
@@ -282,12 +342,12 @@ public class Tradutor extends RegularExpressionEREBaseVisitor<Void> {
 	
 	/**
 	 * Quando visita um caractere de lista que perdeu seu significado,
-	 * imprime 'Literalmente: ' + o caractere.
+	 * imprime o caractere.
 	 */
 	@Override
 	public Void visitListNoSpecial(ListNoSpecialContext ctx) {
 		
-		identacao("Literalmente: " + ctx.getText());
+		identacao(ctx.getText());
 		
 		return null;
 	}
@@ -319,34 +379,12 @@ public class Tradutor extends RegularExpressionEREBaseVisitor<Void> {
 	
 	/**
 	 * Quando visita o ultimo caractere de uma lista que perdeu
-	 * seu significado especial, imprime 'Literalmente: ' + o caractere.
+	 * seu significado especial, imprime o caractere.
 	 */
 	@Override
 	public Void visitListLastElement(ListLastElementContext ctx) {
 		
-		identacao("Literalmente: " + ctx.getText());
-		
-		return null;
-	}
-	
-	/** Quando visita um caractere escapado, imprime
-	 *  'Literalmente: ' + o caractere. */
-	@Override
-	public Void visitEscapedSpecial(EscapedSpecialContext ctx) {
-		//O primeiro filho (0) e a barra invertida,
-		//O segundo  filho (1) e o caractere
-		identacao("Literalmente: " + ctx.getChild(1).getText());
-		
-		return null;
-	}
-	
-	/** Quando visita um caractere escapado, imprime
-	 * 'Caractere: ' + o caractere. */
-	@Override
-	public Void visitEscapedChar(EscapedCharContext ctx) {
-		//O primeiro filho (0) e a barra invertida,
-		//O segundo  filho (1) e o caractere
-		identacao("Caractere: " + ctx.getChild(1).getText());
+		identacao(ctx.getText());
 		
 		return null;
 	}
@@ -540,7 +578,10 @@ public class Tradutor extends RegularExpressionEREBaseVisitor<Void> {
 	@Override
 	public Void visitCharacters(CharactersContext ctx) {
 		
-		identacao("Caracteres: " + ctx.getText());
+		String caracteres = ctx.getText();
+		String semEscape = removeCaractere(caracteres, '\\');
+		
+		identacao("Caracteres: " + semEscape);
 		
 		return null;
 	}
