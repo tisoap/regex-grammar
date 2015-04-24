@@ -11,7 +11,8 @@ import teste.erro.ErrorHandlerPortugues;
 
 /**
  * Realiza a validacao e traducao para linguagem natural de
- * uma Expressao regular.
+ * uma Expressao regular.<br>
+ * <br>
  * 
  * @author Tiso
  *
@@ -42,6 +43,7 @@ public class Regex {
 	/** Instancia da classe responsavel pela traducao. */
 	private Tradutor tradutor;
 	
+	// ----- GETTERS ----- 
 	
 	// ----- GETTERS ----- 
 	
@@ -76,6 +78,9 @@ public class Regex {
 	}
 	
 	
+	
+	// ----- SETTERS ----- 
+	
 	// ----- SETTERS ----- 
 	
 	public void setParser(RegularExpressionEREParser parser) {
@@ -109,6 +114,8 @@ public class Regex {
 	
 	// ----- CONSTRUTOR ----- 
 	
+	// ----- CONSTRUTOR ----- 
+	
 	/**
 	 * Construtor que inicializa as variaveis da classe.
 	 * 
@@ -130,9 +137,13 @@ public class Regex {
 			
 			System.err.println("Erro de disco ao tentar carregar os arquivos '.tokens'");
 			e.printStackTrace();
+			return;
 		}
 	}
 	
+	
+	
+	// ----- METODOS ----- 
 	
 	// ----- METODOS ----- 
 	
@@ -140,7 +151,7 @@ public class Regex {
 	 * Inicializa o parser e o lexer.
 	 * 
 	 * @throws IOException 
-	 *  Este metodo utiliza arquivos texto '.tokens'
+	 *  Sao utilizados arquivos texto '.tokens'
 	 *  com informacoes sobre os tokens aceitos pela gramatica.
 	 */
 	private void inicializar()
@@ -152,7 +163,7 @@ public class Regex {
 		// Cria um lexer que recebe o stream de chars
 		lexer  = new RegularExpressionERELexer(input);
 		
-		// Cria um stream de tokens retirados do lexer
+		// Cria um stream de tokens a partir do lexer
 		tokens = new CommonTokenStream(lexer);
 		
 		// Cria um parser que recebe o stream de tokens
@@ -162,39 +173,60 @@ public class Regex {
 		parser.setErrorHandler(new ErrorHandlerPortugues());
 	}
 	
-	/**
-	 * Avalia a expressao regular recebida.
-	 * Se estiver correta, inicializa a parse tree.
-	 * Se estiver errada, levanta uma excecao.
-	 * 
-	 * @throws Exception
-	 */
-	public void validar()
-			throws Exception {
-		
-		//Tenta criar a parse tree, comencando pela regra inicial 'expression'
-		parseTreeContext = parser.expression();
-	}
 	
 	/**
-	 * Realiza a traducao da expressao, fazendo uso da parse tree
-	 * gerada pelo metodo validar().
+	 * Avalia a expressao regular recebida pelo construtor da classe
+	 * e inicializa a parse tree.
+	 * 
+	 * @return Verdadeiro se estiver correta, Falso caso contrario.
 	 */
-	public void traduzir(){
+	public boolean validar() {
+		
+		try {
+			
+			//Tenta criar a parse tree, comencando pela regra inicial 'expression'
+			parseTreeContext = parser.expression();
+		
+		} catch (Exception e) {
+			
+			//Ocorreram erros
+			parseTreeContext = null;
+			return false;
+		}
+		
+		//Nao ocorreram erros
+		return true;
+
+	}
+	
+	
+	/**
+	 * Realiza a traducao da expressao.
+	 * 
+	 * @return Uma String com o texto traduzido.
+	 */
+	public String traduzir(){
 		
 		//Cria uma nova instancia da classe responsavel pela traducao
 		tradutor = new Tradutor();
 		
-		System.out.println("");
+		//Se nao foi executado o metodo validar(), a parse tree estara vazia.
+		if (parseTreeContext == null) {
+			
+			//Se a validacao retornar falso, retorna uma mensagem de erro
+			if (!validar()){
+				return "A expressao regular nao e valida."; 
+			}
+		}
 		
-		if (parseTreeContext.equals(null))
-			System.err.println("Necessario ter executado o metodo validar() antes de traduzir.");
-		else
-			//Inicia a traducao da expressao, utilizando a parse tree
-			tradutor.visit(parseTreeContext);
+		//Inicia a traducao da expressao, utilizando a parse tree gerada
+		//no metodo validar()
+		tradutor.visit(parseTreeContext);
 		
-		System.out.println("");
+		//Retorna a traducao gerada
+		return tradutor.getTraducao();
 	}
+	
 	
 	/**
 	 * Imprime a parse tree no console em forma
@@ -204,13 +236,15 @@ public class Regex {
 		
 		System.out.println("");
 		
-		if (parseTreeContext.equals(null))
-			System.err.println("Necessario ter executado o metodo validar() antes de imprimir a lista.");
-		else
-			System.out.println(parseTreeContext.toStringTree());
+		if (parseTreeContext == null)
+			if (!validar())
+				return;
+		
+		System.out.println(parseTreeContext.toStringTree());
 		
 		System.out.println("");
 	}
+	
 	
 	/** 
 	 * Exibe uma janela com uma representacao grafica da parse tree.
@@ -218,12 +252,14 @@ public class Regex {
 	 */
 	public void parserTreeGui(){
 		
-		if (parseTreeContext.equals(null))
-			System.err.println("Necessario ter executado o metodo validar() antes de exibir a parse tree.");
-		else
-			//http://stackoverflow.com/questions/29353114/running-antrl-testrig-gui-from-within-a-java-application
-			//http:/www.antlr.org/api/JavaTool/org/antlr/v4/runtime/RuleContext.html#inspect%28org.antlr.v4.runtime.Parser%29
-			parseTreeContext.inspect(parser);
+		if (parseTreeContext == null)
+			if (!validar())
+				return;
+		
+		//http://stackoverflow.com/questions/29353114/running-antrl-testrig-gui-from-within-a-java-application
+		//http:/www.antlr.org/api/JavaTool/org/antlr/v4/runtime/RuleContext.html#inspect%28org.antlr.v4.runtime.Parser%29
+		parseTreeContext.inspect(parser);
 	}
+	
 	
 }

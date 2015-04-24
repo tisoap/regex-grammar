@@ -37,8 +37,8 @@ Adicionar um argumento de visualização faz com que a expressão não seja trad
 
 ##TODO
 
+- Melhorar mensagens de erro, se possível
 - Testes com expressões complexas
-- Generalizar a entrada e retorno de dados do tradutor
 
 ## Changelog
 
@@ -48,6 +48,13 @@ Padrão `DD/MM/AAAA` para as datas e padrão `X.Y.Z` para o versionamento, onde:
 - **Y**: Alterações na gramática
 - **Z**: Alterações no caso de teste
 
+1.16.6 (24/04/2015)
+
+- Tradutor agora monta uma String em vez de imprimir no console
+- Método validar() agora retorna um valor boolean
+- Método traduzir()  executa o método validar() se necessário
+- Método traduzir() agora retorna uma String
+
 1.16.2  (23/04/2015)
 
 - Caracteres escapados agora fazem parte da regra de coleção de caracteres
@@ -56,7 +63,7 @@ Padrão `DD/MM/AAAA` para as datas e padrão `X.Y.Z` para o versionamento, onde:
 
 1.15.4 (23/04/2015)
 
-- Corrigido caso onde `[]--]` era identificado como um lista valida
+- Corrigido caso onde `[]--]` era identificado como um lista válida
 - Abstraída a variável de opção de visualização da classe Regex para a Main
 - Removida criação da parse tree do construtor
 - Criado método validar() que cria a parse tree

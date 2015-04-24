@@ -15,6 +15,9 @@ import org.antlr.v4.runtime.misc.IntervalSet;
  */
 public class ErrorHandlerPortugues extends DefaultErrorStrategy {
 	
+	
+	//Parte que obriga a levantar excecoes
+	
 	@Override
 	public void recover(Parser recognizer, RecognitionException e) {
 		throw new RuntimeException(e);
@@ -32,6 +35,8 @@ public class ErrorHandlerPortugues extends DefaultErrorStrategy {
 		//nada
 	}
 	
+	
+	//Parte que muda as mensagens de erro padrao
 	
 	@Override
 	protected void reportNoViableAlternative(

@@ -36,7 +36,11 @@ public class Main {
 			
 			//Se o argumento nao for -gui ou -list, exibe uma mensagem de erro e sai
 			if (!opcao.equals("-gui") && !opcao.equals("-list")){
-				System.out.println("Argumento de visualizacao invalido, utilize -gui ou -list.");
+				
+				System.out.println(
+						"Argumento de visualizacao invalido,"
+						+ "utilize -gui ou -list.");
+				
 				return;
 			}
 		}
@@ -53,34 +57,27 @@ public class Main {
 		//Envia o texto recebido para a classe Regex
 		Regex regex = new Regex(input);
 		
-		
-		try {
-			
-			//Tenta validar o texto
-			regex.validar();
-			
-		} catch (Exception e) {
-			
-			//Se o texto nao for uma expressao valida,
-			//exibe uma mensagem de erro e sai
-			
-			System.err.println("A expressao regular nao e valida.");
-			return;
-		}
-		
 		//Se foi passado o parametro '-gui'
 		if (opcao.equals("-gui"))
+			
 			//Exibe a parse tree em uma janela
 			regex.parserTreeGui();
 		
 		//Se foi passado o parametro '-list'
 		else if (opcao.equals("-list"))
+			
 			//Imprime a parse tree no console
 			regex.parseTreeList();
 		
 		//Se nenhum parametro foi passado
-		else
+		else {
+			
+			System.out.println("");
+			
 			//Traduz a expressao para linguagem natural
-			regex.traduzir();
+			System.out.println(regex.traduzir());
+			
+			System.out.println("");
+		}
 	}
 }
