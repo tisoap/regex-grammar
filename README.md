@@ -19,7 +19,7 @@ test-case.jar [<visualização>]
 - **-gui**: Exibe a parse tree de modo gráfico
 - **-list**: Exibe a parse tree em forma de listas
 
-Para traduzir uma expressão, execute o JAR com um argumento de modo e digite sua expressão seguida de uma quebra de linha. Exemplo:
+Para traduzir uma expressão, execute o JAR e digite sua expressão seguida de uma quebra de linha. Exemplo:
 
 ```
 $  java -jar test-case.jar
