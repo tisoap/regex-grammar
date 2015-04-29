@@ -7,6 +7,7 @@ import gerado.RegularExpressionEREParser.ExpressionContext;
 import java.io.IOException;
 
 import org.antlr.v4.runtime.*;
+
 import teste.erro.ErrorHandlerPortugues;
 
 /**
@@ -43,7 +44,6 @@ public class Regex {
 	/** Instancia da classe responsavel pela traducao. */
 	private Tradutor tradutor;
 	
-	// ----- GETTERS ----- 
 	
 	// ----- GETTERS ----- 
 	
@@ -81,8 +81,6 @@ public class Regex {
 	
 	// ----- SETTERS ----- 
 	
-	// ----- SETTERS ----- 
-	
 	public void setParser(RegularExpressionEREParser parser) {
 		this.parser = parser;
 	}
@@ -111,8 +109,6 @@ public class Regex {
 		this.tradutor = visitor;
 	}
 	
-	
-	// ----- CONSTRUTOR ----- 
 	
 	// ----- CONSTRUTOR ----- 
 	
@@ -145,8 +141,6 @@ public class Regex {
 	
 	// ----- METODOS ----- 
 	
-	// ----- METODOS ----- 
-	
 	/** 
 	 * Inicializa o parser e o lexer.
 	 * 
@@ -173,7 +167,6 @@ public class Regex {
 		parser.setErrorHandler(new ErrorHandlerPortugues());
 	}
 	
-	
 	/**
 	 * Avalia a expressao regular recebida pelo construtor da classe
 	 * e inicializa a parse tree.
@@ -199,7 +192,6 @@ public class Regex {
 
 	}
 	
-	
 	/**
 	 * Realiza a traducao da expressao.
 	 * 
@@ -219,14 +211,11 @@ public class Regex {
 			}
 		}
 		
-		//Inicia a traducao da expressao, utilizando a parse tree gerada
-		//no metodo validar()
-		tradutor.visit(parseTreeContext);
+		//Cria a traducao da expressao, utilizando a parse tree gerada
+		Traducao traducao = tradutor.traduzir(parseTreeContext);
 		
-		//Retorna a traducao gerada
-		return tradutor.getTraducao();
+		return traducao.getText();
 	}
-	
 	
 	/**
 	 * Imprime a parse tree no console em forma
@@ -245,7 +234,6 @@ public class Regex {
 		System.out.println("");
 	}
 	
-	
 	/** 
 	 * Exibe uma janela com uma representacao grafica da parse tree.
 	 * Para testes apenas.
@@ -260,6 +248,5 @@ public class Regex {
 		//http:/www.antlr.org/api/JavaTool/org/antlr/v4/runtime/RuleContext.html#inspect%28org.antlr.v4.runtime.Parser%29
 		parseTreeContext.inspect(parser);
 	}
-	
 	
 }

@@ -1,5 +1,7 @@
 package teste;
 
+import teste.enumType.Regra;
+import teste.to.TraducaoTO;
 import gerado.RegularExpressionEREBaseVisitor;
 import gerado.RegularExpressionEREParser.*;
 
@@ -23,11 +25,19 @@ public class Tradutor extends RegularExpressionEREBaseVisitor<Void> {
 	
 	//  ------- VARIAVEIS  ------- 
 	
-	/** Contem a concatenacao de todas as traducoes individuais dos
-	 *  metodos visitor.*/
-	public String traducao = "";
+	/** Classe que vai armazenar as traducoes individuais dos metodos visit. */
+	private Traducao traducao = new Traducao();
 	
-	/** O nivel de identacao atual na analize da arvore. */
+	/** Texto atual antes de ser traduzido. */
+	private String textoOriginal;
+	
+	/** Traducao atual recebida por um metodo visit. */
+	private String textoTraduzido;
+	
+	/** A regra que disparou a traducao atual. */
+	private Regra tipoRegra;
+	
+	/** O nivel atual na analize da arvore. */
 	private int nivelAtual = 0;
 	
 	/** A quantidade de grupos de captura encontrados. */
@@ -37,69 +47,99 @@ public class Tradutor extends RegularExpressionEREBaseVisitor<Void> {
 	private int contadorOpcoes = 0;
 	
 	
-	//  ------- GETTERS  ------- 
+	//  ------- METODOS ------- 
 	
 	/**
-	 * Retorna uma String contendo a traducao
-	 * da expressao regular. Sera vazio se nao
-	 * foi executado o metodo visit().
+	 * Faz a traducao dos elementos de uma arvore de
+	 * analise (parse tree) e retorna um objeto Traducao,
+	 * que contem o resultado da traducao.
+	 * 
+	 * @param ctx Uma parse Tree
+	 * @return Um objeto Traducao
 	 */
-	public String getTraducao() {
+	public Traducao traduzir (ExpressionContext ctx){
+		
+		//Visita a raiz da arvore, e todas as suas filhas
+		visit(ctx);
+		
 		return traducao;
 	}
 	
-	
-	//  ------- METODOS AUXILIARES  ------- 
-	
-	/** 
-	 * Cria uma identacao de espacos de acordo com o nivel desejado.
-	 * 
-	 * @param x O nivel de identacao desejado.
-	 * @return Uma String com 3 espacos vezes o numero da identacao.*/
-	public String calcularIdentacao (int x) {
+	/**
+	 * Armazena o texto original, traduzido, tipo de regra
+	 * e nivel de profundidade atuais (armazenados nas variaveis
+	 * globais da classe) em um objeto de transferencia.<br>
+	 * <br>
+	 * Esse objeto de transferencia e entao armazenado dentro
+	 * de uma instancia da classe Traducao.
+	 */
+	private void armazena (){
 		
-		String ident = "";
+		//Um objeto de transferencia que contem todas as informacoes
+		//sobre a traducao feita
+		TraducaoTO to = new TraducaoTO();
 		
-		for (int i = 0; i < x; i++){
-			ident += "   ";
-		}
+		to.setTipoRegra(tipoRegra);
+		to.setNivel(nivelAtual);
+		to.setOriginal(textoOriginal);
+		to.setTraducao(textoTraduzido);
 		
-		return ident;
-	}
-	
-	/** Concatena um texto na variavel 'traducao',
-	 *  adcionando uma identacao no comeco e uma quebra
-	 *  de linha no final. */
-	public void armazena (String texto){
-		
-		String identacao = calcularIdentacao(nivelAtual);
-		
-		traducao += identacao + texto + "\n";
+		//Adciona o objeto na instancia da classe Traducao
+		traducao.addTraducao(to);
 	}
 	
 	/**
-	 * Remove todas as ocorrencias de um caractere epecifico
-	 * dentro de um texto.
+	 * Remove todas as ocorrencias do caractere de escape \ dentro
+	 * de um texto, salvo ocorrencias de \\ que viram \ .
 	 * 
 	 * @param texto O texto que deve ser alterado
-	 * @param caractere O caractere que deve ser removido
-	 * @return Um novo texto que nao contem o caractere escolhido
+	 * @return Um novo texto que nao contem \
 	 */
-    public String removeCaractere(String texto, char caractere){
+    private String removeEscape(String texto){
     	
+        int posicaoAtual = 0;		//Posicao atual no buffer
+        char caractereAtual;		//Caractere atual do texto de entrada
+        char proximoCaractere;		//Caractere seguinte ao atual do texto de entrada
+        char escape = '\\';			//Apenas uma barra invertida
+        
+        //Buffer de String, para fazer a construcao da nova String
         StringBuffer buffer = new StringBuffer(texto.length());
         
+        //Tamanho maximo do buffer
         buffer.setLength(texto.length());
         
-        int posicaoAtual = 0;
-        
+        //Para todos os caracteres no texto de entrada
         for (int i=0; i<texto.length(); i++){
         	
-            char caractereAtual = texto.charAt(i);
+        	//Recupera o caractere atual
+            caractereAtual = texto.charAt(i);
             
-            if(caractereAtual != caractere)
+            //Verefica se ele nao e uma barra invertida
+            if(caractereAtual != escape){
+            	
+            	//Adiciona o caractere no buffer
             	buffer.setCharAt(posicaoAtual++, caractereAtual);
+            }
             
+            //Se o caractere for uma barra invertida
+            else {
+            	
+            	//Recupera o proximo caractere
+            	proximoCaractere = texto.charAt(i+1);
+            	
+            	//Se o proximo caractere tambem for uma barra invertida
+            	if(proximoCaractere == escape){
+            		
+            		//Adiciona o proximo caractere (a barra invertida) no buffet
+            		buffer.setCharAt(posicaoAtual++, proximoCaractere);
+            		
+            		//Aumenta o contador uma posicao a mais, para
+            		//nao ler esta barra invertida denovo
+            		i++;
+            	}
+            	//Se o proximo caractere nao for uma barra invertida,
+            	//ignora a barra invertida atual
+            }
         }
         
         return buffer.toString();
@@ -123,7 +163,11 @@ public class Tradutor extends RegularExpressionEREBaseVisitor<Void> {
 	@Override
 	public Void visitMultiple(MultipleContext ctx) {
 		
-		armazena("Uma das opcoes: ");
+		tipoRegra		= Regra.MULTIPLE;
+		textoOriginal	= ctx.getText();
+		textoTraduzido	= "Uma das opcoes: ";
+		
+		armazena ();
 		
 		nivelAtual++;
 		
@@ -162,10 +206,15 @@ public class Tradutor extends RegularExpressionEREBaseVisitor<Void> {
 		//Se o pai nao for uma SubExpression, aumenta o contador
 		if (pai != filho){
 			contadorOpcoes++;
-			armazena("Opcao " + contadorOpcoes + ":");
+			
+			tipoRegra		= Regra.SUB_EXPRESSION;
+			textoOriginal	= ctx.getText();
+			textoTraduzido	= "Opcao " + contadorOpcoes + ":";
+			
+			armazena();
+			
+			nivelAtual++;
 		}
-		
-		nivelAtual++;
 		
 		visitChildren(ctx);
 		
@@ -182,12 +231,14 @@ public class Tradutor extends RegularExpressionEREBaseVisitor<Void> {
 		
 		contadorGrupos++;
 		
-		armazena("Grupo " + contadorGrupos + ":");
+		tipoRegra		= Regra.GROUP;
+		textoOriginal	= ctx.getText();
+		textoTraduzido	= "Grupo " + contadorGrupos + ":";
+		
+		armazena();
 		
 		nivelAtual++;
-		
 		visitChildren(ctx);
-		
 		nivelAtual--;
 		
 		return null;
@@ -206,7 +257,11 @@ public class Tradutor extends RegularExpressionEREBaseVisitor<Void> {
 	@Override
 	public Void visitStartAnchor(StartAnchorContext ctx) {
 		
-		armazena("No inicio do texto");
+		tipoRegra		= Regra.START_ANCHOR;
+		textoOriginal	= ctx.getText();
+		textoTraduzido	= "No inicio do texto";
+		
+		armazena();
 		
 		return null;
 	}
@@ -215,7 +270,11 @@ public class Tradutor extends RegularExpressionEREBaseVisitor<Void> {
 	@Override
 	public Void visitEndAnchor(EndAnchorContext ctx) {
 		
-		armazena("No final do texto");
+		tipoRegra		= Regra.END_ANCHOR;
+		textoOriginal	= ctx.getText();
+		textoTraduzido	= "No final do texto";
+		
+		armazena();
 		
 		return null;
 	}
@@ -253,7 +312,11 @@ public class Tradutor extends RegularExpressionEREBaseVisitor<Void> {
 	@Override
 	public Void visitOneOrMore(OneOrMoreContext ctx) {
 		
-		armazena("Um ou mais:");
+		tipoRegra		= Regra.ONE_OR_MORE;
+		textoOriginal	= ctx.getText();
+		textoTraduzido	= "Um ou mais:";
+		
+		armazena();
 		
 		return null;
 	}
@@ -262,7 +325,11 @@ public class Tradutor extends RegularExpressionEREBaseVisitor<Void> {
 	@Override
 	public Void visitZeroOrMore(ZeroOrMoreContext ctx) {
 		
-		armazena("Zero ou mais:");
+		tipoRegra		= Regra.ZERO_OR_MORE;
+		textoOriginal	= ctx.getText();
+		textoTraduzido	= "Zero ou mais:";
+		
+		armazena();
 		
 		return null;
 	}
@@ -271,7 +338,11 @@ public class Tradutor extends RegularExpressionEREBaseVisitor<Void> {
 	@Override
 	public Void visitConditional(ConditionalContext ctx) {
 		
-		armazena("Pode ou nao conter:");
+		tipoRegra		= Regra.CONDITIONAL;
+		textoOriginal	= ctx.getText();
+		textoTraduzido	= "Pode ou nao conter:";
+		
+		armazena();
 		
 		return null;
 	}
@@ -281,7 +352,11 @@ public class Tradutor extends RegularExpressionEREBaseVisitor<Void> {
 	@Override
 	public Void visitExact(ExactContext ctx) {
 		
-		armazena("Exatamente " + ctx.value().getText() + " ocorrencias de:");
+		tipoRegra		= Regra.EXACT;
+		textoOriginal	= ctx.getText();
+		textoTraduzido	= "Exatamente " + ctx.value().getText() + " ocorrencias de:";
+		
+		armazena();
 		
 		return null;
 	}
@@ -291,7 +366,11 @@ public class Tradutor extends RegularExpressionEREBaseVisitor<Void> {
 	@Override
 	public Void visitAtLeast(AtLeastContext ctx) {
 		
-		armazena("Pelo menos " + ctx.value().getText() + " ocorrencias de:");
+		tipoRegra		= Regra.AT_LEAST;
+		textoOriginal	= ctx.getText();
+		textoTraduzido	= "Pelo menos " + ctx.value().getText() + " ocorrencias de:";
+		
+		armazena();
 		
 		return null;
 	}
@@ -301,12 +380,16 @@ public class Tradutor extends RegularExpressionEREBaseVisitor<Void> {
 	@Override
 	public Void visitBetween(BetweenContext ctx) {
 		
-		armazena(
-				"Entre " + 
-				ctx.firstValue().getText() + 
-				" e " + 
-				ctx.lastValue().getText() + 
-				" ocorrencias de:");
+		tipoRegra		= Regra.BETWEEN;
+		textoOriginal	= ctx.getText();
+		
+		textoTraduzido	=	"Entre " + 
+							ctx.firstValue().getText() + 
+							" e " + 
+							ctx.lastValue().getText() + 
+							" ocorrencias de:";
+		
+		armazena();
 		
 		return null;
 	}
@@ -336,12 +419,14 @@ public class Tradutor extends RegularExpressionEREBaseVisitor<Void> {
 	@Override
 	public Void visitNegativeList(NegativeListContext ctx) {
 		
-		armazena("Qualquer caractere que nao seja:");
+		tipoRegra		= Regra.NEGATIVE_LIST;
+		textoOriginal	= ctx.getText();
+		textoTraduzido	= "Qualquer caractere que nao seja:";
+		
+		armazena();
 		
 		nivelAtual++;
-		
 		visitChildren(ctx);
-		
 		nivelAtual--;
 		
 		return null;
@@ -353,12 +438,14 @@ public class Tradutor extends RegularExpressionEREBaseVisitor<Void> {
 	@Override
 	public Void visitPositiveList(PositiveListContext ctx) {
 		
-		armazena("Qualquer um dos caracteres:");
+		tipoRegra		= Regra.POSITIVE_LIST;
+		textoOriginal	= ctx.getText();
+		textoTraduzido	= "Qualquer um dos caracteres:";
+		
+		armazena();
 		
 		nivelAtual++;
-		
 		visitChildren(ctx);
-		
 		nivelAtual--;
 		
 		return null;
@@ -383,7 +470,11 @@ public class Tradutor extends RegularExpressionEREBaseVisitor<Void> {
 	@Override
 	public Void visitListNoSpecial(ListNoSpecialContext ctx) {
 		
-		armazena(ctx.getText());
+		tipoRegra		= Regra.LIST_NO_SPECIAL;
+		textoOriginal	= ctx.getText();
+		textoTraduzido	= ctx.getText();
+		
+		armazena();
 		
 		return null;
 	}
@@ -408,7 +499,11 @@ public class Tradutor extends RegularExpressionEREBaseVisitor<Void> {
 		String a = ctx.getChild(0).getText();
 		String b = ctx.getChild(2).getText();
 		
-		armazena("Todos os caracteres entre '" + a + "' e '" + b + "'");
+		tipoRegra		= Regra.LIST_FIRST_RANGE;
+		textoOriginal	= ctx.getText();
+		textoTraduzido	= "Todos os caracteres entre '" + a + "' e '" + b + "'";
+		
+		armazena();
 		
 		return null;
 	}
@@ -431,7 +526,11 @@ public class Tradutor extends RegularExpressionEREBaseVisitor<Void> {
 	@Override
 	public Void visitListLastElement(ListLastElementContext ctx) {
 		
-		armazena(ctx.getText());
+		tipoRegra		= Regra.LIST_LAST_ELEMENT;
+		textoOriginal	= ctx.getText();
+		textoTraduzido	= ctx.getText();
+		
+		armazena();
 		
 		return null;
 	}
@@ -455,7 +554,11 @@ public class Tradutor extends RegularExpressionEREBaseVisitor<Void> {
 		String a = ctx.getChild(0).getText();
 		String b = ctx.getChild(2).getText();
 		
-		armazena("Todos os caracteres entre '" + a + "' e '" + b + "'");
+		tipoRegra		= Regra.RANGE;
+		textoOriginal	= ctx.getText();
+		textoTraduzido	= "Todos os caracteres entre '" + a + "' e '" + b + "'";
+		
+		armazena();
 		
 		return null;
 	}
@@ -466,7 +569,11 @@ public class Tradutor extends RegularExpressionEREBaseVisitor<Void> {
 	@Override
 	public Void visitListCharacter(ListCharacterContext ctx) {
 		
-		armazena(ctx.getText());
+		tipoRegra		= Regra.LIST_CHARACTER;
+		textoOriginal	= ctx.getText();
+		textoTraduzido	= ctx.getText();
+		
+		armazena();
 		
 		return null;
 	}
@@ -496,7 +603,11 @@ public class Tradutor extends RegularExpressionEREBaseVisitor<Void> {
 	@Override
 	public Void visitAlnum(AlnumContext ctx) {
 		
-		armazena("Caracteres alfanumericos");
+		tipoRegra		= Regra.ALNUM;
+		textoOriginal	= ctx.getText();
+		textoTraduzido	= "Caracteres alfanumericos";
+		
+		armazena();
 		
 		return null;
 	}
@@ -506,7 +617,11 @@ public class Tradutor extends RegularExpressionEREBaseVisitor<Void> {
 	@Override
 	public Void visitAlpha(AlphaContext ctx) {
 		
-		armazena("Caracteres alfabeticos");
+		tipoRegra		= Regra.ALPHA;
+		textoOriginal	= ctx.getText();
+		textoTraduzido	= "Caracteres alfabeticos";
+		
+		armazena();
 		
 		return null;
 	}
@@ -516,7 +631,11 @@ public class Tradutor extends RegularExpressionEREBaseVisitor<Void> {
 	@Override
 	public Void visitBlank(BlankContext ctx) {
 		
-		armazena("Espaco e tabulacao");
+		tipoRegra		= Regra.BLANK;
+		textoOriginal	= ctx.getText();
+		textoTraduzido	= "Espaco e tabulacao";
+		
+		armazena();
 		
 		return null;
 	}
@@ -526,7 +645,11 @@ public class Tradutor extends RegularExpressionEREBaseVisitor<Void> {
 	@Override
 	public Void visitCntrl(CntrlContext ctx) {
 		
-		armazena("Caracteres de controle");
+		tipoRegra		= Regra.CNTRL;
+		textoOriginal	= ctx.getText();
+		textoTraduzido	= "Caracteres de controle";
+		
+		armazena();
 		
 		return null;
 	}
@@ -536,7 +659,11 @@ public class Tradutor extends RegularExpressionEREBaseVisitor<Void> {
 	@Override
 	public Void visitDigitclass(DigitclassContext ctx) {
 		
-		armazena("Digitos");
+		tipoRegra		= Regra.DIGIT_CLASS;
+		textoOriginal	= ctx.getText();
+		textoTraduzido	= "Digitos";
+		
+		armazena();
 		
 		return null;
 	}
@@ -546,7 +673,11 @@ public class Tradutor extends RegularExpressionEREBaseVisitor<Void> {
 	@Override
 	public Void visitGraph(GraphContext ctx) {
 		
-		armazena("Caracteres visiveis");
+		tipoRegra		= Regra.GRAPH;
+		textoOriginal	= ctx.getText();
+		textoTraduzido	= "Caracteres visiveis";
+		
+		armazena();
 		
 		return null;
 	}
@@ -556,7 +687,11 @@ public class Tradutor extends RegularExpressionEREBaseVisitor<Void> {
 	@Override
 	public Void visitLower(LowerContext ctx) {
 		
-		armazena("Letras minusculas");
+		tipoRegra		= Regra.LOWER;
+		textoOriginal	= ctx.getText();
+		textoTraduzido	= "Letras minusculas";
+		
+		armazena();
 		
 		return null;
 	}
@@ -566,7 +701,11 @@ public class Tradutor extends RegularExpressionEREBaseVisitor<Void> {
 	@Override
 	public Void visitPrint(PrintContext ctx) {
 		
-		armazena("Caracteres visiveis e espaco");
+		tipoRegra		= Regra.PRINT;
+		textoOriginal	= ctx.getText();
+		textoTraduzido	= "Caracteres visiveis e espaco";
+		
+		armazena();
 		
 		return null;
 	}
@@ -576,7 +715,11 @@ public class Tradutor extends RegularExpressionEREBaseVisitor<Void> {
 	@Override
 	public Void visitPunct(PunctContext ctx) {
 		
-		armazena("Caracteres de pontucao");
+		tipoRegra		= Regra.PUNCT;
+		textoOriginal	= ctx.getText();
+		textoTraduzido	= "Caracteres de pontucao";
+		
+		armazena();
 		
 		return null;
 	}
@@ -586,7 +729,11 @@ public class Tradutor extends RegularExpressionEREBaseVisitor<Void> {
 	@Override
 	public Void visitSpaceclass(SpaceclassContext ctx) {
 		
-		armazena("Caracteres brancos");
+		tipoRegra		= Regra.PUNCT;
+		textoOriginal	= ctx.getText();
+		textoTraduzido	= "Caracteres brancos";
+		
+		armazena();
 		
 		return null;
 	}
@@ -596,7 +743,11 @@ public class Tradutor extends RegularExpressionEREBaseVisitor<Void> {
 	@Override
 	public Void visitUpper(UpperContext ctx) {
 		
-		armazena("Letras maiusculas");
+		tipoRegra		= Regra.UPPER;
+		textoOriginal	= ctx.getText();
+		textoTraduzido	= "Letras maiusculas";
+		
+		armazena();
 		
 		return null;
 	}
@@ -606,7 +757,11 @@ public class Tradutor extends RegularExpressionEREBaseVisitor<Void> {
 	@Override
 	public Void visitXdigit(XdigitContext ctx) {
 		
-		armazena("Numeros hexadecimais");
+		tipoRegra		= Regra.X_DIGIT;
+		textoOriginal	= ctx.getText();
+		textoTraduzido	= "Numeros hexadecimais";
+		
+		armazena();
 		
 		return null;
 	}
@@ -616,7 +771,11 @@ public class Tradutor extends RegularExpressionEREBaseVisitor<Void> {
 	@Override
 	public Void visitAnychar(AnycharContext ctx) {
 		
-		armazena("Qualquer caractere");
+		tipoRegra		= Regra.ANY_CHAR;
+		textoOriginal	= ctx.getText();
+		textoTraduzido	= "Qualquer caractere";
+		
+		armazena();
 		
 		return null;
 	}
@@ -630,9 +789,13 @@ public class Tradutor extends RegularExpressionEREBaseVisitor<Void> {
 		
 		//Remove todas as barra invertidas, caso essa colecao
 		//tenha caracteres escapados
-		String semEscape = removeCaractere(caracteres, '\\');
+		String semEscape = removeEscape(caracteres);
 		
-		armazena("Caracteres: " + semEscape);
+		tipoRegra		= Regra.CHARACTERS;
+		textoOriginal	= ctx.getText();
+		textoTraduzido	= "Caracteres: " + semEscape;
+		
+		armazena();
 		
 		return null;
 	}
@@ -641,7 +804,11 @@ public class Tradutor extends RegularExpressionEREBaseVisitor<Void> {
 	@Override
 	public Void visitCharacter(CharacterContext ctx) {
 		
-		armazena(ctx.getText());
+		tipoRegra		= Regra.CHARACTER;
+		textoOriginal	= ctx.getText();
+		textoTraduzido	= ctx.getText();
+		
+		armazena();
 		
 		return null;
 	}

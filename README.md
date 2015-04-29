@@ -48,6 +48,15 @@ Padrão `DD/MM/AAAA` para as datas e padrão `X.Y.Z` para o versionamento, onde:
 - **Y**: Alterações na gramática
 - **Z**: Alterações no caso de teste
 
+2.0 (29/04/2015)
+
+- Corrigida tradução da barra de escape
+- Criado Transfer Object para traduções individuais
+- Criada classe enum com os nomes de regras utilizados pelo tradutor
+- Criada classe Tradução que armazena os objetos de transferência
+- Tradutor agora popula e retorna uma instancia da classe Tradução
+- Montagem final do texto traduzido agora feito pela classe Tradução
+
 1.16.6 (24/04/2015)
 
 - Tradutor agora monta uma String em vez de imprimir no console
