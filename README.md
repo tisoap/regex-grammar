@@ -35,9 +35,6 @@ a(b|c)
 
 Adicionar um argumento de visualização faz com que a expressão não seja traduzida para linguagem natural.
 
-##TODO
-
-- Testes com expressões complexas
 ## Changelog
 
 Padrão `DD/MM/AAAA` para as datas e padrão `X.Y.Z` para o versionamento, onde:
