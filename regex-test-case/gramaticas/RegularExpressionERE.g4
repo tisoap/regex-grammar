@@ -54,13 +54,13 @@ expression : group                   //Um grupo
            | multiple                //Multiplas opcoes
            | anchor                  //Uma posicao
            | repetition              //Uma repeticao
-           | expression expression   //Varias exprecoes
-           | list                    //Uma lista de possiveis caracteres
+           | expression expression   //Varias exprecoes regulares
+           | list                    //Uma lista de caracteres
            | charclass               //Uma classe de caracteres
            | anychar                 //Qualquer caractere
            | characters              //Caracteres em sequencia
            
-           //Regra especial para ignorar quebras de linha e tabulacoes
+           //Regra especial para ignorar alguns caracteres
            | WS
            ;
 
@@ -96,14 +96,7 @@ endAnchor   : DOLAR ;      //$
  * Um elemento a ser quantificado e o simbolo repetidor.
  * O simbolo repetidor se associa pela esquerda do elemento quantificado.
  */
-repetition : <assoc=right> quantified quantifier
-             #correctRepetition
-           
-             //Erro
-           | quantifier quantifier+ 
-             {notifyErrorListeners("Quantificadores nao podem quantificar outros quantificadores.");}
-             #wrongRepetition
-           ;
+repetition : quantified quantifier ;
 
 //So e possivel quantificar itens individuais
 quantified : group
@@ -298,7 +291,7 @@ xdigit      : XDIGIT     ;
 
 
 //O elemento que representa qualquer caractere
-anychar : DOT ;
+anychar : DOT ; //.
 
 //Um caractere escapado e uma barra invertida seguida do caractere
 escaped : ESCAPE special    #escapedSpecial

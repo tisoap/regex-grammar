@@ -68,14 +68,7 @@ public class RegularExpressionEREBaseVisitor<T> extends AbstractParseTreeVisitor
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitCorrectRepetition(RegularExpressionEREParser.CorrectRepetitionContext ctx) { return visitChildren(ctx); }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation returns the result of calling
-	 * {@link #visitChildren} on {@code ctx}.</p>
-	 */
-	@Override public T visitWrongRepetition(RegularExpressionEREParser.WrongRepetitionContext ctx) { return visitChildren(ctx); }
+	@Override public T visitRepetition(RegularExpressionEREParser.RepetitionContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *

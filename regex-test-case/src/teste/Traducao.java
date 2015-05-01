@@ -14,9 +14,40 @@ import teste.to.TraducaoTO;
  */
 public class Traducao {
 	
+	// ----- VARIAVEIS -----
+	
 	/** Lista de objetos TraducaoTO. */
 	private List<TraducaoTO> traducoes = new ArrayList<TraducaoTO>();
 	
+	private boolean ocorreuErro = false;
+	
+	private String mensagemErro = "";
+	
+	private String posicaoErro = "";
+	
+	
+	// ----- GETTERS -----
+	
+	public boolean ocorreuErro() {
+		return ocorreuErro;
+	}
+	
+
+
+	public String getMensagemErro() {
+		return mensagemErro;
+	}
+	
+
+
+	public String getPosicaoErro() {
+		return posicaoErro;
+	}
+	
+	
+	
+
+
 	/**
 	 * 
 	 * @return A lista contendo todos os objetos de traducao.
@@ -25,6 +56,27 @@ public class Traducao {
 		return traducoes;
 	}
 	
+	
+	// ----- SETTERS -----
+	
+	public void setOcorreuErro(boolean ocorreuErro) {
+		this.ocorreuErro = ocorreuErro;
+	}
+
+	public void setMensagemErro(String mensagemErro) {
+		this.mensagemErro = mensagemErro;
+	}
+
+	public void setPosicaoErro(String posicaoErro) {
+		this.posicaoErro = posicaoErro;
+	}
+	
+	
+	// ----- METODOS -----
+	
+
+
+
 	/**
 	 * Adiciona um novo objeto de traducao na lista de traducoes.
 	 * @param to Um objeto de transferencia TraducaoTO
@@ -173,7 +225,7 @@ public class Traducao {
 	/**
 	 * 
 	 * @return As traducoes com quebras de linha padrao Windows
-	 * e identacoes.
+	 * (Carriage Return + New line) e identacoes.
 	 */
 	public String getTextWindows(){
 		

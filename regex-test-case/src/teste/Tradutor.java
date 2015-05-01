@@ -62,6 +62,7 @@ public class Tradutor extends RegularExpressionEREBaseVisitor<Void> {
 		//Visita a raiz da arvore, e todas as suas filhas
 		visit(ctx);
 		
+		//Retorna uma instancia da classe Traducao, ja populada
 		return traducao;
 	}
 	
@@ -130,13 +131,14 @@ public class Tradutor extends RegularExpressionEREBaseVisitor<Void> {
             	//Se o proximo caractere tambem for uma barra invertida
             	if(proximoCaractere == escape){
             		
-            		//Adiciona o proximo caractere (a barra invertida) no buffet
+            		//Adiciona o proximo caractere (a barra invertida) no buffer
             		buffer.setCharAt(posicaoAtual++, proximoCaractere);
             		
             		//Aumenta o contador uma posicao a mais, para
-            		//nao ler esta barra invertida denovo
+            		//pular a leitura da barra invertida
             		i++;
             	}
+            	
             	//Se o proximo caractere nao for uma barra invertida,
             	//ignora a barra invertida atual
             }
@@ -280,12 +282,11 @@ public class Tradutor extends RegularExpressionEREBaseVisitor<Void> {
 	}
 	
 	/**
-	 * Quando visita uma repeticao correta, visita o quantificador,
+	 * Quando visita uma repeticao, visita o quantificador,
 	 * aumenta o nivel de identacao e visita a parte quantificada.
 	 */
 	@Override
-	public Void visitCorrectRepetition(CorrectRepetitionContext ctx) {
-		
+	public Void visitRepetition(RepetitionContext ctx) {
 		//Visita o simbolo quantificador
 		visit(ctx.quantifier());
 		

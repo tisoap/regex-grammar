@@ -37,9 +37,7 @@ Adicionar um argumento de visualização faz com que a expressão não seja trad
 
 ##TODO
 
-- Melhorar mensagens de erro, se possível
 - Testes com expressões complexas
-
 ## Changelog
 
 Padrão `DD/MM/AAAA` para as datas e padrão `X.Y.Z` para o versionamento, onde:
@@ -48,13 +46,21 @@ Padrão `DD/MM/AAAA` para as datas e padrão `X.Y.Z` para o versionamento, onde:
 - **Y**: Alterações na gramática
 - **Z**: Alterações no caso de teste
 
+2.1.4 (30/04/2015)
+
+- Caracteres de controle são ignorados
+- Melhoradas mensagens de erro
+- Adicionado error listener customizado
+- Classe Tradução agora também armazena informações de erros durante a tradução
+- Classe Regex agora retorna um objeto Tradução
+
 2.0 (29/04/2015)
 
 - Corrigida tradução da barra de escape
 - Criado Transfer Object para traduções individuais
 - Criada classe enum com os nomes de regras utilizados pelo tradutor
 - Criada classe Tradução que armazena os objetos de transferência
-- Tradutor agora popula e retorna uma instancia da classe Tradução
+- Classe Tradutor agora popula e retorna uma instancia da classe Tradução
 - Montagem final do texto traduzido agora feito pela classe Tradução
 
 1.16.6 (24/04/2015)

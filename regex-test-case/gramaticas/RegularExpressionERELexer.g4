@@ -26,11 +26,16 @@ DIGIT           : [0-9] ;  //Digitos de 0 a 9
 //Entra no modo CLASS quando encontra a abertura de uma classe
 CLASSOPEN  : '[:' -> mode(CLASS) ;
 
-//Todos os caracteres que nao sejam de controle
-OTHER : ~[\u0000-\u001F\u007F-\u009F] ; //~ significa negacao
+//Todos os caracteres nao especiais
+OTHER : ~[] ; //~ significa negacao
 
-//Ignora quebras de linha e tabulacoes
-WS : [\r\n\t] -> skip ;
+//Ignora quebras de linha, tabulacoes e caracteres de controle
+// \r				Carriage Return
+// \n				New line
+// \t				Tab
+// \u0000-\u001F	UTF-8 entre 0000 e 001F
+// \u007F-\u009F	UTF-8 entre 007F e 009F
+WS : [\r\n\t\u0000-\u001F\u007F-\u009F] -> skip ;
 
 
 /** ----- Island Grammars ----- */

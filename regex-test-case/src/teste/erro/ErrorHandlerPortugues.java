@@ -4,39 +4,18 @@ import org.antlr.v4.runtime.DefaultErrorStrategy;
 import org.antlr.v4.runtime.InputMismatchException;
 import org.antlr.v4.runtime.NoViableAltException;
 import org.antlr.v4.runtime.Parser;
-import org.antlr.v4.runtime.RecognitionException;
 import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.TokenStream;
 import org.antlr.v4.runtime.misc.IntervalSet;
 
 /**
  * Error handler que sobrepoe os metodos padrao para utilizar
- * mensagens em portugues e a levantar execoes em qualquer erro.
+ * mensagens em portugues.
+ * 
+ * @author Tiso
+ *
  */
 public class ErrorHandlerPortugues extends DefaultErrorStrategy {
-	
-	
-	//Parte que obriga a levantar excecoes
-	
-	@Override
-	public void recover(Parser recognizer, RecognitionException e) {
-		throw new RuntimeException(e);
-	}
-	
-	@Override
-	public Token recoverInline(Parser recognizer)
-			throws RecognitionException {
-		
-		throw new RuntimeException(new InputMismatchException(recognizer));
-	}
-	
-	@Override
-	public void sync(Parser recognizer) throws RecognitionException {
-		//nada
-	}
-	
-	
-	//Parte que muda as mensagens de erro padrao
 	
 	@Override
 	protected void reportNoViableAlternative(
@@ -54,7 +33,7 @@ public class ErrorHandlerPortugues extends DefaultErrorStrategy {
 		}
 		else input = "<desconhecido>";
 		
-		String msg = "Nenhuma alternativa viável na entrada " + escapeWSAndQuote(input);
+		String msg = "Texto errado ou incompleto em " + escapeWSAndQuote(input) + ".";
 		
 		recognizer.notifyErrorListeners(e.getOffendingToken(), msg, e);
 	}
@@ -65,8 +44,9 @@ public class ErrorHandlerPortugues extends DefaultErrorStrategy {
 			InputMismatchException e)
 	{
 		
-		String msg = "Entrada errada " + getTokenErrorDisplay(e.getOffendingToken()) + 
-		" estava esperando por um destes elementos: " + e.getExpectedTokens().toString(recognizer.getVocabulary());
+		String msg = "Texto errado " + getTokenErrorDisplay(e.getOffendingToken())
+		// + " estava esperando por um destes elementos: " + e.getExpectedTokens().toString(recognizer.getVocabulary())
+		;
 		
 		recognizer.notifyErrorListeners(e.getOffendingToken(), msg, e);
 	}
@@ -75,17 +55,19 @@ public class ErrorHandlerPortugues extends DefaultErrorStrategy {
 	protected void reportUnwantedToken(Parser recognizer) {
 		
 		if (inErrorRecoveryMode(recognizer)) return;
-
+		
 		beginErrorCondition(recognizer);
-
+		
 		Token t = recognizer.getCurrentToken();
 		
 		String tokenName = getTokenErrorDisplay(t);
 		
-		IntervalSet expecting = getExpectedTokens(recognizer);
+		//IntervalSet expecting = getExpectedTokens(recognizer);
 		
-		String msg = "Entrada adcional " + tokenName + " estava esperando por " +
-			expecting.toString(recognizer.getVocabulary());
+		String msg = "Texto adcional " + tokenName + "."
+		//	+ " estava esperando por um destes elementos: " +
+		//	expecting.toString(recognizer.getVocabulary())
+			;
 		
 		recognizer.notifyErrorListeners(t, msg, null);
 	}
@@ -102,8 +84,8 @@ public class ErrorHandlerPortugues extends DefaultErrorStrategy {
 		IntervalSet expecting = getExpectedTokens(recognizer);
 		
 		String msg = " Está faltando " + expecting.toString(recognizer.getVocabulary()) +
-			" em " + getTokenErrorDisplay(t);
+			" em " + getTokenErrorDisplay(t) + ".";
 
 		recognizer.notifyErrorListeners(t, msg, null);
-	}		
+	}
 }

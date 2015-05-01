@@ -9,6 +9,7 @@ import java.io.IOException;
 import org.antlr.v4.runtime.*;
 
 import teste.erro.ErrorHandlerPortugues;
+import teste.erro.ErrorListenerCustomizado;
 
 /**
  * Realiza a validacao e traducao para linguagem natural de
@@ -44,70 +45,114 @@ public class Regex {
 	/** Instancia da classe responsavel pela traducao. */
 	private Tradutor tradutor;
 	
+	/** Instancia da classe que contem o resultado de uma traducao. */
+	private Traducao traducao;
 	
-	// ----- GETTERS ----- 
+	/** Listener de erros do parser. */
+	private ErrorListenerCustomizado errorListener;
 	
-	public RegularExpressionEREParser getParser() {
-		return parser;
-	}
-
-	/** Sera nulo se o metodo validar() nao foi executado. */
-	public ExpressionContext getParseTreeContext() {
-		return parseTreeContext;
-	}
-
+	
+	// ----- GETTERS -----
+	
 	public String getRegularExpresion() {
 		return regularExpresion;
 	}
+
+
 
 	public ANTLRInputStream getInput() {
 		return input;
 	}
 
+
+
 	public RegularExpressionERELexer getLexer() {
 		return lexer;
 	}
 
+
+
 	public CommonTokenStream getTokens() {
 		return tokens;
 	}
-	
-	/** Sera nulo se o metodo traduzir() nao foi executado. */
-	public Tradutor getVisitor() {
-		return tradutor;
-	}
-	
-	
-	
-	// ----- SETTERS ----- 
-	
-	public void setParser(RegularExpressionEREParser parser) {
-		this.parser = parser;
+
+
+
+	public RegularExpressionEREParser getParser() {
+		return parser;
 	}
 
-	public void setParseTreeContext(ExpressionContext parseTreeContext) {
-		this.parseTreeContext = parseTreeContext;
+
+
+	public ExpressionContext getParseTreeContext() {
+		return parseTreeContext;
 	}
+
+
+
+	public Tradutor getTradutor() {
+		return tradutor;
+	}
+
+
+
+	public Traducao getTraducao() {
+		return traducao;
+	}
+	
+	// ----- SETTERS -----
+	
+
+
 
 	public void setRegularExpresion(String regularExpresion) {
 		this.regularExpresion = regularExpresion;
 	}
 
+
+
 	public void setInput(ANTLRInputStream input) {
 		this.input = input;
 	}
+
+
 
 	public void setLexer(RegularExpressionERELexer lexer) {
 		this.lexer = lexer;
 	}
 
+
+
 	public void setTokens(CommonTokenStream tokens) {
 		this.tokens = tokens;
 	}
-	
-	public void setVisitor(Tradutor visitor) {
-		this.tradutor = visitor;
+
+
+
+	public void setParser(RegularExpressionEREParser parser) {
+		this.parser = parser;
 	}
+
+
+
+	public void setParseTreeContext(ExpressionContext parseTreeContext) {
+		this.parseTreeContext = parseTreeContext;
+	}
+
+
+
+	public void setTradutor(Tradutor tradutor) {
+		this.tradutor = tradutor;
+	}
+
+
+
+	public void setTraducao(Traducao traducao) {
+		this.traducao = traducao;
+	}
+
+
+
 	
 	
 	// ----- CONSTRUTOR ----- 
@@ -138,7 +183,6 @@ public class Regex {
 	}
 	
 	
-	
 	// ----- METODOS ----- 
 	
 	/** 
@@ -163,7 +207,11 @@ public class Regex {
 		// Cria um parser que recebe o stream de tokens
 		parser = new RegularExpressionEREParser(tokens);
 		
-		// Troca o Error Handler padrao do parser por um com mensagens em portugues
+		//Troca o Error Listener padrao do parser por um com mensagens em portugues
+		parser.removeErrorListeners();
+		parser.addErrorListener(new ErrorListenerCustomizado());
+		
+		// Troca o Error Handler padrao do parser por um com mensagens em portugues		
 		parser.setErrorHandler(new ErrorHandlerPortugues());
 	}
 	
@@ -173,48 +221,54 @@ public class Regex {
 	 * 
 	 * @return Verdadeiro se estiver correta, Falso caso contrario.
 	 */
-	public boolean validar() {
+	private boolean validar() {
 		
-		try {
-			
-			//Tenta criar a parse tree, comencando pela regra inicial 'expression'
-			parseTreeContext = parser.expression();
+		//Realiza a analise de estrutura
+		parseTreeContext = parser.expression();
 		
-		} catch (Exception e) {
-			
-			//Ocorreram erros
-			parseTreeContext = null;
+		//recupera o error listener utilizado pelo parser
+		errorListener = 
+				(ErrorListenerCustomizado) parser.getErrorListeners().get(0);
+		
+		//Verifica se ocorreram erros
+		if (errorListener.isErro())
 			return false;
-		}
-		
-		//Nao ocorreram erros
-		return true;
-
+		else
+			return true;
 	}
 	
 	/**
 	 * Realiza a traducao da expressao.
 	 * 
-	 * @return Uma String com o texto traduzido.
+	 * @return Um objeto com o resultado da traducao.
 	 */
-	public String traduzir(){
+	public Traducao traduzir(){
 		
 		//Cria uma nova instancia da classe responsavel pela traducao
 		tradutor = new Tradutor();
 		
-		//Se nao foi executado o metodo validar(), a parse tree estara vazia.
-		if (parseTreeContext == null) {
-			
-			//Se a validacao retornar falso, retorna uma mensagem de erro
-			if (!validar()){
-				return "A expressao regular nao e valida."; 
-			}
-		}
+		//Cria a parse tree
+		boolean semErroAnalise = validar();
 		
 		//Cria a traducao da expressao, utilizando a parse tree gerada
-		Traducao traducao = tradutor.traduzir(parseTreeContext);
+		traducao = tradutor.traduzir(parseTreeContext);
 		
-		return traducao.getText();
+		//Se ocorreran erros durante a analise, armazena as informacoes dos erros
+		if (!semErroAnalise){
+			
+			//recupera a mensagem de erro do listener
+			String erro = errorListener.getErrorMessage();
+			
+			//recupera a mensagem indicando a posicao do erro
+			String posicao = errorListener.getErrorPosition();
+			
+			//Popula o objeto traducao com as informacoes de erro
+			traducao.setOcorreuErro(true);
+			traducao.setMensagemErro(erro);
+			traducao.setPosicaoErro(posicao);
+		}
+		
+		return traducao;
 	}
 	
 	/**
@@ -225,9 +279,7 @@ public class Regex {
 		
 		System.out.println("");
 		
-		if (parseTreeContext == null)
-			if (!validar())
-				return;
+		validar();
 		
 		System.out.println(parseTreeContext.toStringTree());
 		
@@ -240,9 +292,7 @@ public class Regex {
 	 */
 	public void parserTreeGui(){
 		
-		if (parseTreeContext == null)
-			if (!validar())
-				return;
+		validar();
 		
 		//http://stackoverflow.com/questions/29353114/running-antrl-testrig-gui-from-within-a-java-application
 		//http:/www.antlr.org/api/JavaTool/org/antlr/v4/runtime/RuleContext.html#inspect%28org.antlr.v4.runtime.Parser%29

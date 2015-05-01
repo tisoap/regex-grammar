@@ -75,7 +75,21 @@ public class Main {
 			System.out.println("");
 			
 			//Traduz a expressao para linguagem natural
-			System.out.println(regex.traduzir());
+			Traducao traducao = regex.traduzir();
+			
+			//Se ocorreram erros, exibe as mensagens de erro
+			if (traducao.ocorreuErro()) {
+				System.err.println("A expressao não está correta:");
+				System.err.println(traducao.getMensagemErro());
+				System.err.println(traducao.getPosicaoErro());
+			}
+			
+			//Se nao ocorreram erros, exibe a traducao
+			else {
+				
+				//Utiliza quebras de linha \r\n
+				System.out.println(traducao.getTextWindows());
+			}
 			
 			System.out.println("");
 		}

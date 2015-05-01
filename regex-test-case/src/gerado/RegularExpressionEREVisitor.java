@@ -55,19 +55,11 @@ public interface RegularExpressionEREVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitEndAnchor(RegularExpressionEREParser.EndAnchorContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code correctRepetition}
-	 * labeled alternative in {@link RegularExpressionEREParser#repetition}.
+	 * Visit a parse tree produced by {@link RegularExpressionEREParser#repetition}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitCorrectRepetition(RegularExpressionEREParser.CorrectRepetitionContext ctx);
-	/**
-	 * Visit a parse tree produced by the {@code wrongRepetition}
-	 * labeled alternative in {@link RegularExpressionEREParser#repetition}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitWrongRepetition(RegularExpressionEREParser.WrongRepetitionContext ctx);
+	T visitRepetition(RegularExpressionEREParser.RepetitionContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link RegularExpressionEREParser#quantified}.
 	 * @param ctx the parse tree
