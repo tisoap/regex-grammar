@@ -25,29 +25,20 @@ public class Traducao {
 	
 	private String posicaoErro = "";
 	
+	private StringBuffer buffer;
+	
 	
 	// ----- GETTERS -----
 	
 	public boolean ocorreuErro() {
 		return ocorreuErro;
 	}
-	
-
-
 	public String getMensagemErro() {
 		return mensagemErro;
 	}
-	
-
-
 	public String getPosicaoErro() {
 		return posicaoErro;
 	}
-	
-	
-	
-
-
 	/**
 	 * 
 	 * @return A lista contendo todos os objetos de traducao.
@@ -62,20 +53,15 @@ public class Traducao {
 	public void setOcorreuErro(boolean ocorreuErro) {
 		this.ocorreuErro = ocorreuErro;
 	}
-
 	public void setMensagemErro(String mensagemErro) {
 		this.mensagemErro = mensagemErro;
 	}
-
 	public void setPosicaoErro(String posicaoErro) {
 		this.posicaoErro = posicaoErro;
 	}
 	
 	
 	// ----- METODOS -----
-	
-
-
 
 	/**
 	 * Adiciona um novo objeto de traducao na lista de traducoes.
@@ -104,98 +90,112 @@ public class Traducao {
 	}
 	
 	/**
-	 * Monta um texto HTML com listas ordenadas, que contem
+	 * Monta um texto HTML com listas nao ordenadas 'ul', que contem
 	 * as traducoes em itens de lista.
 	 * 
-	 * @return String contendo uma lista ordenada HMTL
+	 * @return String contendo uma lista nao ordenada HMTL
 	 * com todas as traducoes.
 	 */
+	//TODO corrigir construcao em listas
 	public String getTextHTML(){
 		
-		StringBuffer buffer = new StringBuffer();
-		
-		//Os niveis iniciais comecam zerados
 		int nivel		= 0;
 		int novoNivel	= 0;
+		int lista		= traducoes.size();
+		buffer 			= new StringBuffer();
 		
-		//Abre a primeira lista ordenada
-		buffer.append("<ol>");
+		//Abre a primeira lista
+		buffer.append("<ul>");
 		buffer.append("\n");
 		
-		//Para cada traducao individual na lista de traducoes
-		for (TraducaoTO to : traducoes) {
+		//Para cada item na lista de traducoes
+		for (int i=0; i<lista; i++) {
+			
+			//Recupera a traducao atual
+			TraducaoTO traducaoAtual = traducoes.get(i);
 			
 			//Recupera o nivel de profundidade da traducao
-			novoNivel = to.getNivel();
+			novoNivel = traducaoAtual.getNivel();
 			
-			//Se o nivel for igual ao atual
-			if (novoNivel == nivel) {
+			//Se o nivel da traducao for maior ou igual que o anterior,
+			//e ela for terminal, insere a traducao em uma tag li
+			if (novoNivel >= nivel && traducaoAtual.isTerminal()) {
 				
-				//Insere a traducao em uma nova tag <li>
-				buffer.append(identacao(nivel));
 				buffer.append("<li>");
-				buffer.append(to.getTraducao());
+				buffer.append(traducaoAtual.getTraducao());
 				buffer.append("</li>");
 				buffer.append("\n");
 				
-			}
-			
-			//Se o nivel for maior que o atual
-			else if (novoNivel > nivel) {
-				
-				//Insere uma tag <li>, e dentro dela uma tag <ol>,
-				//e dentro dela uma tag <li> com a traducao
-				
-				buffer.append(identacao(nivel));
-				buffer.append("<li>");
-				buffer.append("\n");
-				buffer.append(identacao(nivel));
-				buffer.append("<ol>");
-				buffer.append("\n");
-				buffer.append(identacao(novoNivel));
-				buffer.append("<li>");
-				buffer.append(to.getTraducao());
-				buffer.append("</li>");
-				buffer.append("\n");
-				
-				//Atualiza o nivel atual
 				nivel = novoNivel;
 			}
 			
-			//Se o nivel for menor que o atual
-			else if (novoNivel < nivel){
+			//Se o nivel da traducao for maior ou igual que o anterior,
+			//e ela nao for terminal, insere a traducao em uma tag li,
+			//e dentro dela abre uma nova tag ul
+			else if (novoNivel >= nivel && !traducaoAtual.isTerminal()) {
 				
-				//Fecha a tag <ol>, fecha a tag <li>
-				//e cria uma nava tag <li> com a traducao
-				
-				buffer.append(identacao(novoNivel));
-				buffer.append("</ol>");
-				buffer.append("\n");
-				buffer.append(identacao(novoNivel));
 				buffer.append("<li>");
-				buffer.append(to.getTraducao());
+				buffer.append(traducaoAtual.getTraducao());
+				buffer.append("\n");
+				buffer.append("<ul>");
+				buffer.append("\n");
+				
+				nivel = novoNivel;
+			}
+			
+			//Se o nivel da traducao for menor que o anterior,
+			//e ela for terminal, fecha a tag ul anterior
+			//e insere a traducao em uma nova tag li
+			else if (novoNivel < nivel && traducaoAtual.isTerminal()){
+				
+				while (novoNivel < nivel){
+					buffer.append("</ul>");
+					buffer.append("\n");
+					nivel--;
+				}
+				
+				buffer.append("<li>");
+				buffer.append(traducaoAtual.getTraducao());
 				buffer.append("</li>");
 				buffer.append("\n");
 				
-				//Atualiza o nivel atual
+				nivel = novoNivel;
+			}
+			
+			//Se o nivel da traducao for menor que o anterior,
+			//e ela nao for terminal, fecha a tag ul anterior,
+			//insere a traducao em uma nova tag li, e dentro dela
+			//abre uma nova tag ul
+			else if (novoNivel < nivel && !traducaoAtual.isTerminal()){
+				
+				while (novoNivel < nivel){
+					buffer.append("</ul>");
+					buffer.append("\n");
+					nivel--;
+				}
+				
+				buffer.append("<li>");
+				buffer.append(traducaoAtual.getTraducao());
+				buffer.append("\n");
+				buffer.append("<ul>");
+				buffer.append("\n");
+				
 				nivel = novoNivel;
 			}
 		}
 		
-		//Fecha as tags <ol> e <li> restantes
+		//Fecha todas as tags ul e li restantes
 		while (nivel != 0){
 			nivel--;
 			
-			buffer.append(identacao(nivel));
-			buffer.append("</ol>");
+			buffer.append("</ul>");
 			buffer.append("\n");
-			buffer.append(identacao(nivel));
 			buffer.append("</li>");
 			buffer.append("\n");
 		}
 		
-		//Fecha a primeira lista ordenada
-		buffer.append("</ol>");
+		//Fecha a primeira lista
+		buffer.append("</ul>");
 		buffer.append("\n");
 		
 		
@@ -207,7 +207,7 @@ public class Traducao {
 	 */
 	public String getText(){
 		
-		StringBuffer buffer = new StringBuffer();
+		buffer = new StringBuffer();
 		int nivel;
 		
 		for (TraducaoTO to : traducoes) {
@@ -229,7 +229,7 @@ public class Traducao {
 	 */
 	public String getTextWindows(){
 		
-		StringBuffer buffer = new StringBuffer();
+		buffer = new StringBuffer();
 		int nivel;
 		
 		for (TraducaoTO to : traducoes) {

@@ -57,102 +57,55 @@ public class Regex {
 	public String getRegularExpresion() {
 		return regularExpresion;
 	}
-
-
-
 	public ANTLRInputStream getInput() {
 		return input;
 	}
-
-
-
 	public RegularExpressionERELexer getLexer() {
 		return lexer;
 	}
-
-
-
 	public CommonTokenStream getTokens() {
 		return tokens;
 	}
-
-
-
 	public RegularExpressionEREParser getParser() {
 		return parser;
 	}
-
-
-
 	public ExpressionContext getParseTreeContext() {
 		return parseTreeContext;
 	}
-
-
-
 	public Tradutor getTradutor() {
 		return tradutor;
 	}
-
-
-
 	public Traducao getTraducao() {
 		return traducao;
 	}
 	
+	
 	// ----- SETTERS -----
 	
-
-
-
 	public void setRegularExpresion(String regularExpresion) {
 		this.regularExpresion = regularExpresion;
 	}
-
-
-
 	public void setInput(ANTLRInputStream input) {
 		this.input = input;
 	}
-
-
-
 	public void setLexer(RegularExpressionERELexer lexer) {
 		this.lexer = lexer;
 	}
-
-
-
 	public void setTokens(CommonTokenStream tokens) {
 		this.tokens = tokens;
 	}
-
-
-
 	public void setParser(RegularExpressionEREParser parser) {
 		this.parser = parser;
 	}
-
-
-
 	public void setParseTreeContext(ExpressionContext parseTreeContext) {
 		this.parseTreeContext = parseTreeContext;
 	}
-
-
-
 	public void setTradutor(Tradutor tradutor) {
 		this.tradutor = tradutor;
 	}
-
-
-
 	public void setTraducao(Traducao traducao) {
 		this.traducao = traducao;
 	}
-
-
-
 	
 	
 	// ----- CONSTRUTOR ----- 

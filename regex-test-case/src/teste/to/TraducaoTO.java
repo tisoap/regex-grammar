@@ -11,6 +11,9 @@ import teste.enumType.Regra;
  */
 public class TraducaoTO {
 	
+	
+	// ----- VARIAVEIS -----
+	
 	/** O nivel de profundidade da arvore em que o elemento foi encontrado. */
 	private int nivel;
 	
@@ -22,6 +25,11 @@ public class TraducaoTO {
 	
 	/** A regra que disparou a traducao. */
 	private Regra tipoRegra;
+	
+	private boolean terminal;
+	
+	
+	// ----- GETTERS -----
 	
 	public int getNivel() {
 		return nivel;
@@ -35,6 +43,13 @@ public class TraducaoTO {
 	public Regra getTipoRegra() {
 		return tipoRegra;
 	}
+	public boolean isTerminal() {
+		return terminal;
+	}
+	
+	
+	// ----- SETTERS -----
+	
 	public void setNivel(int nivel) {
 		this.nivel = nivel;
 	}
@@ -46,6 +61,9 @@ public class TraducaoTO {
 	}
 	public void setTipoRegra(Regra tipoRegra) {
 		this.tipoRegra = tipoRegra;
+	}
+	public void setTerminal(boolean terminal) {
+		this.terminal = terminal;
 	}
 	
 }

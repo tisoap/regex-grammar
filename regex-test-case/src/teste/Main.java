@@ -88,7 +88,8 @@ public class Main {
 			else {
 				
 				//Utiliza quebras de linha \r\n
-				System.out.println(traducao.getTextWindows());
+				//System.out.println(traducao.getText());
+				System.out.println(traducao.getTextHTML());
 			}
 			
 			System.out.println("");

@@ -3,13 +3,14 @@ package teste.erro;
 import org.antlr.v4.runtime.*;
 
 /**
- * Error listener que sobrepoe o metodo padrao para levantar uma excecao
- * em qualquer erro.
+ * Error listener que sobrepoe o metodo padrao para armazenar
+ * informacoes sobre o erro.
  * 
  * @author Tiso
  *
  */
 public class ErrorListenerCustomizado extends BaseErrorListener {
+	
 	
 	//----- VARIAVEIS ----- 
 	
@@ -22,6 +23,7 @@ public class ErrorListenerCustomizado extends BaseErrorListener {
 	
 	/** Indica se ocorreu ou nao um erro. */
 	private boolean erro = false;
+	
 	
 	//----- GETTERS ----- 
 	
@@ -64,7 +66,6 @@ public class ErrorListenerCustomizado extends BaseErrorListener {
 		
 	}
 	
-
 	/**
 	* Indica a posicao do caractere problematico no texto original
 	* colocando '^' imediatamente abaixo dele.
