@@ -4,6 +4,9 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
+import regex.Regex;
+import regex.Traducao;
+
 public class Main {
 	
 	/** 
@@ -86,10 +89,7 @@ public class Main {
 			
 			//Se nao ocorreram erros, exibe a traducao
 			else {
-				
-				//Utiliza quebras de linha \r\n
-				//System.out.println(traducao.getText());
-				System.out.println(traducao.getTextHTML());
+				System.out.println(traducao.getText());
 			}
 			
 			System.out.println("");

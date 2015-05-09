@@ -1,9 +1,9 @@
-package teste;
+package regex;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import teste.to.TraducaoTO;
+import regex.transfer.TraducaoTO;
 
 /**
  * Armazena traducoes individuais em uma lista de traducoes, e
@@ -122,11 +122,6 @@ public class Traducao {
 	 * construida recursivamente.
 	 */
 	private String listaRecursiva(){
-		
-		/*
-		 * OBS: Este metodo assume que as variacoes de nivel sao de 1 (uma)
-		 * unidade, para mais ou para menos.
-		 */
 		
 		int 			novoNivel;
 		TraducaoTO		traducaoAtual;

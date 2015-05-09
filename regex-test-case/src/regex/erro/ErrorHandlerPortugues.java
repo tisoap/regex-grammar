@@ -1,4 +1,4 @@
-package teste.erro;
+package regex.erro;
 
 import org.antlr.v4.runtime.DefaultErrorStrategy;
 import org.antlr.v4.runtime.InputMismatchException;

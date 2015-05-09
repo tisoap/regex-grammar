@@ -1,6 +1,6 @@
-package teste.to;
+package regex.transfer;
 
-import teste.enumType.Regra;
+import regex.enumType.RegraRegex;
 
 /**
  * Transfer Object que armazena os dados de uma traducao, vindos
@@ -24,7 +24,7 @@ public class TraducaoTO {
 	private String original;
 	
 	/** A regra que disparou a traducao. */
-	private Regra tipoRegra;
+	private RegraRegex tipoRegra;
 	
 	private boolean terminal;
 	
@@ -40,7 +40,7 @@ public class TraducaoTO {
 	public String getOriginal() {
 		return original;
 	}
-	public Regra getTipoRegra() {
+	public RegraRegex getTipoRegra() {
 		return tipoRegra;
 	}
 	public boolean isTerminal() {
@@ -59,7 +59,7 @@ public class TraducaoTO {
 	public void setOriginal(String original) {
 		this.original = original;
 	}
-	public void setTipoRegra(Regra tipoRegra) {
+	public void setTipoRegra(RegraRegex tipoRegra) {
 		this.tipoRegra = tipoRegra;
 	}
 	public void setTerminal(boolean terminal) {

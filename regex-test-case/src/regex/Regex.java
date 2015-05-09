@@ -1,4 +1,4 @@
-package teste;
+package regex;
 
 import gerado.RegularExpressionERELexer;
 import gerado.RegularExpressionEREParser;
@@ -8,8 +8,8 @@ import java.io.IOException;
 
 import org.antlr.v4.runtime.*;
 
-import teste.erro.ErrorHandlerPortugues;
-import teste.erro.ErrorListenerCustomizado;
+import regex.erro.ErrorHandlerPortugues;
+import regex.erro.ErrorListenerCustomizado;
 
 /**
  * Realiza a validacao e traducao para linguagem natural de
