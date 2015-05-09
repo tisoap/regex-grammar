@@ -38,13 +38,12 @@ OTHER : ~[] ; //~ significa negacao
 WS : [\r\n\t\u0000-\u001F\u007F-\u009F] -> skip ;
 
 
-/** ----- Island Grammars ----- */
+// ----- Island Grammars -----
 
-/**
- * "Gramaticas Ilha" sao sub-gramaticas dentro de uma gramatica.
- * Definicao necessaria para que nao exista conflito entre as regras
- * dela e da gramatica principal.
- */
+
+//"Gramaticas Ilha" sao sub-gramaticas dentro de uma gramatica.
+//Definicao necessaria para que nao exista conflito entre as regras
+//dela e da gramatica principal.
 
 //Quando entra em uma classe, considera apenas os tokens abaixo.
 mode CLASS ;
