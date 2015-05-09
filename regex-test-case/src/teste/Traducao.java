@@ -27,6 +27,8 @@ public class Traducao {
 	
 	private StringBuffer buffer;
 	
+	private int posicao, nivel, tamanho;
+
 	
 	// ----- GETTERS -----
 	
@@ -90,116 +92,129 @@ public class Traducao {
 	}
 	
 	/**
-	 * Monta um texto HTML com listas nao ordenadas 'ul', que contem
-	 * as traducoes em itens de lista.
 	 * 
-	 * @return String contendo uma lista nao ordenada HMTL
-	 * com todas as traducoes.
+	 * @return Uma String com as traducoes em formato de arvore, utilizando
+	 * listas nao ordenadas HTML.
 	 */
-	//TODO corrigir construcao em listas
 	public String getTextHTML(){
 		
-		int nivel		= 0;
-		int novoNivel	= 0;
-		int lista		= traducoes.size();
-		buffer 			= new StringBuffer();
+		posicao	= 0;
+		nivel	= 0;
+		tamanho = traducoes.size();
+		buffer	= new StringBuffer();
 		
 		//Abre a primeira lista
 		buffer.append("<ul>");
 		buffer.append("\n");
 		
-		//Para cada item na lista de traducoes
-		for (int i=0; i<lista; i++) {
-			
-			//Recupera a traducao atual
-			TraducaoTO traducaoAtual = traducoes.get(i);
-			
-			//Recupera o nivel de profundidade da traducao
-			novoNivel = traducaoAtual.getNivel();
-			
-			//Se o nivel da traducao for maior ou igual que o anterior,
-			//e ela for terminal, insere a traducao em uma tag li
-			if (novoNivel >= nivel && traducaoAtual.isTerminal()) {
-				
-				buffer.append("<li>");
-				buffer.append(traducaoAtual.getTraducao());
-				buffer.append("</li>");
-				buffer.append("\n");
-				
-				nivel = novoNivel;
-			}
-			
-			//Se o nivel da traducao for maior ou igual que o anterior,
-			//e ela nao for terminal, insere a traducao em uma tag li,
-			//e dentro dela abre uma nova tag ul
-			else if (novoNivel >= nivel && !traducaoAtual.isTerminal()) {
-				
-				buffer.append("<li>");
-				buffer.append(traducaoAtual.getTraducao());
-				buffer.append("\n");
-				buffer.append("<ul>");
-				buffer.append("\n");
-				
-				nivel = novoNivel;
-			}
-			
-			//Se o nivel da traducao for menor que o anterior,
-			//e ela for terminal, fecha a tag ul anterior
-			//e insere a traducao em uma nova tag li
-			else if (novoNivel < nivel && traducaoAtual.isTerminal()){
-				
-				while (novoNivel < nivel){
-					buffer.append("</ul>");
-					buffer.append("\n");
-					nivel--;
-				}
-				
-				buffer.append("<li>");
-				buffer.append(traducaoAtual.getTraducao());
-				buffer.append("</li>");
-				buffer.append("\n");
-				
-				nivel = novoNivel;
-			}
-			
-			//Se o nivel da traducao for menor que o anterior,
-			//e ela nao for terminal, fecha a tag ul anterior,
-			//insere a traducao em uma nova tag li, e dentro dela
-			//abre uma nova tag ul
-			else if (novoNivel < nivel && !traducaoAtual.isTerminal()){
-				
-				while (novoNivel < nivel){
-					buffer.append("</ul>");
-					buffer.append("\n");
-					nivel--;
-				}
-				
-				buffer.append("<li>");
-				buffer.append(traducaoAtual.getTraducao());
-				buffer.append("\n");
-				buffer.append("<ul>");
-				buffer.append("\n");
-				
-				nivel = novoNivel;
-			}
-		}
-		
-		//Fecha todas as tags ul e li restantes
-		while (nivel != 0){
-			nivel--;
-			
-			buffer.append("</ul>");
-			buffer.append("\n");
-			buffer.append("</li>");
-			buffer.append("\n");
-		}
+		buffer.append(listaRecursiva());
 		
 		//Fecha a primeira lista
 		buffer.append("</ul>");
 		buffer.append("\n");
 		
-		
 		return buffer.toString();
+		
+	}
+	
+	/**
+	 * @return Uma String contendo itens de lista (tags li) com as traducoes,
+	 * construida recursivamente.
+	 */
+	private String listaRecursiva(){
+		
+		/*
+		 * OBS: Este metodo assume que as variacoes de nivel sao de 1 (uma)
+		 * unidade, para mais ou para menos.
+		 */
+		
+		int 			novoNivel;
+		TraducaoTO		traducaoAtual;
+		StringBuffer 	bufferLocal;
+		
+		bufferLocal = new StringBuffer();
+		
+		//Para cada item na lista de traducoes
+		for (int i=posicao; i<tamanho; i++) {
+			
+			//Recupera a traducao atual
+			traducaoAtual = traducoes.get(i);
+			
+			//Recupera o nivel de profundidade da traducao
+			novoNivel = traducaoAtual.getNivel();
+			
+			//Se o nivel se manteve e a traducao atual e terminal,
+			//insere a traducao em uma tag 'li'
+			if (novoNivel == nivel && traducaoAtual.isTerminal()) {
+				
+				bufferLocal.append("<li>");
+				bufferLocal.append(traducaoAtual.getTraducao());
+				bufferLocal.append("</li>");
+				bufferLocal.append("\n");
+			}
+			
+			//Se o nivel se manteve e a traducao atual nao e terminal
+			//insere a traducao dentro de uma tag 'li', e dentro dela
+			//abre uma nova tag 'ul' e chama o metodo recursivamente
+			//antes de fecha-la
+			else if (novoNivel == nivel && !traducaoAtual.isTerminal()){
+				
+				//Abre um item de lista e insere a traducao nele
+				bufferLocal.append("<li>");
+				bufferLocal.append(traducaoAtual.getTraducao());
+				bufferLocal.append("\n");
+				
+				//Dentro do item de lista, abre uma lista nao ordenada
+				bufferLocal.append("<ul>");
+				bufferLocal.append("\n");
+				
+				//Antes de chamar o metodo recursivamente, aumenta o nivel atual
+				//pois como a regra atual nao e terminal, as proximas regras serao
+				//descendentes desta, sendo um nivel mais profundas
+				nivel++;
+				
+				//Antes de chamar o metodo recursivamente, atualiza a variavel de
+				//posicao, para que a busca continue no proximo item.
+				posicao = i+1;
+				
+				//Adiciona no buffer o resutado da chamada recursiva
+				bufferLocal.append(listaRecursiva());
+				
+				//Fecha a lista nao ordenada
+				bufferLocal.append("</ul>");
+				bufferLocal.append("\n");
+				
+				//Fecha o item de lista
+				bufferLocal.append("</li>");
+				bufferLocal.append("\n");
+				
+				//Atualiza a variavel de busca, para que o metodo nao passe
+				//pelos mesmos itens que o metodo recursivo ja passou
+				i = posicao;
+			}
+			
+			//Se o nivel diminuiu, significa que saimos de uma regra nao terminal
+			//e consequentemente que a execucao atual e uma recursao.
+			//Portanto, deve ser retornada a construcao atual da lista.
+			else if (novoNivel < nivel){
+				
+				//Se estamos saindo da recursao, significa que estamos
+				//voltando um nivel de profundidade, entao a variavel de
+				//nivel precisa ser atualizada de acordo
+				nivel--;
+				
+				//Atualiza a possicao atual, para que o metodo superior
+				//continue onde a recursao parou. E subitraido 1 para
+				//conpensar o i++ do loop for.
+				posicao = i-1;
+				
+				return bufferLocal.toString();
+				
+			}
+			
+		}
+		
+		return bufferLocal.toString();
 	}
 	
 	/**
