@@ -6,9 +6,9 @@ Possui duas aplicações de teste Java: uma executa em um console, a outra e um 
 
 Para todos os casos, é assumido o padrão de codificação Unicode UTF-8. Sendo assim, não será dado suporte a “Collating Sequences” e “Character Equivalents” no padrão POSIX. Veja uma explicação [aqui (inglês)](http://www.regular-expressions.info/posixbrackets.html).
 
-## Aplicações  de Teste
+##Aplicações  de Teste
 
-### Console
+###Console
 
 É um JAR executável que recebe os seguintes comandos:
 
@@ -37,12 +37,6 @@ a(b|c)
 
 Adicionar um argumento de visualização faz com que a expressão não seja traduzida para linguagem natural.
 
-### Web
-
-É uma aplicação WEB, que consiste de uma pagina HTML com um formulário simples, e um servidor Tomcat, que faz uso de servlets para fazer a tradução do texto submetido, retornando o resultado ao navegador.
-
-Este servidor simples pode ser obtido pelo arquivo `regex-server-test.war`.
-
 ## Changelog
 
 Padrão `DD/MM/AAAA` para as datas e padrão `X.Y.Z` para o versionamento, onde:
@@ -50,10 +44,6 @@ Padrão `DD/MM/AAAA` para as datas e padrão `X.Y.Z` para o versionamento, onde:
 - **X**: Versões finais
 - **Y**: Alterações na gramática
 - **Z**: Alterações no caso de teste
-
-2.1.5 (07/05/2015)
-
-- Adicionado caso de teste com aplicação web
 
 2.1.4 (30/04/2015)
 
