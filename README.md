@@ -2,7 +2,7 @@
 
 Gramática ANTLR que define expressões regulares no padrão  [POSIX ERE (inglês)](http://pubs.opengroup.org/onlinepubs/9699919799/basedefs/V1_chap09.html) . 
 
-Possui duas aplicações de teste Java: uma executa em um console, a outra e um servidor web. Ambas realizam a tradução de expressões regulares para linguagem natural em estrutura de árvore, fazendo uso de classes geradas pelo ANTLR.
+Possui uma aplicação de teste Java que executa no console. Ela realiza a tradução de expressões regulares para linguagem natural em estrutura de árvore, fazendo uso de classes geradas pelo ANTLR.
 
 Para todos os casos, é assumido o padrão de codificação Unicode UTF-8. Sendo assim, não será dado suporte a “Collating Sequences” e “Character Equivalents” no padrão POSIX. Veja uma explicação [aqui (inglês)](http://www.regular-expressions.info/posixbrackets.html).
 
@@ -44,6 +44,15 @@ Padrão `DD/MM/AAAA` para as datas e padrão `X.Y.Z` para o versionamento, onde:
 - **X**: Versões finais
 - **Y**: Alterações na gramática
 - **Z**: Alterações no caso de teste
+
+2.1.7 (09/05/2015)
+
+- Corrigidas acentuações
+- Projeto e pacotes renomeados
+
+2.1.5 (08/05/2015)
+
+- Corrigida tradução para listas HTML
 
 2.1.4 (30/04/2015)
 

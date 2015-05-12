@@ -17,7 +17,7 @@ DASH            : '-'   ;
 CIRCUMFLEX      : '^'   ;
 DOLAR           : '$'   ;
 PIPE            : '|'   ;
-GROUPOPEN       : '('   ;
+GROUPOPEN       : '('   ; 
 GROUPCLOSE      : ')'   ;
 ESCAPE          : '\\'  ;  //OBS: Apenas uma barra invertida
 DIGIT           : [0-9] ;  //Digitos de 0 a 9
