@@ -8,7 +8,7 @@ import gerado.RegularExpressionEREParser.*;
 /**
  * Utiliza o padrao Visitor para "visitar" uma parse tree e,
  * para cada no diferente da arvore, armazena uma traducao equivalente
- * em linguagem natural, em estrutura de arvore com texto identado.<br>
+ * em linguagem natural.<br>
  * <br>
  * O metodo visit() recebe uma parse tree e realiza a traducao. O resultado
  * e armazenado em uma variavel da classe.<br>
@@ -162,7 +162,7 @@ public class Tradutor extends RegularExpressionEREBaseVisitor<Void> {
 	@Override
 	public Void visitMultiple(MultipleContext ctx) {
 		
-		armazena(RegraRegex.MULTIPLE, ctx.getText(), "Uma das opções: ", false);
+		armazena(RegraRegex.MULTIPLE, ctx.getText(), "Uma das opções:", false);
 		
 		nivelAtual++;
 		
@@ -375,7 +375,7 @@ public class Tradutor extends RegularExpressionEREBaseVisitor<Void> {
 	@Override
 	public Void visitNegativeList(NegativeListContext ctx) {
 		
-		armazena(RegraRegex.NEGATIVE_LIST, ctx.getText(), "Qualquer caractere que n�o seja:", false);
+		armazena(RegraRegex.NEGATIVE_LIST, ctx.getText(), "Qualquer caractere que não seja:", false);
 		
 		nivelAtual++;
 		visitChildren(ctx);

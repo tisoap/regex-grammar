@@ -114,25 +114,22 @@ public class Regex {
 	 * Construtor que inicializa as variaveis da classe.
 	 * 
 	 * @param input Uma String que contem uma expressao regular
+	 * @throws IOException 
 	 */
-	public Regex(String input){
+	public Regex(String input) throws IOException{
 		
 		//Armazena a expressao recebida
 		setRegularExpresion(input);
 		
+		//Tenta incializar o parser e o lexer 
+		inicializar();
+	}
+	
+	/**
+	 * Construtor vazio.
+	 */
+	public Regex(){
 		
-		try {
-			//Tenta incializar o parser e o lexer 
-			inicializar();
-		
-		} catch (IOException e) {
-			
-			//Imprime uma mensagem de erro se nao conseguir carregar os arquivos necessarios
-			
-			System.err.println("Erro de disco ao tentar carregar os arquivos '.tokens'");
-			e.printStackTrace();
-			return;
-		}
 	}
 	
 	
@@ -145,7 +142,7 @@ public class Regex {
 	 *  Sao utilizados arquivos texto '.tokens'
 	 *  com informacoes sobre os tokens aceitos pela gramatica.
 	 */
-	private void inicializar()
+	public void inicializar()
 			throws IOException {
 		
 		// Cria um stream de chars a partir de um texto digitado pelo usuario
@@ -174,7 +171,7 @@ public class Regex {
 	 * 
 	 * @return Verdadeiro se estiver correta, Falso caso contrario.
 	 */
-	private boolean validar() {
+	public boolean validar() {
 		
 		//Realiza a analise de estrutura
 		parseTreeContext = parser.expression();

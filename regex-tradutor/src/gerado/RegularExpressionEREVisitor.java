@@ -1,6 +1,4 @@
-// Generated from RegularExpressionERE.g4 by ANTLR 4.5
-
-	package gerado;
+package gerado;
 
 import org.antlr.v4.runtime.tree.ParseTreeVisitor;
 
@@ -270,6 +268,12 @@ public interface RegularExpressionEREVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitXdigit(RegularExpressionEREParser.XdigitContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link RegularExpressionEREParser#errorClass}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitErrorClass(RegularExpressionEREParser.ErrorClassContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link RegularExpressionEREParser#anychar}.
 	 * @param ctx the parse tree

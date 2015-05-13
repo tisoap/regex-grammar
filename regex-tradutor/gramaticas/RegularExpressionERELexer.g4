@@ -17,7 +17,7 @@ DASH            : '-'   ;
 CIRCUMFLEX      : '^'   ;
 DOLAR           : '$'   ;
 PIPE            : '|'   ;
-GROUPOPEN       : '('   ; 
+GROUPOPEN       : '('   ;
 GROUPCLOSE      : ')'   ;
 ESCAPE          : '\\'  ;  //OBS: Apenas uma barra invertida
 DIGIT           : [0-9] ;  //Digitos de 0 a 9
@@ -60,6 +60,7 @@ PRINT       : 'print'  ;
 PUNCT       : 'punct'  ;
 UPPER       : 'upper'  ;
 XDIGIT      : 'xdigit' ;
+ERRORCLASS  : ~[]      ;
 
 //Sai do modo CLASS quando encontra o fechamento da classe
 CLASSCLOSE  : ':]' -> mode(DEFAULT_MODE) ;

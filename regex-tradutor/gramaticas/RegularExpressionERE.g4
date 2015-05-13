@@ -16,11 +16,6 @@ grammar RegularExpressionERE;
 //Utilizar os tokens do lexer 'RegularExpressionsERELexer'
 options { tokenVocab=RegularExpressionERELexer; }
 
-//Adiciona o nome do pacote nas classes Java geradas
-@header {
-	package gerado;
-}
-
 //Adiciona os metodos de validacao nas classes Java geradas
 @members {
 	
@@ -259,7 +254,7 @@ listCharacter : DIGIT
 //Uma classe de caracteres POSIX e o nome da classe entre [: e :]
 charclass: CLASSOPEN classname CLASSCLOSE;
 
-//Uma classe pode ser: 
+//Uma classe pode ser:
 classname : alnum         //Caracteres alphanumericos
           | alpha         //Caracteres alfabeticos
           | blank         //Espacos e tabulacoes
@@ -272,6 +267,7 @@ classname : alnum         //Caracteres alphanumericos
           | spaceclass    //Caracteres de espaco branco
           | upper         //Letras maiusculas
           | xdigit        //Digitos hexadecimais
+          | errorClass    //Classe nao existente
           ;
 
 //A aplicacao precisa saber o tipo da classe, por isso sao usadas
@@ -288,6 +284,9 @@ punct       : PUNCT      ;
 spaceclass  : SPACECLASS ;
 upper       : UPPER      ;
 xdigit      : XDIGIT     ;
+errorClass  : ERRORCLASS+
+              {notifyErrorListeners("Classe nao existe.");}
+              ;
 
 
 //O elemento que representa qualquer caractere
