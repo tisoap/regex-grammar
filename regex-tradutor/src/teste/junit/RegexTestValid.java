@@ -11,31 +11,38 @@ import org.junit.Test;
 import regex.Regex;
 
 /**
- * Testes JUnit para a classe Regex.
+ * Testes JUnit para a classe Regex. Testa se o algoritimo identifica
+ * corretamente expressoes corretas e erradas.
  * 
  * @author Tiso
  *
  */
-public class RegexTest {
+public class RegexTestValid {
 	
 	boolean erro;
 	private Regex teste;
-	private String expressao = "a|b";
-	
-	private String[] expressoesErradas = {
-			"a++",
-			"[z-a]",
-			"r{9001,0}",
-			"[:bla:]",
-			"[-----]"
-			};
 	
 	private String[] expressoesCorretas = {
 			"abc(def(hij))lm+",
 			"[a-z]*gf+[*=]",
 			"[---]",
 			"(f){2,4}",
-			"digit[:digit:]"
+			"digit[[:digit:]+]+",
+			"\\+{5}",
+			"\\\\"
+			};
+	
+	private String[] expressoesErradas = {
+			"a++",
+			"abc(",
+			"(abc",
+			"[z-a]",
+			"r{9001,0}",
+			"[:digit:]",
+			"[[:bla:]]",
+			"[-----]",
+			"[[:+:]]",
+			"\\"
 			};
 	
 	/**
@@ -51,9 +58,10 @@ public class RegexTest {
 	 * Metodo de teste para {@link regex.Regex#validar()}.
 	 */
 	@Test
-	public void testValidar() {	
+	public void testValidar() {
 		
 		System.out.println("Testando expressoes corretas:");
+		
 		for (String string : expressoesCorretas) {
 			System.out.println(string);
 			
@@ -69,7 +77,7 @@ public class RegexTest {
 			assertTrue("Essa expressao e correta",erro);
 		}
 		
-		System.out.println("");
+		System.out.println();
 		
 		System.out.println("Testando expressoes erradas:");
 		for (String string : expressoesErradas) {
@@ -86,23 +94,6 @@ public class RegexTest {
 			erro = teste.validar();
 			assertFalse("Esta expressao e errada.",erro);
 		}
-	}
-	
-	/**
-	 * Metodo de teste para {@link regex.Regex#traduzir()}.<br>
-	 * Testa apenas timeout.
-	 */
-	@Test(timeout=200)
-	public void testTraduzir(){
-		
-		try {
-			teste = new Regex(expressao);
-		} catch (IOException e) {
-			fail("Erro de IO.");
-		}
-		
-		teste.traduzir();
-		
 	}
 	
 	/**

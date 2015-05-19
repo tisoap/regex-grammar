@@ -49,11 +49,10 @@ expression : group                   //Um grupo
            | multiple                //Multiplas opcoes
            | anchor                  //Uma posicao
            | repetition              //Uma repeticao
-           | expression expression   //Varias exprecoes regulares
            | list                    //Uma lista de caracteres
-           | charclass               //Uma classe de caracteres
            | anychar                 //Qualquer caractere
            | characters              //Caracteres em sequencia
+           | expression expression   //Varias exprecoes regulares
            
            //Regra especial para ignorar alguns caracteres
            | WS
@@ -71,7 +70,6 @@ subExpression : group                         //Um grupo de captura
               | repetition                    //Repeticoes
               | subExpression subExpression   //Varias subexprecoes
               | list                          //Uma lista de possiveis caracteres
-              | charclass                     //Uma classe de caracteres
               | anychar                       //Qualquer caractere
               | characters                    //Caracteres em sequencia
               ;
@@ -96,7 +94,6 @@ repetition : quantified quantifier ;
 //So e possivel quantificar itens individuais
 quantified : group
            | list
-           | charclass
            | anychar
            | escaped
            | character
