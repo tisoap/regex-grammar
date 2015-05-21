@@ -268,7 +268,8 @@ classname : alnum         //Caracteres alphanumericos
           ;
 
 //A aplicacao precisa saber o tipo da classe, por isso sao usadas
-//varia regras de parser.
+//varia regras de parser, para que sejam gerados os visitors para
+//cada tipo de classe.
 alnum       : ALNUM      ;
 alpha       : ALPHA      ;
 blank       : BLANK      ;

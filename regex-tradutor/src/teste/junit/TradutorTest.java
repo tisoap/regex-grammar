@@ -115,7 +115,9 @@ public class TradutorTest {
 			
 			assertEquals(
 					"As traducoes devem ser iguais.",
-					traducoes[i], traducao.getText());
+					traducoes[i],
+					traducao.getText()
+					);
 			
 			//System.out.println(traducao.getText());
 		}

@@ -19,9 +19,11 @@ import regex.Regex;
  */
 public class RegexTestValid {
 	
-	boolean erro;
+	private boolean erro;
 	private Regex teste;
 	
+	/** Array de Strings contendo
+	 * expressoes regulares sintaticamente corretas. */
 	private String[] expressoesCorretas = {
 			"abc(def(hij))lm+",
 			"[a-z]*gf+[*=]",
@@ -32,6 +34,8 @@ public class RegexTestValid {
 			"\\\\"
 			};
 	
+	/** Array de Strings contendo
+	 * expressoes regulares sintaticamente erradas. */
 	private String[] expressoesErradas = {
 			"a++",
 			"abc(",
@@ -46,6 +50,8 @@ public class RegexTestValid {
 			};
 	
 	/**
+	 * Executa antes da execucao de cada teste.
+	 * 
 	 * @throws java.lang.Exception
 	 */
 	@Before
@@ -55,7 +61,10 @@ public class RegexTestValid {
 	}
 
 	/**
-	 * Metodo de teste para {@link regex.Regex#validar()}.
+	 * Metodo de teste para {@link regex.Regex#validar()}.<br>
+	 * <br>
+	 * Testa se o algoritimo consegue identificar corretamente
+	 * expressoes regulares corretas e incorretas.
 	 */
 	@Test
 	public void testValidar() {
@@ -63,6 +72,7 @@ public class RegexTestValid {
 		System.out.println("Testando expressoes corretas:");
 		
 		for (String string : expressoesCorretas) {
+			
 			System.out.println(string);
 			
 			teste.setRegularExpresion(string);
@@ -74,13 +84,18 @@ public class RegexTestValid {
 			}
 			
 			erro = teste.validar();
+			
 			assertTrue("Essa expressao e correta",erro);
 		}
+		
 		
 		System.out.println();
 		
 		System.out.println("Testando expressoes erradas:");
+		
+		
 		for (String string : expressoesErradas) {
+			
 			System.out.println(string);
 			
 			teste.setRegularExpresion(string);
@@ -92,11 +107,14 @@ public class RegexTestValid {
 			}
 			
 			erro = teste.validar();
+			
 			assertFalse("Esta expressao e errada.",erro);
 		}
 	}
 	
 	/**
+	 * Executa depois de cada teste.
+	 * 
 	 * @throws java.lang.Exception
 	 */
 	@After

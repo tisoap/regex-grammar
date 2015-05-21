@@ -14,7 +14,13 @@ import org.junit.runner.RunWith;
 import regex.Regex;
 
 /**
- * Testes JUnit para a classe Regex.
+ * Teste JUnit para a classe Regex. Testa o tempo de execucao para a traducao
+ * de diferentes expressoes regulares.<br>
+ * <br>
+ * Utiliza a anotacao RunWith(Theories), que permite que o teste seja executado
+ * para cada item de uma colecao de dados finita.<br>
+ * <br>
+ * http://junit.org/apidocs/org/junit/experimental/theories/Theories.html
  * 
  * @author Tiso
  *
@@ -25,17 +31,23 @@ public class RegexTestTime {
 	private Regex teste;
 	private long startTime, stopTime, elapsedTime;
 	
+	/** Colecao de dados (expressoes) que serao utilizadas nos testes. */
    @DataPoints
    public static String[] strings = {
-	   "a", //1
-	   "aa", //2
-	   "aaaa", //4
-	   "aaaaaaaa", //8
-	   "aaaaaaaaaaaaaaaa", //16
-	   "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa" //32
+	   
+	   //Diferentes quantidades do caractere 'a'
+	   "a",									//  1
+	   "aa",								//  2
+	   "aaaa",								//  4
+	   "aaaaaaaa",							//  8
+	   "aaaaaaaaaaaaaaaa",					// 16
+	   "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"	// 32
+	   
 	   };
 	
 	/**
+	 * Executa antes da execucao de cada teste.
+	 * 
 	 * @throws java.lang.Exception
 	 */
 	@Before
@@ -46,7 +58,10 @@ public class RegexTestTime {
 	
 	/**
 	 * Metodo de teste para {@link regex.Regex#traduzir()}.<br>
-	 * Testa apenas timeout.
+	 * <br>
+	 * Testa o tempo de execucao da traducao de uma exprecao.
+	 * Vai utilizar qualquer variavel marcada como @DataPoints 
+	 * para os testes.
 	 */
 	@Theory
 	public void testTraduzir(String expressao){
@@ -73,6 +88,8 @@ public class RegexTestTime {
 	}
 	
 	/**
+	 * Executa depois da execucao de cada teste.
+	 * 
 	 * @throws java.lang.Exception
 	 */
 	@After
