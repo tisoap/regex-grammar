@@ -49,10 +49,10 @@ expression : group                   //Um grupo
            | multiple                //Multiplas opcoes
            | anchor                  //Uma posicao
            | repetition              //Uma repeticao
+           | expression expression   //Varias exprecoes regulares
            | list                    //Uma lista de caracteres
            | anychar                 //Qualquer caractere
            | characters              //Caracteres em sequencia
-           | expression expression   //Varias exprecoes regulares
            
            //Regra especial para ignorar alguns caracteres
            | WS
@@ -282,6 +282,9 @@ punct       : PUNCT      ;
 spaceclass  : SPACECLASS ;
 upper       : UPPER      ;
 xdigit      : XDIGIT     ;
+
+//Se for digitada um nome de classe que nao existe,
+//levanta um erro
 errorClass  : ERRORCLASS+
               {notifyErrorListeners("Classe nao existe.");}
               ;

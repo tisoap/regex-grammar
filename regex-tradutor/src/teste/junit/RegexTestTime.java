@@ -41,8 +41,7 @@ public class RegexTestTime {
 	   "aaaa",								//  4
 	   "aaaaaaaa",							//  8
 	   "aaaaaaaaaaaaaaaa",					// 16
-	   "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"	// 32
-	   
+	   "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",	// 32
 	   };
 	
 	/**

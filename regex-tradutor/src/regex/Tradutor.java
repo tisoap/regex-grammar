@@ -198,18 +198,24 @@ public class Tradutor extends RegularExpressionEREBaseVisitor<Void> {
 		int pai   = ctx.getParent().getRuleIndex();
 		int filho = ctx.getRuleIndex();
 		
-		//Se o pai nao for uma SubExpression, aumenta o contador
+		//Se o pai nao for uma SubExpression
 		if (pai != filho){
 			contadorOpcoes++;
 			
 			armazena(RegraRegex.SUB_EXPRESSION, ctx.getText(), "Opção " + contadorOpcoes + ":", false);
 			
 			nivelAtual++;
+			
+			visitChildren(ctx);
+			
+			nivelAtual--;
 		}
 		
-		visitChildren(ctx);
-		
-		nivelAtual--;
+		//Se o pai for uma subexpressao
+		else {
+			
+			visitChildren(ctx);
+		}
 		
 		return null;
 	}

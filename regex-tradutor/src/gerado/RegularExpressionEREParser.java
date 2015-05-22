@@ -255,9 +255,9 @@ public class RegularExpressionEREParser extends Parser {
 					_localctx = new ExpressionContext(_parentctx, _parentState);
 					pushNewRecursionContext(_localctx, _startState, RULE_expression);
 					setState(109);
-					if (!(precpred(_ctx, 2))) throw new FailedPredicateException(this, "precpred(_ctx, 2)");
+					if (!(precpred(_ctx, 5))) throw new FailedPredicateException(this, "precpred(_ctx, 5)");
 					setState(110);
-					expression(3);
+					expression(6);
 					}
 					} 
 				}
@@ -2832,7 +2832,7 @@ public class RegularExpressionEREParser extends Parser {
 	private boolean expression_sempred(ExpressionContext _localctx, int predIndex) {
 		switch (predIndex) {
 		case 0:
-			return precpred(_ctx, 2);
+			return precpred(_ctx, 5);
 		}
 		return true;
 	}
@@ -2913,7 +2913,7 @@ public class RegularExpressionEREParser extends Parser {
 		"\3\2\2\2^\u0158\3\2\2\2`\u015c\3\2\2\2b\u0160\3\2\2\2de\b\2\1\2en\5\b"+
 		"\5\2fn\5\4\3\2gn\5\n\6\2hn\5\20\t\2in\5(\25\2jn\5Z.\2kn\5`\61\2ln\7\26"+
 		"\2\2md\3\2\2\2mf\3\2\2\2mg\3\2\2\2mh\3\2\2\2mi\3\2\2\2mj\3\2\2\2mk\3\2"+
-		"\2\2ml\3\2\2\2ns\3\2\2\2op\f\4\2\2pr\5\2\2\5qo\3\2\2\2ru\3\2\2\2sq\3\2"+
+		"\2\2ml\3\2\2\2ns\3\2\2\2op\f\7\2\2pr\5\2\2\bqo\3\2\2\2ru\3\2\2\2sq\3\2"+
 		"\2\2st\3\2\2\2t\3\3\2\2\2us\3\2\2\2vy\5\6\4\2wx\7\17\2\2xz\5\6\4\2yw\3"+
 		"\2\2\2z{\3\2\2\2{y\3\2\2\2{|\3\2\2\2|\5\3\2\2\2}~\b\4\1\2~\u0085\5\b\5"+
 		"\2\177\u0085\5\n\6\2\u0080\u0085\5\20\t\2\u0081\u0085\5(\25\2\u0082\u0085"+
