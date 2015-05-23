@@ -22,7 +22,6 @@ GROUPCLOSE      : ')'   ;
 ESCAPE          : '\\'  ;  //OBS: Apenas uma barra invertida
 DIGIT           : [0-9] ;  //Digitos de 0 a 9
 
-
 //Entra no modo CLASS quando encontra a abertura de uma classe
 CLASSOPEN  : '[:' -> mode(CLASS) ;
 

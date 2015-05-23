@@ -3,8 +3,7 @@ package regex.transfer;
 import regex.enumType.RegraRegex;
 
 /**
- * Transfer Object que armazena os dados de uma traducao, vindos
- * de um elemento de uma expressao regular.
+ * Transfer Object que armazena as informações de uma traducao.
  * 
  * @author Tiso
  *
@@ -26,6 +25,7 @@ public class TraducaoTO {
 	/** A regra que disparou a traducao. */
 	private RegraRegex tipoRegra;
 	
+	/** Indica se a regra é terminal ou não (se é um nó de árvore ou folha). */
 	private boolean terminal;
 	
 	

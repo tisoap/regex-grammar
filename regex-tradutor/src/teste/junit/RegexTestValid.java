@@ -39,7 +39,7 @@ public class RegexTestValid {
 	private String[] expressoesErradas = {
 			"a++",
 			"abc(",
-			"(abc",
+			"abc)",
 			"[z-a]",
 			"r{9001,0}",
 			"[:digit:]",

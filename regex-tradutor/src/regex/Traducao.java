@@ -78,7 +78,7 @@ public class Traducao {
 	 * ao valor inteiro passado.
 	 * 
 	 * @param n O nivel de identacao desejado
-	 * @return Uma String contendo a identacao
+	 * @return Uma String contendo a identacao em espaços
 	 */
 	private String identacao (int n){
 		
@@ -107,6 +107,7 @@ public class Traducao {
 		buffer.append("<ul>");
 		buffer.append("\n");
 		
+		//
 		buffer.append(listaRecursiva());
 		
 		//Fecha a primeira lista

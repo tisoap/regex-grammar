@@ -137,20 +137,44 @@ firstValue : DIGIT+ ;
 lastValue  : DIGIT+ ;
 
 //Uma lista pode ser positiva ou negativa, e fica entre colchetes
-list : LISTOPEN (negativeList|positiveList) LISTCLOSE ;
+list : 
+       //Previne que sejam criadas listas vazias
+       (LISTOPEN LISTCLOSE | LISTOPEN CIRCUMFLEX LISTCLOSE)
+       {notifyErrorListeners("Lista vazia.");}
+     
+     | LISTOPEN (negativeList|positiveList) LISTCLOSE
+     ;
 
 /**
- * Uma lista negativa e qualquer quantidade de elementos de lista, com ^ no comeco.
- * Pode ou nao conter elementos especiais no inicio e no fim.
+ * Uma lista negativa e um conjunto nao vazio de elementos de lista
+ * precedidos por '^'.
  */
-negativeList : CIRCUMFLEX listFirstElement? listElement*  listLastElement? ;
+negativeList : CIRCUMFLEX listElements ;
 
 /**
- * Uma lista positiva e qualquer quantidade de elementos de lista
- * Pode ou nao conter elementos especiais no inicio e no fim.
+ * Uma lista positiva e um conjunto nao vazio de elementos de lista.
  */
-positiveList : listFirstElement? listElement* listLastElement? ;
+positiveList : listElements ;
 
+/**
+ * Um conjunto de elementos de lista sao um ou mais elementos
+ * de lista.
+ */
+listElements : 
+               //Elementos de lista, podendo ou nao conter casos especiais
+               //de inicio ou fim
+               listFirstElement? listElement+ listLastElement?
+               
+               //Apenas o caso especial de inicio
+             | listFirstElement
+             
+               //Apenas o caso especial de fim
+             | listLastElement
+             
+               //Apenas os casos especiais de inicio e fim
+             | listFirstElement listLastElement
+             
+             ;
 
 //Um elemento de lista pode ser:
 listElement : range            //Uma serie de caracteres
@@ -161,31 +185,35 @@ listElement : range            //Uma serie de caracteres
 /**
  * Uma serie sao dois caracteres separados por um traco.
  * 
- * O proprio caractere de traco pode ser o elemento da direita,
- * mas nao da esquerda.
+ * Os caracteres '-' (traco) e ']' (fecha colchetes) podem ser o 
+ * segundo caractere em uma serie, perdendo assim seu significado
+ * especial dentro de uma lista.
  * 
  * O primeiro caractere deve preceder o segundo. Para garantir isto,
  * a regra abaixo contem um "predicador semantico" (Semantic Predicate),
  * que e uma condicional em linguagem Java no formato {...}? .
  * A regra so sera verdadeira se a condicional for verdadeira.
  */
-range : 
+range :
 	
 	//Armazena o primeiro caractere na variavel local 'a',
 	//e o segundo caractere na variavel local 'b'
 	a=listCharacter DASH b=listCharacter
 	
-	//Semantic Predicate
-	//Compara se o valor 'a' vem antes ou e igual a 'b'
+	//Semantic Predicate: Compara se o valor 'a' vem antes ou e igual a 'b'
 	{vemAntesDe($a.text,$b.text)}?
 	
 	|
 	
-	//O mesmo que a opcao anterior, mas para o caso especial
-	//de traco como sendo o segundo caractere
-	
+	//caso especial de traco como sendo o segundo caractere
 	c=listCharacter DASH d=DASH
 	{vemAntesDe($c.text,$d.text)}?
+	
+	|
+	
+	//caso especial de fecha colchete como sendo o segundo caractere
+	e=listCharacter DASH f=LISTCLOSE
+	{vemAntesDe($e.text,$f.text)}?
 	
 	;
 
@@ -214,9 +242,11 @@ listNoSpecial : LISTCLOSE
  * serie de caracteres.
  */
 listFirstRange : a=LISTCLOSE  DASH  b=DASH          {vemAntesDe($a.text,$b.text)}?
-               | DASH         DASH  DASH            //serie valida em qualquer local
-               | c=LISTCLOSE  DASH  d=listCharacter {vemAntesDe($c.text,$d.text)}?
-               | e=DASH       DASH  f=listCharacter {vemAntesDe($e.text,$f.text)}?
+               | c=DASH       DASH  d=DASH          {vemAntesDe($c.text,$d.text)}?
+               | e=LISTCLOSE  DASH  f=LISTCLOSE     {vemAntesDe($e.text,$f.text)}?
+               | g=DASH       DASH  h=LISTCLOSE     {vemAntesDe($g.text,$h.text)}?
+               | i=LISTCLOSE  DASH  j=listCharacter {vemAntesDe($i.text,$j.text)}?
+               | k=DASH       DASH  l=listCharacter {vemAntesDe($k.text,$l.text)}?
                ;
 
 /**

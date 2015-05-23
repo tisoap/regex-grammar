@@ -6,18 +6,9 @@ import gerado.RegularExpressionEREBaseVisitor;
 import gerado.RegularExpressionEREParser.*;
 
 /**
- * Utiliza o padrao Visitor para "visitar" uma parse tree e,
- * para cada no diferente da arvore, armazena uma traducao equivalente
+ * Utiliza o padrão Visitor para "visitar" uma parse tree e,
+ * para cada nó diferente da árvore, armazena uma tradução equivalente
  * em linguagem natural.<br>
- * <br>
- * O metodo visit() recebe uma parse tree e realiza a traducao. O resultado
- * e armazenado em uma variavel da classe.<br>
- * <br> 
- * Todos os metodos visitor retornam nulo. A traducao pode ser recuperada
- * utilizando o metodo getTraducao().<br>
- * <br>
- * Os metodos visitor que aumentam a identacao sempre vao
- * diminui-la apos visitar todos os seus filhos.<br>
  * <br>
  * @author Tiso
  */
@@ -25,10 +16,10 @@ public class Tradutor extends RegularExpressionEREBaseVisitor<Void> {
 	
 	//  ------- VARIAVEIS  ------- 
 	
-	/** Classe que vai armazenar as traducoes individuais dos metodos visit. */
+	/** Objeto que vai armazenar as traducoes individuais dos metodos visit. */
 	private Traducao traducao = new Traducao();
 	
-	/** O nivel atual na analize da arvore. */
+	/** O nivel de profundidade atual na arvore de analise. */
 	private int nivelAtual = 0;
 	
 	/** A quantidade de grupos de captura encontrados. */
@@ -98,7 +89,7 @@ public class Tradutor extends RegularExpressionEREBaseVisitor<Void> {
         int posicaoAtual = 0;		//Posicao atual no buffer
         char caractereAtual;		//Caractere atual do texto de entrada
         char proximoCaractere;		//Caractere seguinte ao atual do texto de entrada
-        char escape = '\\';			//Apenas uma barra invertida
+        char escape = '\\';			//Barra invertida
         
         //Buffer de String, para fazer a construcao da nova String
         StringBuffer buffer = new StringBuffer(texto.length());
@@ -401,6 +392,18 @@ public class Tradutor extends RegularExpressionEREBaseVisitor<Void> {
 		nivelAtual++;
 		visitChildren(ctx);
 		nivelAtual--;
+		
+		return null;
+	}
+	
+	/**
+	 * Quando visita uma colecao de elementos de lista,
+	 * visita todos os filhos dela.
+	 */
+	@Override
+	public Void visitListElements(ListElementsContext ctx) {
+		
+		visitChildren(ctx);
 		
 		return null;
 	}

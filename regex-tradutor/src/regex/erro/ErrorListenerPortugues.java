@@ -9,7 +9,7 @@ import org.antlr.v4.runtime.*;
  * @author Tiso
  *
  */
-public class ErrorListenerCustomizado extends BaseErrorListener {
+public class ErrorListenerPortugues extends BaseErrorListener {
 	
 	
 	//----- VARIAVEIS ----- 

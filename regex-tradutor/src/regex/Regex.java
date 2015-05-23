@@ -9,7 +9,7 @@ import java.io.IOException;
 import org.antlr.v4.runtime.*;
 
 import regex.erro.ErrorHandlerPortugues;
-import regex.erro.ErrorListenerCustomizado;
+import regex.erro.ErrorListenerPortugues;
 
 /**
  * Realiza a validacao e traducao para linguagem natural de
@@ -39,7 +39,8 @@ public class Regex {
 	/** Instancia do parser da gramatica de expressoes regulares. */
 	private RegularExpressionEREParser parser;
 	
-	/** Instancia da parse tree resultante da avaliacao do parser. */
+	/** Instancia da parse tree resultante da avaliacao do parser. 
+	 *  ExpressionContext é uma classe aninhada de RegularExpressionEREParser. */
 	private ExpressionContext parseTreeContext = null;
 	
 	/** Instancia da classe responsavel pela traducao. */
@@ -49,7 +50,7 @@ public class Regex {
 	private Traducao traducao;
 	
 	/** Listener de erros do parser. */
-	private ErrorListenerCustomizado errorListener;
+	private ErrorListenerPortugues errorListener;
 	
 	
 	// ----- GETTERS -----
@@ -145,23 +146,23 @@ public class Regex {
 	public void inicializar()
 			throws IOException {
 		
-		// Cria um stream de chars a partir de um texto digitado pelo usuario
+		//Cria um stream de chars a partir de um texto digitado pelo usuario
 		input  = new ANTLRInputStream(regularExpresion);
 		
-		// Cria um lexer que recebe o stream de chars
+		//Cria um lexer que recebe o stream de chars
 		lexer  = new RegularExpressionERELexer(input);
 		
-		// Cria um stream de tokens a partir do lexer
+		//Cria um stream de tokens a partir do lexer
 		tokens = new CommonTokenStream(lexer);
 		
-		// Cria um parser que recebe o stream de tokens
+		//Cria um parser que recebe o stream de tokens
 		parser = new RegularExpressionEREParser(tokens);
 		
 		//Troca o Error Listener padrao do parser por um com mensagens em portugues
 		parser.removeErrorListeners();
-		parser.addErrorListener(new ErrorListenerCustomizado());
+		parser.addErrorListener(new ErrorListenerPortugues());
 		
-		// Troca o Error Handler padrao do parser por um com mensagens em portugues		
+		//Troca o Error Handler padrao do parser por um com mensagens em portugues		
 		parser.setErrorHandler(new ErrorHandlerPortugues());
 	}
 	
@@ -178,7 +179,7 @@ public class Regex {
 		
 		//recupera o error listener utilizado pelo parser
 		errorListener = 
-				(ErrorListenerCustomizado) parser.getErrorListeners().get(0);
+				(ErrorListenerPortugues) parser.getErrorListeners().get(0);
 		
 		//Verifica se ocorreram erros
 		if (errorListener.isErro())
@@ -227,13 +228,13 @@ public class Regex {
 	 */
 	public void parseTreeList(){
 		
-		System.out.println("");
+		System.out.println();
 		
 		validar();
 		
 		System.out.println(parseTreeContext.toStringTree());
 		
-		System.out.println("");
+		System.out.println();
 	}
 	
 	/** 

@@ -143,6 +143,12 @@ public interface RegularExpressionEREVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitPositiveList(RegularExpressionEREParser.PositiveListContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link RegularExpressionEREParser#listElements}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitListElements(RegularExpressionEREParser.ListElementsContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link RegularExpressionEREParser#listElement}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
