@@ -15,11 +15,11 @@ public class ErrorListenerPortugues extends BaseErrorListener {
 	//----- VARIAVEIS ----- 
 	
 	/** Texto com a mensagem de erro. */
-	private String errorMessage;
+	private String errorMessage = "";
 	
 	/** Texto com a expressao original e uma linha extra com '^',
 	 * indicando os caracteres problematicos no texto original. */
-	private String errorPosition;
+	private String errorPosition = "";
 	
 	/** Indica se ocorreu ou nao um erro. */
 	private boolean erro = false;
@@ -27,14 +27,35 @@ public class ErrorListenerPortugues extends BaseErrorListener {
 	
 	//----- GETTERS ----- 
 	
+	/**
+	 * 
+	 * @return Valor boleano que indica se ocorreram ou não erros
+	 * durante o processo de criação da árvore de análise.
+	 */
 	public boolean isErro() {
 		return erro;
 	}
-
+	
+	/**
+	 * 
+	 * @return String contendo a mensagem de erro retornada pelo
+	 * parser durante a análise. Será vazia se não ocorreram erros.
+	 */
 	public String getErrorMessage() {
 		return errorMessage;
 	}
 
+	/**
+	 * 
+	 * @return String contendo o texto da expressão regular
+	 * original em uma linha, e na segunda linha uma serie
+	 * de '^' (acento circumflexo) residindo nas mesmas posicoes
+	 * onde foram identificados erros na expressão. Será
+	 * vazia se não ocorreram erros.<br>
+	 * <br>
+	 * Este texto só será útil se exibido em fonte
+	 * monoespaçada.
+	 */
 	public String getErrorPosition() {
 		return errorPosition;
 	}
@@ -57,6 +78,8 @@ public class ErrorListenerPortugues extends BaseErrorListener {
 		
 		erro = true;
 		
+		//Troca a mensagem de erro padrão de predicador semantico
+		//por uma em portugues.
 		if (e instanceof FailedPredicateException)
 			errorMessage = "Os valores inseridos não são válidos.";
 		else

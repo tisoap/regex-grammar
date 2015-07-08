@@ -117,7 +117,8 @@ public class Regex {
 	 * @param input Uma String que contem uma expressao regular
 	 * @throws IOException 
 	 */
-	public Regex(String input) throws IOException{
+	public Regex(String input)
+			throws IOException{
 		
 		//Armazena a expressao recebida
 		setRegularExpresion(input);
@@ -127,7 +128,7 @@ public class Regex {
 	}
 	
 	/**
-	 * Construtor vazio.
+	 * Construtor vazio. Utilizado pelas classes de teste JUnit.
 	 */
 	public Regex(){
 		
@@ -140,8 +141,10 @@ public class Regex {
 	 * Inicializa o parser e o lexer.
 	 * 
 	 * @throws IOException 
-	 *  Sao utilizados arquivos texto '.tokens'
-	 *  com informacoes sobre os tokens aceitos pela gramatica.
+	 *  Sao utilizados arquivos de texto '.tokens'
+	 *  com informacoes sobre os tokens aceitos pela gramatica,
+	 *  
+	 *  Logo é possível que ocorra um erro de I/O.
 	 */
 	public void inicializar()
 			throws IOException {
@@ -167,19 +170,31 @@ public class Regex {
 	}
 	
 	/**
-	 * Avalia a expressao regular recebida pelo construtor da classe
-	 * e inicializa a parse tree.
+	 * Realiza a análise de estrutura da expressão regular,
+	 * utilizando o parser. Gera uma árvore de análise.
 	 * 
-	 * @return Verdadeiro se estiver correta, Falso caso contrario.
+	 * @return Falso se ocorreram erros durante o processo de análise.
+	 * Verdadeiro caso contrário.
 	 */
 	public boolean validar() {
 		
 		//Realiza a analise de estrutura
 		parseTreeContext = parser.expression();
 		
-		//recupera o error listener utilizado pelo parser
+		/**
+		 * Recupera o error listener utilizado pelo parser.
+		 * 
+		 * Um parser pode ter mais de um error listener,
+		 * mas no caso só existe um atrelado a ele,
+		 * que é o ErrorListenerPortugues adcionado pelo
+		 * metodo Inicializar() desta classe.
+		 * 
+		 * Logo, só é necessário recuperar o primeiro 
+		 * error listener (primeiro indice incia em 0)
+		 * e fazer um cast para ErrorListenerPortugues.
+		 */
 		errorListener = 
-				(ErrorListenerPortugues) parser.getErrorListeners().get(0);
+			(ErrorListenerPortugues) parser.getErrorListeners().get(0);
 		
 		//Verifica se ocorreram erros
 		if (errorListener.isErro())
@@ -198,19 +213,20 @@ public class Regex {
 		//Cria uma nova instancia da classe responsavel pela traducao
 		tradutor = new Tradutor();
 		
-		//Cria a parse tree
+		//Cria a arvore de análise e retorna um boolean
+		//indicando se ocorreram erros durante o processo.
 		boolean semErroAnalise = validar();
 		
-		//Cria a traducao da expressao, utilizando a parse tree gerada
+		//Cria a traducao da expressao, utilizando a arvore de análise gerada
 		traducao = tradutor.traduzir(parseTreeContext);
 		
 		//Se ocorreran erros durante a analise, armazena as informacoes dos erros
 		if (!semErroAnalise){
 			
-			//recupera a mensagem de erro do listener
+			//Recupera a mensagem de erro do listener
 			String erro = errorListener.getErrorMessage();
 			
-			//recupera a mensagem indicando a posicao do erro
+			//Recupera a mensagem indicando a posicao do erro
 			String posicao = errorListener.getErrorPosition();
 			
 			//Popula o objeto traducao com as informacoes de erro
