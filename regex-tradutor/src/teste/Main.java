@@ -90,8 +90,6 @@ public class Main {
 			//Se nao ocorreram erros, exibe a traducao
 			else {
 				System.out.println(traducao.getText());
-				System.out.println();
-				System.out.println(traducao.getJSON().toString());
 			}
 			
 			System.out.println("");

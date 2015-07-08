@@ -266,7 +266,18 @@ public class Traducao {
 	 * http://docs.dhtmlx.com/tree__syntax_templates.html#jsonformattemplate
 	 */
 	public String getJSONString(){
-		return getJSON().toString();
+		
+		//Recupera um objeto JSON em formato String
+		String jsonString = getJSON().toString();
+		
+		String quote = "\"";
+		String escape = "\\";
+		String escapedQuote = escape+escape+quote;
+		
+		//Escapa todas as aspas duplas com uma barra invertida
+		jsonString = jsonString.replaceAll(quote,escapedQuote);
+		
+		return jsonString;
 	}
 	
 	/**
