@@ -90,6 +90,7 @@ public class Main {
 			//Se nao ocorreram erros, exibe a traducao
 			else {
 				System.out.println(traducao.getText());
+				System.out.println(traducao.getJSONString());
 			}
 			
 			System.out.println("");

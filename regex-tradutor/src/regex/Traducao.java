@@ -406,23 +406,29 @@ public class Traducao {
 		
 		//Adiciona os objetos com as informacoes adicionais
 		arrayBuilder
+		
+			//Nivel de profundidade da arvore em que o elemento foi encontrado
+			.add(factory.createObjectBuilder()
+				.add("name", "nivel")
+				.add("content",to.getNivel())
+			)
 			
 			//Texto original antes de ser traduzido
 			.add(factory.createObjectBuilder()
-				.add("name", "Original")
-				.add("value",to.getOriginal())
+				.add("name", "original")
+				.add("content",to.getOriginal())
 			)
 			
 			//Regra que disparou a traducao
 			.add(factory.createObjectBuilder()
-				.add("name", "TipoRegra")
-				.add("value",to.getTipoRegra().toString())
+				.add("name", "regra")
+				.add("content",to.getTipoRegra().toString())
 			)
 			
 			//Se a regra e terminal ou nao
 			.add(factory.createObjectBuilder()
-				.add("name", "isTerminal")
-				.add("value",to.isTerminal())
+				.add("name", "terminal")
+				.add("content",to.isTerminal())
 			)
 		;
 		
