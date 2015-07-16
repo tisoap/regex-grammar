@@ -23,15 +23,11 @@ public class Traducao {
 	
 	private JsonBuilderFactory factory;
 	
-	private JsonObject json;
-	
 	private boolean ocorreuErro = false;
 	
 	private String mensagemErro = "";
 	
 	private String posicaoErro = "";
-	
-	private StringBuffer buffer;
 	
 	private int posicao, nivel, tamanho, contadorId;
 	
@@ -106,7 +102,7 @@ public class Traducao {
 		posicao	= 0;
 		nivel	= 0;
 		tamanho = traducoes.size();
-		buffer	= new StringBuffer();
+		StringBuffer buffer	= new StringBuffer();
 		
 		//Abre a primeira lista
 		buffer.append("<ul>");
@@ -223,7 +219,7 @@ public class Traducao {
 	 */
 	public String getText(){
 		
-		buffer = new StringBuffer();
+		StringBuffer buffer = new StringBuffer();
 		int nivel;
 		
 		for (TraducaoTO to : traducoes) {
@@ -244,7 +240,7 @@ public class Traducao {
 	 */
 	public String getTextWindows(){
 		
-		buffer = new StringBuffer();
+		StringBuffer buffer = new StringBuffer();
 		int nivel;
 		
 		for (TraducaoTO to : traducoes) {
@@ -302,7 +298,7 @@ public class Traducao {
 		inicio.add("item",jsonRecursivo());
 		
 		//Constroi o objeto JSON
-		json = inicio.build();
+		JsonObject json = inicio.build();
 		
 		return json;
 	}

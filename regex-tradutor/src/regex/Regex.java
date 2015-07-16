@@ -150,22 +150,29 @@ public class Regex {
 			throws IOException {
 		
 		//Cria um stream de chars a partir de um texto digitado pelo usuario
+		/** ----- DS 4-5 ----- **/
 		input  = new ANTLRInputStream(regularExpresion);
 		
 		//Cria um lexer que recebe o stream de chars
+		/** ----- DS 6-7 ----- **/
 		lexer  = new RegularExpressionERELexer(input);
 		
 		//Cria um stream de tokens a partir do lexer
+		/** ----- DS 8-9 ----- **/
 		tokens = new CommonTokenStream(lexer);
 		
 		//Cria um parser que recebe o stream de tokens
+		/** ----- DS 10-11 ----- **/
 		parser = new RegularExpressionEREParser(tokens);
 		
 		//Troca o Error Listener padrao do parser por um com mensagens em portugues
 		parser.removeErrorListeners();
+		
+		/** ----- DS 12-13 ----- **/
 		parser.addErrorListener(new ErrorListenerPortugues());
 		
 		//Troca o Error Handler padrao do parser por um com mensagens em portugues		
+		/** ----- DS 14-15 ----- **/
 		parser.setErrorHandler(new ErrorHandlerPortugues());
 	}
 	
@@ -179,6 +186,7 @@ public class Regex {
 	public boolean validar() {
 		
 		//Realiza a analise de estrutura
+		/** ----- DS 22-25 ----- **/
 		parseTreeContext = parser.expression();
 		
 		/**
@@ -193,10 +201,13 @@ public class Regex {
 		 * error listener (primeiro indice incia em 0)
 		 * e fazer um cast para ErrorListenerPortugues.
 		 */
+		
+		/** ----- DS 26-27 ----- **/
 		errorListener = 
 			(ErrorListenerPortugues) parser.getErrorListeners().get(0);
 		
 		//Verifica se ocorreram erros
+		/** ----- DS 28-29 ----- **/
 		if (errorListener.isErro())
 			return false;
 		else
@@ -211,6 +222,7 @@ public class Regex {
 	public Traducao traduzir(){
 		
 		//Cria uma nova instancia da classe responsavel pela traducao
+		/** ----- DS 18 ----- **/
 		tradutor = new Tradutor();
 		
 		//Cria a arvore de análise e retorna um boolean
@@ -218,6 +230,7 @@ public class Regex {
 		boolean semErroAnalise = validar();
 		
 		//Cria a traducao da expressao, utilizando a arvore de análise gerada
+		/** ----- DS 30-35 ----- **/
 		traducao = tradutor.traduzir(parseTreeContext);
 		
 		//Se ocorreran erros durante a analise, armazena as informacoes dos erros
