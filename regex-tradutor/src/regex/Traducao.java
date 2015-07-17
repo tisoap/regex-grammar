@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.json.*;
 
+import regex.enumType.RegraRegex;
 import regex.transfer.TraducaoTO;
 
 /**
@@ -427,6 +428,19 @@ public class Traducao {
 				.add("content",to.isTerminal())
 			)
 		;
+		
+		//Se a traducao for do tipo "CHARACTERS"
+		if (to.getTipoRegra() == RegraRegex.CHARACTERS) {
+			
+			//O texto que compoe a regra CHARACTERS
+			arrayBuilder.add(
+				factory.createObjectBuilder()
+					.add("name", "texto")
+					.add("content",to.getOriginal()
+				)
+			);
+			
+		}
 		
 		return arrayBuilder;
 	}

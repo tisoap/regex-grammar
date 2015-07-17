@@ -12,12 +12,17 @@ public class UserdataTO {
 	/** A regra na qual o elemento pertence */
 	private RegraRegex tipoRegra;
 	
-	/** Indica se a regra é terminal ou não */
+	/** Indica se o elemento é terminal ou não */
 	private boolean terminal;
 	
+	/** O texto do elemento (se aplicavel) */
+	private String texto = null;
 	
 	// ----- GETTERS -----
 	
+	public String getTexto() {
+		return texto;
+	}
 	public int getNivel() {
 		return nivel;
 	}
@@ -39,6 +44,9 @@ public class UserdataTO {
 	}
 	public void setTerminal(boolean terminal) {
 		this.terminal = terminal;
+	}
+	public void setTexto(String texto) {
+		this.texto = texto;
 	}
 	
 }
