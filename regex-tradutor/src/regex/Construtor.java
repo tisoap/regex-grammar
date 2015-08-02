@@ -133,7 +133,10 @@ public class Construtor {
 	 * Estas informacoes sao os metadados de um no da arvore.<br>
 	 * <br>
 	 * Cada objeto deste array deve ser composto por dois pares de chave/valor.
-	 * As chaves serao sempre "name" e "content".<br>
+	 * As chaves serao sempre "name" e "content". Este e o padrao definido
+	 * pela biblioteca DHTMLX Tree:<br>
+	 * 
+	 * http://docs.dhtmlx.com/tree__syntax_templates.html#jsonformattemplate
 	 * 
 	 * @param userdata Um array de objetos JSON
 	 * @return Um objeto de transferencia UserdataTO
@@ -145,7 +148,7 @@ public class Construtor {
 		String		content;
 		RegraRegex	regra;
 		boolean		terminal;
-		int			nivel;
+		int			nivel, numero1, numero2;
 		
 		//Itera todos os valores do array
 		for (JsonValue jsonValue : userdata) {
@@ -183,6 +186,24 @@ public class Construtor {
 				
 				content = data.getString("content");
 				to.setTexto(content);
+			}
+			
+			//Checa se o objeto tem uma chave "name" com valor "numero1"
+			//OBS: Este par so vai existir em um no do tipo EXACT, AT_LEAST ou BETWEEN
+			else if( data.getString("name").equals("numero1") ){
+				
+				content = data.getString("content");
+				numero1 = Integer.parseInt(content);
+				to.setNumero1(numero1);
+			}
+			
+			//Checa se o objeto tem uma chave "name" com valor "numero1"
+			//OBS: Este par so vai existir em um no do tipo BETWEEN
+			else if( data.getString("name").equals("numero2") ){
+				
+				content = data.getString("content");
+				numero2 = Integer.parseInt(content);
+				to.setNumero2(numero2);
 			}
 		}
 		
@@ -228,20 +249,51 @@ public class Construtor {
 	 */
 	private static String textoNaoTerminal(JsonObject node, UserdataTO nodeData){
 		
-		String		 texto	= null;
 		StringBuffer buffer	= new StringBuffer();
 		RegraRegex	 regra	= nodeData.getTipoRegra();
 		JsonArray	 filhos	= node.getJsonArray("item");
-		
-		//Recupera o texto regex de todos os filhos deste no
-		texto = textoRegex(filhos);
+		String		 texto	= textoRegex(filhos);
 		
 		//Adciona o texto regex equivalente no buffer de acordo com a
 		//regra do no.
 		switch (regra) {
+			
 			case ONE_OR_MORE:
 				buffer.append(texto);
 				buffer.append("+");
+				break;
+			
+			case ZERO_OR_MORE:
+				buffer.append(texto);
+				buffer.append("*");
+				break;
+				
+			case CONDITIONAL:
+				buffer.append(texto);
+				buffer.append("?");
+				break;
+				
+			case EXACT:
+				buffer.append(texto);
+				buffer.append("{");
+				buffer.append(nodeData.getNumero1());
+				buffer.append("}");
+				break;
+				
+			case AT_LEAST:
+				buffer.append(texto);
+				buffer.append("{");
+				buffer.append(nodeData.getNumero1());
+				buffer.append(",}");
+				break;
+				
+			case BETWEEN:
+				buffer.append(texto);
+				buffer.append("{");
+				buffer.append(nodeData.getNumero1());
+				buffer.append(",");
+				buffer.append(nodeData.getNumero2());
+				buffer.append("}");
 				break;
 			
 			//TODO Criar casos nao terminais restantes
@@ -253,15 +305,15 @@ public class Construtor {
 		
 		return buffer.toString();
 	}
-	
-	//TODO Remover classe main
+
+	//TODO Remover classe main e acessos estaticos da classe
 	/**
 	 * Para testes apenas.
 	 * @param args
 	 */
 	public static void main(String[] args) {
 		
-		String teste = "{\"id\":\"0\", \"item\":[{ \"id\":\"1\",  \"text\":\"Caracteres: a\", \"userdata\":[{ \"name\":\"nivel\" , \"content\":\"0\" },{ \"name\":\"original\" , \"content\":\"a\" },{ \"name\":\"regra\" , \"content\":\"CHARACTERS\" },{ \"name\":\"terminal\" , \"content\":\"true\" },{ \"name\":\"texto\" , \"content\":\"a\" }]},{ \"id\":\"2\",  \"open\":\"1\",  \"select\":\"1\", \"text\":\"Um ou mais:\", \"userdata\":[{ \"name\":\"terminal\" , \"content\":\"false\" },{ \"name\":\"nivel\" , \"content\":\"0\" },{ \"name\":\"regra\" , \"content\":\"ONE_OR_MORE\" }], \"item\":[{ \"id\":\"3\",  \"text\":\"Caracteres: teste\", \"userdata\":[{ \"name\":\"terminal\" , \"content\":\"true\" },{ \"name\":\"nivel\" , \"content\":\"1\" },{ \"name\":\"regra\" , \"content\":\"CHARACTERS\" },{ \"name\":\"texto\" , \"content\":\"teste\" }]}]}]}";
+		String teste = "{\"id\":\"0\", \"item\":[{ \"id\":\"1\", \"text\":\"Caracteres: a\", \"userdata\":[{ \"name\":\"nivel\" , \"content\":\"0\" },{ \"name\":\"original\" , \"content\":\"a\" },{ \"name\":\"regra\" , \"content\":\"CHARACTERS\" },{ \"name\":\"terminal\" , \"content\":\"true\" },{ \"name\":\"texto\" , \"content\":\"a\" }]}\n,{ \"id\":\"12\", \"open\":\"1\", \"select\":\"1\", \"text\":\"Um ou mais:\", \"userdata\":[{ \"name\":\"terminal\" , \"content\":\"false\" },{ \"name\":\"nivel\" , \"content\":\"0\" },{ \"name\":\"regra\" , \"content\":\"ONE_OR_MORE\" }], \"item\":[{ \"id\":\"13\", \"text\":\"Caracteres: bla\", \"userdata\":[{ \"name\":\"terminal\" , \"content\":\"true\" },{ \"name\":\"nivel\" , \"content\":\"1\" },{ \"name\":\"regra\" , \"content\":\"CHARACTERS\" },{ \"name\":\"texto\" , \"content\":\"bla\" }]}\n]\n}\n,{ \"id\":\"10\", \"open\":\"1\", \"text\":\"Zero ou mais:\", \"userdata\":[{ \"name\":\"terminal\" , \"content\":\"false\" },{ \"name\":\"nivel\" , \"content\":\"0\" },{ \"name\":\"regra\" , \"content\":\"ZERO_OR_MORE\" }], \"item\":[{ \"id\":\"11\", \"text\":\"Caracteres: nothing\", \"userdata\":[{ \"name\":\"terminal\" , \"content\":\"true\" },{ \"name\":\"nivel\" , \"content\":\"1\" },{ \"name\":\"regra\" , \"content\":\"CHARACTERS\" },{ \"name\":\"texto\" , \"content\":\"nothing\" }]}\n]\n}\n,{ \"id\":\"8\", \"open\":\"1\", \"text\":\"Pelo menos 9 repeticoes de:\", \"userdata\":[{ \"name\":\"terminal\" , \"content\":\"false\" },{ \"name\":\"nivel\" , \"content\":\"0\" },{ \"name\":\"regra\" , \"content\":\"AT_LEAST\" },{ \"name\":\"numero1\" , \"content\":\"9\" }], \"item\":[{ \"id\":\"9\", \"text\":\"Caracteres: sdhaksfdh\", \"userdata\":[{ \"name\":\"terminal\" , \"content\":\"true\" },{ \"name\":\"nivel\" , \"content\":\"1\" },{ \"name\":\"regra\" , \"content\":\"CHARACTERS\" },{ \"name\":\"texto\" , \"content\":\"sdhaksfdh\" }]}\n]\n}\n,{ \"id\":\"6\", \"open\":\"1\", \"text\":\"Entre 5 e 9 repeticoes de:\", \"userdata\":[{ \"name\":\"terminal\" , \"content\":\"false\" },{ \"name\":\"nivel\" , \"content\":\"0\" },{ \"name\":\"regra\" , \"content\":\"BETWEEN\" },{ \"name\":\"numero1\" , \"content\":\"5\" },{ \"name\":\"numero2\" , \"content\":\"9\" }], \"item\":[{ \"id\":\"7\", \"text\":\"Caracteres: teste\", \"userdata\":[{ \"name\":\"terminal\" , \"content\":\"true\" },{ \"name\":\"nivel\" , \"content\":\"1\" },{ \"name\":\"regra\" , \"content\":\"CHARACTERS\" },{ \"name\":\"texto\" , \"content\":\"teste\" }]}\n]\n}\n,{ \"id\":\"2\", \"open\":\"1\", \"text\":\"Pode ou nao ter:\", \"userdata\":[{ \"name\":\"terminal\" , \"content\":\"false\" },{ \"name\":\"nivel\" , \"content\":\"0\" },{ \"name\":\"regra\" , \"content\":\"CONDITIONAL\" }], \"item\":[{ \"id\":\"3\", \"text\":\"Caracteres: b\", \"userdata\":[{ \"name\":\"terminal\" , \"content\":\"true\" },{ \"name\":\"nivel\" , \"content\":\"1\" },{ \"name\":\"regra\" , \"content\":\"CHARACTERS\" },{ \"name\":\"texto\" , \"content\":\"b\" }]}\n,{ \"id\":\"4\", \"open\":\"1\", \"text\":\"Exatamente 5 repeticoes de:\", \"userdata\":[{ \"name\":\"terminal\" , \"content\":\"false\" },{ \"name\":\"nivel\" , \"content\":\"1\" },{ \"name\":\"regra\" , \"content\":\"EXACT\" },{ \"name\":\"numero1\" , \"content\":\"5\" }], \"item\":[{ \"id\":\"5\", \"text\":\"Caracteres: c\", \"userdata\":[{ \"name\":\"terminal\" , \"content\":\"true\" },{ \"name\":\"nivel\" , \"content\":\"2\" },{ \"name\":\"regra\" , \"content\":\"CHARACTERS\" },{ \"name\":\"texto\" , \"content\":\"c\" }]}\n]\n}\n]\n}\n]}";
 		System.out.println(construir(teste));
 	}
 }

@@ -264,12 +264,24 @@ public class Traducao {
 	 */
 	public String getJSONString(){
 		
+		return getJSON().toString();
+	}
+	
+	/**
+	 * @return Uma string contendo um objeto JSON com as traducoes,
+	 * no formato aceito pela biblioteca dhtmlxTree, com as aspas
+	 * escapadas por barras insveridas.<br>
+	 * <br>
+	 * http://docs.dhtmlx.com/tree__syntax_templates.html#jsonformattemplate
+	 */
+	public String getEscapedJSONString(){
+		
 		//Recupera um objeto JSON em formato String
 		String jsonString = getJSON().toString();
 		
 		String quote = "\"";
 		String escape = "\\";
-		String escapedQuote = escape+escape+quote;
+		String escapedQuote = escape+quote;
 		
 		//Escapa todas as aspas duplas com uma barra invertida
 		jsonString = jsonString.replaceAll(quote,escapedQuote);
@@ -332,7 +344,7 @@ public class Traducao {
 					.add("id", contadorId++)
 					.add("text", traducaoAtual.getTraducao())
 					.add("child", 0)
-					.add("userdata",getUserdata(traducaoAtual))
+					.add("userdata",criarUserdata(traducaoAtual))
 				);
 			
 			}
@@ -355,7 +367,7 @@ public class Traducao {
 					.add("id", contadorId++)
 					.add("text", traducaoAtual.getTraducao())
 					.add("child", 1)
-					.add("userdata",getUserdata(traducaoAtual))
+					.add("userdata",criarUserdata(traducaoAtual))
 					.add("item", jsonRecursivo())
 				);
 				
@@ -396,7 +408,7 @@ public class Traducao {
 	 * @param to Um objeto TraducaoTO de onde serao extraidas as informacoes.
 	 * @return JsonArrayBuilder
 	 */
-	private JsonArrayBuilder getUserdata(TraducaoTO to){
+	private JsonArrayBuilder criarUserdata(TraducaoTO to){
 		
 		//Cria o array de objetos
 		JsonArrayBuilder arrayBuilder = factory.createArrayBuilder();
@@ -432,14 +444,60 @@ public class Traducao {
 		//Se a traducao for do tipo "CHARACTERS"
 		if (to.getTipoRegra() == RegraRegex.CHARACTERS) {
 			
-			//O texto que compoe a regra CHARACTERS
-			arrayBuilder.add(
-				factory.createObjectBuilder()
-					.add("name", "texto")
-					.add("content",to.getOriginal()
+			//Adiciona o texto que compoe a regra CHARACTERS
+			arrayBuilder.add(factory.createObjectBuilder()
+				.add("name", "texto")
+				.add("content",to.getOriginal())
+			);
+		}
+		
+		//Se a traducao for do tipo "ONE_OR_MORE" ou "AT_LEAST"
+		else if (
+				to.getTipoRegra() == RegraRegex.EXACT     ||
+				to.getTipoRegra() == RegraRegex.AT_LEAST
 				)
+		{
+			
+			//Adiciona o valor numerico da repeticao
+			arrayBuilder.add(factory.createObjectBuilder()
+				.add("name", "numero1")
+				.add("content",to.getNumero1())
 			);
 			
+		}
+		
+		//Se a traducao for do tipo "BETWEEN"
+		else if (to.getTipoRegra() == RegraRegex.BETWEEN){
+			
+			//Adiciona os valores numericos da repeticao
+			arrayBuilder.add(factory.createObjectBuilder()
+				.add("name", "numero1")
+				.add("content",to.getNumero1())
+			)
+			
+			.add(factory.createObjectBuilder()
+				.add("name", "numero2")
+				.add("content",to.getNumero2())
+			);
+			
+		}
+		
+		//Se a traducao for do tipo "RANGE" ou "LIST_FIRST_RANGE"
+		else if (
+				to.getTipoRegra() == RegraRegex.RANGE ||
+				to.getTipoRegra() == RegraRegex.LIST_FIRST_RANGE
+				)
+		{
+			//Adiciona os caracteres da serie
+			arrayBuilder.add(factory.createObjectBuilder()
+				.add("name", "caractere1")
+				.add("content",to.getCaractere1())
+			)
+			
+			.add(factory.createObjectBuilder()
+				.add("name", "caractere2")
+				.add("content",to.getCaractere2())
+			);
 		}
 		
 		return arrayBuilder;

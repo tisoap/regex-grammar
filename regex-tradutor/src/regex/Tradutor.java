@@ -23,10 +23,12 @@ public class Tradutor extends RegularExpressionEREBaseVisitor<Void> {
 	/** O nivel de profundidade atual na arvore de analise. */
 	private int nivelAtual = 0;
 	
-	/** A quantidade de grupos de captura encontrados. */
+	/** A quantidade de grupos de captura encontrados. 
+	 *  Este numero e usado no texto da traducao. (Ex: "Grupo 2:")*/
 	private int contadorGrupos = 0;
 	
-	/** A quantidade relativa de multiplas opcoes encontradas. */
+	/** A quantidade de multiplas opcoes encontradas. 
+	 *  Este numero e usado no texto da traducao. (Ex: "Opcao 3:")*/
 	private int contadorOpcoes = 0;
 	
 	
@@ -59,14 +61,110 @@ public class Tradutor extends RegularExpressionEREBaseVisitor<Void> {
 	 * @param terminal			Indicacao se a regra e terminal.
 	 */
 	private void armazena (
-			RegraRegex tipoRegra, 
-			String textoOriginal,
-			String textoTraduzido,
-			boolean terminal){
-		
+			RegraRegex	tipoRegra, 
+			String		textoOriginal,
+			String		textoTraduzido,
+			boolean		terminal)
+	{
 		//Um objeto de transferencia que contem todas as informacoes
 		//sobre a traducao feita
 		/** ----- DS 31-32 ----- **/
+		TraducaoTO to = populaTraducaoTO(tipoRegra, textoTraduzido, textoTraduzido, terminal);
+		
+		//Adciona o objeto de tranferencia em uma lista
+		//dentro do objeto Traducao
+		/** ----- DS 33-34 ----- **/
+		traducao.addTraducao(to);
+	}
+	
+	/**
+	 * Sobrecarga do metodo armazenar() para incluir o numero encontrado
+	 * em uma regra de repeticao "EXACT" ou "AT_LEAST".
+	 * 
+	 * @param tipoRegra			A regra no qual a traducao pertence.
+	 * @param textoOriginal		O texto original antes de ser traduzido.
+	 * @param textoTraduzido	A traducao.
+	 * @param terminal			Indicacao se a regra e terminal.
+	 * @param numero1			O valor numerico da repeticao.
+	 */
+	private void armazena (
+			RegraRegex	tipoRegra, 
+			String		textoOriginal,
+			String		textoTraduzido,
+			boolean		terminal,
+			int		numero1)
+	{
+		TraducaoTO to = populaTraducaoTO(tipoRegra, textoTraduzido, textoTraduzido, terminal);
+		to.setNumero1(numero1);
+		traducao.addTraducao(to);
+	}
+
+	/**
+	 * Sobrecarga do metodo armazenar() para incluir os numeros encontrado
+	 * em uma regra de repeticao "BETWEEN".
+	 * 
+	 * @param tipoRegra			A regra no qual a traducao pertence.
+	 * @param textoOriginal		O texto original antes de ser traduzido.
+	 * @param textoTraduzido	A traducao.
+	 * @param terminal			Indicacao se a regra e terminal.
+	 * @param numero1			O primeiro valor numerico da repeticao.
+	 * @param numero2			O segundo valor numerico da repeticao.
+	 */
+	private void armazena (
+			RegraRegex	tipoRegra, 
+			String		textoOriginal,
+			String		textoTraduzido,
+			boolean		terminal,
+			int			numero1,
+			int			numero2)
+	{
+		TraducaoTO to = populaTraducaoTO(tipoRegra, textoTraduzido, textoTraduzido, terminal);
+		to.setNumero1(numero1);
+		to.setNumero2(numero2);
+		traducao.addTraducao(to);
+	}
+	
+	/**
+	 * Sobrecarga do metodo armazenar() para incluir os caracteres encontrados
+	 * em uma serie RANGE ou LIST_FIRST_RANGE
+	 * 
+	 * @param tipoRegra			A regra no qual a traducao pertence.
+	 * @param textoOriginal		O texto original antes de ser traduzido.
+	 * @param textoTraduzido	A traducao.
+	 * @param terminal			Indicacao se a regra e terminal.
+	 * @param caractere1		O primeiro caractere da serie.
+	 * @param caractere2		O segundo caractere da serie.
+	 */
+	private void armazena (
+			RegraRegex	tipoRegra, 
+			String		textoOriginal,
+			String		textoTraduzido,
+			boolean		terminal,
+			String		caractere1,
+			String		caractere2)
+	{
+		TraducaoTO to = populaTraducaoTO(tipoRegra, textoTraduzido, textoTraduzido, terminal);
+		to.setCaractere1(caractere1);
+		to.setCaractere2(caractere2);
+		traducao.addTraducao(to);
+	}
+	
+	/**
+	 * Popula e retorna um objeto de transferencia TraducaoTO com
+	 * os parametros passados.
+	 * 
+	 * @param tipoRegra			A regra no qual a traducao pertence.
+	 * @param textoOriginal		O texto original antes de ser traduzido.
+	 * @param textoTraduzido	A traducao.
+	 * @param terminal			Indicacao se a regra e terminal.
+	 * @return					Um objeto de transferencia TraducaoTO
+	 */
+	private TraducaoTO populaTraducaoTO(
+			RegraRegex	tipoRegra, 
+			String		textoOriginal,
+			String		textoTraduzido,
+			boolean		terminal)
+	{
 		TraducaoTO to = new TraducaoTO();
 		
 		to.setTipoRegra(tipoRegra);
@@ -75,9 +173,7 @@ public class Tradutor extends RegularExpressionEREBaseVisitor<Void> {
 		to.setTraducao(textoTraduzido);
 		to.setTerminal(terminal);
 		
-		//Adciona o objeto na instancia da classe Traducao
-		/** ----- DS 33-34 ----- **/
-		traducao.addTraducao(to);
+		return to;
 	}
 	
 	/**
@@ -131,7 +227,8 @@ public class Tradutor extends RegularExpressionEREBaseVisitor<Void> {
             	}
             	
             	//Se o proximo caractere nao for uma barra invertida,
-            	//ignora a barra invertida atual
+            	//ignora a barra invertida atual, nao adicionando ela
+            	//no buffer.
             }
         }
         
@@ -160,17 +257,23 @@ public class Tradutor extends RegularExpressionEREBaseVisitor<Void> {
 		
 		nivelAtual++;
 		
-		/** Salva o contador de opcoes atual e zera ele.
-		 *  Necessario pois pode existir multiplas opcoes
-		 *  dentro de um grupo que faz parte de multiplas
-		 *  opcoes.
+		/** 
+		 * Salva o contador de opcoes atual e zera ele.
+		 * 
+		 * Necessario pois podem existir multiplas opcoes
+		 * dentro de um grupo que faz parte de multiplas
+		 * opcoes.
+		 * 
+		 * Em um caso assim, queremos contar apenas as 
+		 * opcoes da regra MULTIPLE atual, e nao da que se
+		 * encontra em um nivel mais acima.
 		 */
 		int temp = contadorOpcoes;
 		contadorOpcoes = 0;
 		
 		visitChildren(ctx);
 		
-		//Retorna o contador ao seu estado original
+		//Retorna o contador de opcoes ao seu estado original
 		contadorOpcoes = temp;
 		
 		nivelAtual--;
@@ -184,10 +287,12 @@ public class Tradutor extends RegularExpressionEREBaseVisitor<Void> {
 	@Override
 	public Void visitSubExpression(SubExpressionContext ctx) {
 		
-		/** Testa se este no da arvore e do mesmo tipo do pai
-		 *  Necessario pois uma subExpression pode ser filha de uma
-		 *  subExpression, e nao queremos aumentar o contador
-		 *  nessa situacao.
+		/** 
+		 * Testa se este no da arvore e do mesmo tipo do pai.
+		 * 
+		 * Necessario pois uma subExpression pode ser filha de uma
+		 * subExpression, e nao queremos aumentar o contador
+		 * nessa situacao.
 		 */
 		int pai   = ctx.getParent().getRuleIndex();
 		int filho = ctx.getRuleIndex();
@@ -199,9 +304,7 @@ public class Tradutor extends RegularExpressionEREBaseVisitor<Void> {
 			armazena(RegraRegex.SUB_EXPRESSION, ctx.getText(), "Opção " + contadorOpcoes + ":", false);
 			
 			nivelAtual++;
-			
 			visitChildren(ctx);
-			
 			nivelAtual--;
 		}
 		
@@ -215,7 +318,7 @@ public class Tradutor extends RegularExpressionEREBaseVisitor<Void> {
 	}
 	
 	/** Quando visita um grupo, aumenta o contador de grupos,
-	 *  traduz'Grupo n:', aumenta o nivel de identacao
+	 *  traduz 'Grupo n:', aumenta o nivel de identacao
 	 *  e visita todos os filhos dele. */
 	@Override
 	public Void visitGroup(GroupContext ctx) {
@@ -317,7 +420,13 @@ public class Tradutor extends RegularExpressionEREBaseVisitor<Void> {
 	@Override
 	public Void visitExact(ExactContext ctx) {
 		
-		armazena(RegraRegex.EXACT, ctx.getText(), "Exatamente " + ctx.value().getText() + " ocorrências de:", false);
+		//Recupera o valor de 'n' como uma String
+		String stringNumber = ctx.value().getText();
+		
+		//Converte o valor de 'n' encontrado para um numero interio
+		int number = Integer.parseInt(stringNumber);
+		
+		armazena(RegraRegex.EXACT, ctx.getText(), "Exatamente " + stringNumber + " ocorrências de:", false, number);
 		
 		return null;
 	}
@@ -327,7 +436,10 @@ public class Tradutor extends RegularExpressionEREBaseVisitor<Void> {
 	@Override
 	public Void visitAtLeast(AtLeastContext ctx) {
 		
-		armazena(RegraRegex.AT_LEAST, ctx.getText(), "Pelo menos " + ctx.value().getText() + " ocorrências de:", false);
+		String stringNumber = ctx.value().getText();
+		int number = Integer.parseInt(stringNumber);
+		
+		armazena(RegraRegex.AT_LEAST, ctx.getText(), "Pelo menos " + stringNumber + " ocorrências de:", false, number);
 		
 		return null;
 	}
@@ -337,15 +449,12 @@ public class Tradutor extends RegularExpressionEREBaseVisitor<Void> {
 	@Override
 	public Void visitBetween(BetweenContext ctx) {
 		
-		armazena(
-				RegraRegex.BETWEEN,
-				ctx.getText(),
-				"Entre " + 
-				ctx.firstValue().getText() + 
-				" e " + 
-				ctx.lastValue().getText() + 
-				" ocorrencias de:",
-				false);
+		String stringFirstNumber = ctx.firstValue().getText();
+		String stringLastNumber = ctx.lastValue().getText();
+		int firstNumber = Integer.parseInt(stringFirstNumber);
+		int lastNumber = Integer.parseInt(stringLastNumber);
+		
+		armazena(RegraRegex.BETWEEN, ctx.getText(), "Entre " + stringFirstNumber + " e " + stringLastNumber + " ocorrencias de:", false, firstNumber, lastNumber);
 		
 		return null;
 	}
@@ -449,11 +558,11 @@ public class Tradutor extends RegularExpressionEREBaseVisitor<Void> {
 		 * 2: B
 		 */
 		
-		//Recupera os textos
+		//Recupera os caracteres
 		String a = ctx.getChild(0).getText();
 		String b = ctx.getChild(2).getText();
 		
-		armazena(RegraRegex.LIST_FIRST_RANGE, ctx.getText(), "Todos os caracteres entre '" + a + "' e '" + b + "'", true);
+		armazena(RegraRegex.LIST_FIRST_RANGE, ctx.getText(), "Todos os caracteres entre '" + a + "' e '" + b + "'", true,a,b);
 		
 		return null;
 	}
@@ -494,11 +603,11 @@ public class Tradutor extends RegularExpressionEREBaseVisitor<Void> {
 		 * 2: B
 		 */
 		
-		//Recupera os textos
+		//Recupera os caracteres
 		String a = ctx.getChild(0).getText();
 		String b = ctx.getChild(2).getText();
 		
-		armazena(RegraRegex.RANGE, ctx.getText(), "Todos os caracteres entre '" + a + "' e '" + b + "'", true);
+		armazena(RegraRegex.RANGE, ctx.getText(), "Todos os caracteres entre '" + a + "' e '" + b + "'", true,a,b);
 		
 		return null;
 	}
