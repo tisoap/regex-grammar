@@ -9,7 +9,7 @@ import javax.json.JsonReader;
 import javax.json.JsonValue;
 
 import regex.enumType.RegraRegex;
-import regex.transfer.UserdataTO;
+import regex.transfer.TraducaoTO;
 
 /**
  * Realiza a construcao e validacao de uma expressao regular
@@ -32,7 +32,7 @@ public class Construtor {
 	 * @param jsonString Um objeto JSON em String.
 	 * @return Uma String contendo a expressao regular montada.
 	 */
-	public static String construir(String jsonString){
+	public String construir(String jsonString){
 		
 		JsonReader	reader;
 		JsonObject	json;
@@ -65,12 +65,12 @@ public class Construtor {
 	 * @return A expressao regular montada em String
 	 */
 	//TODO Fazer codigo defensivo
-	private static String textoRegex(JsonArray array){
+	private String textoRegex(JsonArray array){
 		
 		StringBuffer	buffer = new StringBuffer();
 		JsonArray		userdataArray;
 		JsonObject		node;
-		UserdataTO		nodeData;
+		TraducaoTO		nodeData;
 		
 		//Itera todos os valores do array
 		for (JsonValue jsonValue : array) {
@@ -118,7 +118,7 @@ public class Construtor {
 			}
 			//Se nao existe uma chave "userdata"
 			else {
-				//TODO Levantar exeption aqui
+				//TODO Levantar excecao se nao existir uma chave userdata
 			}
 		}
 		
@@ -141,11 +141,11 @@ public class Construtor {
 	 * @param userdata Um array de objetos JSON
 	 * @return Um objeto de transferencia UserdataTO
 	 */
-	private static UserdataTO nodeData(JsonArray userdata){
+	private TraducaoTO nodeData(JsonArray userdata){
 		
-		UserdataTO	to = new UserdataTO();
+		TraducaoTO	to = new TraducaoTO();
 		JsonObject	data;
-		String		content;
+		String		content, dataType;
 		RegraRegex	regra;
 		boolean		terminal;
 		int			nivel, numero1, numero2;
@@ -156,54 +156,56 @@ public class Construtor {
 			//Faz cast do valor encontrado para objeto JSON
 			data = (JsonObject) jsonValue;
 			
-			//Checa se o objeto tem uma chave "name" com valor "regra"
-			if( data.getString("name").equals("regra") ){
-				
-				content = data.getString("content");
-				regra = RegraRegex.valueOf(content);
-				to.setTipoRegra(regra);
-			}
+			//Recupera o nome do tipo de dado contido neste objeto JSON
+			//TODO Levantar execao se nao existir uma chave "name"
+			dataType = data.getString("name");
 			
-			//Checa se o objeto tem uma chave "name" com valor "terminal"
-			else if( data.getString("name").equals("terminal") ){
-				
-				content = data.getString("content");
-				terminal = Boolean.parseBoolean(content);
-				to.setTerminal(terminal);
-			}
+			//Recupera o dado propriamente dito
+			//TODO Levantar execao se nao existir uma chave "content"
+			content = data.getString("content");
 			
-			//Checa se o objeto tem uma chave "name" com valor "nivel"
-			else if( data.getString("name").equals("nivel") ){
+			switch (dataType) {
 				
-				content = data.getString("content");
-				nivel = Integer.parseInt(content);
-				to.setNivel(nivel);
-			}
-			
-			//Checa se o objeto tem uma chave "name" com valor "texto"
-			//OBS: Este par so vai existir em um no do tipo CHARACTERS
-			else if( data.getString("name").equals("texto") ){
+				case "regra":
+					regra = RegraRegex.valueOf(content);
+					to.setTipoRegra(regra);
+					break;
+					
+				case "terminal":
+					terminal = Boolean.parseBoolean(content);
+					to.setTerminal(terminal);
+					break;
 				
-				content = data.getString("content");
-				to.setTexto(content);
-			}
-			
-			//Checa se o objeto tem uma chave "name" com valor "numero1"
-			//OBS: Este par so vai existir em um no do tipo EXACT, AT_LEAST ou BETWEEN
-			else if( data.getString("name").equals("numero1") ){
+				case "nivel":
+					nivel = Integer.parseInt(content);
+					to.setNivel(nivel);
+					break;
+					
+				case "texto":
+					to.setTexto(content);
+					break;
+					
+				case "numero1":
+					numero1 = Integer.parseInt(content);
+					to.setNumero1(numero1);
+					break;
 				
-				content = data.getString("content");
-				numero1 = Integer.parseInt(content);
-				to.setNumero1(numero1);
-			}
-			
-			//Checa se o objeto tem uma chave "name" com valor "numero1"
-			//OBS: Este par so vai existir em um no do tipo BETWEEN
-			else if( data.getString("name").equals("numero2") ){
+				case "numero2":
+					numero2 = Integer.parseInt(content);
+					to.setNumero2(numero2);
+					break;
+					
+				case "caractere1":
+					to.setCaractere1(content);
+					break;
 				
-				content = data.getString("content");
-				numero2 = Integer.parseInt(content);
-				to.setNumero2(numero2);
+				case "caractere2":
+					to.setCaractere2(content);
+					break;
+					
+				default:
+					//TODO levantar execao se o tipo de metadado nao for reconhecido
+					break;
 			}
 		}
 		
@@ -216,28 +218,95 @@ public class Construtor {
 	 * @param nodeData Os metadados.
 	 * @return Uma String com o texto regex equivalente ao no.
 	 */
-	private static String textoTerminal(UserdataTO nodeData){
+	private StringBuffer textoTerminal(TraducaoTO nodeData){
 		
-		String		texto = null;
+		StringBuffer buffer	= new StringBuffer();
 		RegraRegex	regra = nodeData.getTipoRegra();
 		
 		//Altera o valor da variavel "texto" de acordo com a
 		//regra encontrada
+		
 		switch (regra) {
 			
-			//Caso a regra seja "CHARACTERS", o texto
-			case CHARACTERS:
-				texto = nodeData.getTexto();
+			//Caso a regra seja de um tipo de caractere, recupera o texto dele
+			case CHARACTERS:			//Varios caracteres seguidos
+			case CHARACTER:			//Um caractere
+			case LIST_CHARACTER:		//Um caractere de lista
+			case LIST_NO_SPECIAL:		//Um caractere de lista que perdeu seu significado especial ao ficar no inicio da lista   
+			case LIST_LAST_ELEMENT:	//Um caractere de lista que perdeu seu significado especial ao ficar no final da lista
+				buffer.append(nodeData.getTexto());
 				break;
 			
-			//TODO Criar casos terminais restantes
+			case START_ANCHOR:
+				buffer.append("^");
+				break;
+				
+			case END_ANCHOR:
+				buffer.append("$");
+				break;
+				
+			case ANY_CHAR:
+				buffer.append(".");
+				break;
+				
+			case RANGE:				//Serie de caracteres
+			case LIST_FIRST_RANGE:	//Caso especial de serie de caracteres no inicio da lista
+				buffer.append(nodeData.getCaractere1() + "-" + nodeData.getCaractere2());  
+				break;
+			
+			case ALNUM:
+				buffer.append("[:alnum:]");
+				break;
+				
+			case DIGIT_CLASS:
+				buffer.append("[:digit:]");
+				break;
+			
+			case SPACE_CLASS: 
+				buffer.append("[:space:]");
+				break;
+			
+			case ALPHA:
+				buffer.append("[:alpha:]");
+				break;
+				
+			case BLANK: 
+				buffer.append("[:blank:]");
+				break;
+				
+			case CNTRL:
+				buffer.append("[:cntrl:]");
+				break;
+				
+			case GRAPH:
+				buffer.append("[:graph:]");
+				break;
+				
+			case LOWER:
+				buffer.append("[:lower:]");
+				break;
+				
+			case PRINT:
+				buffer.append("[:print:]");
+				break;
+				
+			case PUNCT:
+				buffer.append("[:punct:]");
+				break;
+				
+			case UPPER:
+				buffer.append("[:upper:]");
+				break;
+				
+			case X_DIGIT:
+				buffer.append("[:xdigit:]");
 			
 			default:
-				//TODO Levantar exeption aqui
+				//TODO Levantar execao se nao existir a regra terminal recebida
 				break;
 		}
 		
-		return texto;
+		return buffer;
 	}
 	
 	/**
@@ -247,7 +316,7 @@ public class Construtor {
 	 * @param nodeData Os metadados deste no
 	 * @return Uma String com o texto regex equivalente ao no e todos os seus filhos.
 	 */
-	private static String textoNaoTerminal(JsonObject node, UserdataTO nodeData){
+	private StringBuffer textoNaoTerminal(JsonObject node, TraducaoTO nodeData){
 		
 		StringBuffer buffer	= new StringBuffer();
 		RegraRegex	 regra	= nodeData.getTipoRegra();
@@ -296,24 +365,55 @@ public class Construtor {
 				buffer.append("}");
 				break;
 			
-			//TODO Criar casos nao terminais restantes
+			case MULTIPLE:
+				
+				buffer.append(texto);
+				
+				/** Remove o ultimo caractere do buffer,
+				 *  que sera um "|", para que as multiplas
+				 *  opcoes fiquem com sintaxe correta. */
+				buffer.deleteCharAt(buffer.length()-1);
+				
+				break;
+				
+			case SUB_EXPRESSION:
+				buffer.append(texto);
+				buffer.append("|");
+				break;
+			
+			case GROUP:
+				buffer.append("(");
+				buffer.append(texto);
+				buffer.append(")");
+				break;
+				
+			case POSITIVE_LIST:
+				buffer.append("[");
+				buffer.append(texto);
+				buffer.append("]");
+				break;
+				
+			case NEGATIVE_LIST:
+				buffer.append("[^");
+				buffer.append(texto);
+				buffer.append("]");
+				break;
 			
 			default:
-				//TODO Levantar exeption aqui
+				//TODO Levantar execao se nao existir a regra nao terminal recebida
 				break;
 		}
 		
-		return buffer.toString();
+		return buffer;
 	}
-
-	//TODO Remover classe main e acessos estaticos da classe
+	
 	/**
 	 * Para testes apenas.
 	 * @param args
-	 */
+	 
 	public static void main(String[] args) {
 		
 		String teste = "{\"id\":\"0\", \"item\":[{ \"id\":\"1\", \"text\":\"Caracteres: a\", \"userdata\":[{ \"name\":\"nivel\" , \"content\":\"0\" },{ \"name\":\"original\" , \"content\":\"a\" },{ \"name\":\"regra\" , \"content\":\"CHARACTERS\" },{ \"name\":\"terminal\" , \"content\":\"true\" },{ \"name\":\"texto\" , \"content\":\"a\" }]}\n,{ \"id\":\"12\", \"open\":\"1\", \"select\":\"1\", \"text\":\"Um ou mais:\", \"userdata\":[{ \"name\":\"terminal\" , \"content\":\"false\" },{ \"name\":\"nivel\" , \"content\":\"0\" },{ \"name\":\"regra\" , \"content\":\"ONE_OR_MORE\" }], \"item\":[{ \"id\":\"13\", \"text\":\"Caracteres: bla\", \"userdata\":[{ \"name\":\"terminal\" , \"content\":\"true\" },{ \"name\":\"nivel\" , \"content\":\"1\" },{ \"name\":\"regra\" , \"content\":\"CHARACTERS\" },{ \"name\":\"texto\" , \"content\":\"bla\" }]}\n]\n}\n,{ \"id\":\"10\", \"open\":\"1\", \"text\":\"Zero ou mais:\", \"userdata\":[{ \"name\":\"terminal\" , \"content\":\"false\" },{ \"name\":\"nivel\" , \"content\":\"0\" },{ \"name\":\"regra\" , \"content\":\"ZERO_OR_MORE\" }], \"item\":[{ \"id\":\"11\", \"text\":\"Caracteres: nothing\", \"userdata\":[{ \"name\":\"terminal\" , \"content\":\"true\" },{ \"name\":\"nivel\" , \"content\":\"1\" },{ \"name\":\"regra\" , \"content\":\"CHARACTERS\" },{ \"name\":\"texto\" , \"content\":\"nothing\" }]}\n]\n}\n,{ \"id\":\"8\", \"open\":\"1\", \"text\":\"Pelo menos 9 repeticoes de:\", \"userdata\":[{ \"name\":\"terminal\" , \"content\":\"false\" },{ \"name\":\"nivel\" , \"content\":\"0\" },{ \"name\":\"regra\" , \"content\":\"AT_LEAST\" },{ \"name\":\"numero1\" , \"content\":\"9\" }], \"item\":[{ \"id\":\"9\", \"text\":\"Caracteres: sdhaksfdh\", \"userdata\":[{ \"name\":\"terminal\" , \"content\":\"true\" },{ \"name\":\"nivel\" , \"content\":\"1\" },{ \"name\":\"regra\" , \"content\":\"CHARACTERS\" },{ \"name\":\"texto\" , \"content\":\"sdhaksfdh\" }]}\n]\n}\n,{ \"id\":\"6\", \"open\":\"1\", \"text\":\"Entre 5 e 9 repeticoes de:\", \"userdata\":[{ \"name\":\"terminal\" , \"content\":\"false\" },{ \"name\":\"nivel\" , \"content\":\"0\" },{ \"name\":\"regra\" , \"content\":\"BETWEEN\" },{ \"name\":\"numero1\" , \"content\":\"5\" },{ \"name\":\"numero2\" , \"content\":\"9\" }], \"item\":[{ \"id\":\"7\", \"text\":\"Caracteres: teste\", \"userdata\":[{ \"name\":\"terminal\" , \"content\":\"true\" },{ \"name\":\"nivel\" , \"content\":\"1\" },{ \"name\":\"regra\" , \"content\":\"CHARACTERS\" },{ \"name\":\"texto\" , \"content\":\"teste\" }]}\n]\n}\n,{ \"id\":\"2\", \"open\":\"1\", \"text\":\"Pode ou nao ter:\", \"userdata\":[{ \"name\":\"terminal\" , \"content\":\"false\" },{ \"name\":\"nivel\" , \"content\":\"0\" },{ \"name\":\"regra\" , \"content\":\"CONDITIONAL\" }], \"item\":[{ \"id\":\"3\", \"text\":\"Caracteres: b\", \"userdata\":[{ \"name\":\"terminal\" , \"content\":\"true\" },{ \"name\":\"nivel\" , \"content\":\"1\" },{ \"name\":\"regra\" , \"content\":\"CHARACTERS\" },{ \"name\":\"texto\" , \"content\":\"b\" }]}\n,{ \"id\":\"4\", \"open\":\"1\", \"text\":\"Exatamente 5 repeticoes de:\", \"userdata\":[{ \"name\":\"terminal\" , \"content\":\"false\" },{ \"name\":\"nivel\" , \"content\":\"1\" },{ \"name\":\"regra\" , \"content\":\"EXACT\" },{ \"name\":\"numero1\" , \"content\":\"5\" }], \"item\":[{ \"id\":\"5\", \"text\":\"Caracteres: c\", \"userdata\":[{ \"name\":\"terminal\" , \"content\":\"true\" },{ \"name\":\"nivel\" , \"content\":\"2\" },{ \"name\":\"regra\" , \"content\":\"CHARACTERS\" },{ \"name\":\"texto\" , \"content\":\"c\" }]}\n]\n}\n]\n}\n]}";
 		System.out.println(construir(teste));
-	}
+	}*/
 }

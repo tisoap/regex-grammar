@@ -281,7 +281,7 @@ public class Traducao {
 		
 		String quote = "\"";
 		String escape = "\\";
-		String escapedQuote = escape+quote;
+		String escapedQuote = escape+escape+quote;
 		
 		//Escapa todas as aspas duplas com uma barra invertida
 		jsonString = jsonString.replaceAll(quote,escapedQuote);
@@ -425,7 +425,7 @@ public class Traducao {
 			//Texto original antes de ser traduzido
 			.add(factory.createObjectBuilder()
 				.add("name", "original")
-				.add("content",to.getOriginal())
+				.add("content",to.getTexto())
 			)
 			
 			//Regra que disparou a traducao
@@ -447,7 +447,7 @@ public class Traducao {
 			//Adiciona o texto que compoe a regra CHARACTERS
 			arrayBuilder.add(factory.createObjectBuilder()
 				.add("name", "texto")
-				.add("content",to.getOriginal())
+				.add("content",to.getTexto())
 			);
 		}
 		

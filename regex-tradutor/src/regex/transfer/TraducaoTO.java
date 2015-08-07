@@ -20,7 +20,7 @@ public class TraducaoTO {
 	private String traducao;
 	
 	/** O texto original do elemento, incluindo todos os textos abaixo dele. */
-	private String original;
+	private String texto;
 	
 	/** Primeiro caractere de um elemento de regra "RANGE" ou "LIST_FIRST_RANGE" */
 	private String caractere1;
@@ -40,7 +40,6 @@ public class TraducaoTO {
 	/** Segundo numero de um elemento de regra "BETWEEN" */
 	private int numero2;
 	
-	
 	// ----- GETTERS -----
 	public int getNivel() {
 		return nivel;
@@ -48,8 +47,8 @@ public class TraducaoTO {
 	public String getTraducao() {
 		return traducao;
 	}
-	public String getOriginal() {
-		return original;
+	public String getTexto() {
+		return texto;
 	}
 	public String getCaractere1() {
 		return caractere1;
@@ -77,8 +76,8 @@ public class TraducaoTO {
 	public void setTraducao(String traducao) {
 		this.traducao = traducao;
 	}
-	public void setOriginal(String original) {
-		this.original = original;
+	public void setTexto(String texto) {
+		this.texto = texto;
 	}
 	public void setCaractere1(String caractere1) {
 		this.caractere1 = caractere1;

@@ -169,7 +169,7 @@ public class Tradutor extends RegularExpressionEREBaseVisitor<Void> {
 		
 		to.setTipoRegra(tipoRegra);
 		to.setNivel(nivelAtual);
-		to.setOriginal(textoOriginal);
+		to.setTexto(textoOriginal);
 		to.setTraducao(textoTraduzido);
 		to.setTerminal(terminal);
 		
