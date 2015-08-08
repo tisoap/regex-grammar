@@ -8,6 +8,11 @@ import javax.json.JsonObject;
 import javax.json.JsonReader;
 import javax.json.JsonValue;
 
+import exception.MalformedJson;
+import exception.MalformedMetadata;
+import exception.NonExistentMetadata;
+import exception.UnrecognisedMetadata;
+import exception.UnrecognisedRule;
 import regex.enumType.RegraRegex;
 import regex.transfer.TraducaoTO;
 
@@ -16,7 +21,6 @@ import regex.transfer.TraducaoTO;
  * a partir de uma linguagem natural.
  * 
  * @author tiso
- *
  */
 public class Construtor {
 	
@@ -29,10 +33,27 @@ public class Construtor {
 	 *
 	 * http://docs.dhtmlx.com/tree__syntax_templates.html#jsonformattemplate
 	 * 
-	 * @param jsonString Um objeto JSON em String.
-	 * @return Uma String contendo a expressao regular montada.
+	 * @param jsonString 				Um objeto JSON em String.
+	 * 
+	 * @return 							Uma String contendo a expressao regular montada.
+	 * 
+	 * @throws MalformedJson 			Se o JSON recebido nao esta no formato aceito pela
+	 * 									biblioteca DHTMLX Tree.
+	 * 
+	 * @throws MalformedMetadata		Se os metadados de um elemento nao estao no formato aceito pela
+	 * 									biblioteca DHTMLX Tree.
+	 * 
+	 * @throws NonExistentMetadata 		Se nao existem metadados em um elemento.
+	 * 
+	 * @throws UnrecognisedMetadata 	Se existe um metadado nao reconhecido pela aplicacao
+	 * 									em um dos elementos.
+	 * 
+	 * @throws UnrecognisedRule 		Se existe uma regra nao reconhecida pela aplicacao
+	 * 									em um dos elementos.
 	 */
-	public String construir(String jsonString){
+	public String construir(String jsonString)
+			throws UnrecognisedMetadata, MalformedJson,
+			NonExistentMetadata, UnrecognisedRule, MalformedMetadata {
 		
 		JsonReader	reader;
 		JsonObject	json;
@@ -47,25 +68,43 @@ public class Construtor {
 		
 		//Recupera o 1o array do objeto JSON,
 		//que contem todos os item na raiz
-		//TODO Levartar excecao se o JSON nao estiver no padrao correto
 		itens = json.getJsonArray("item");
 		
-		//Constroi o texto regex a partir do itens do array
-		regex = textoRegex(itens);
-		
-		//Retorna a regex pronta
-		return regex;
+		//Se este array nao existir, levanta uma excecao
+		if (itens == null) {
+			throw new MalformedJson("JSON recebido nao esta no formato suportado.");
+		}
+		else {
+			//Constroi o texto regex a partir do itens do array
+			regex = textoRegex(itens);
+			
+			//Retorna a regex pronta
+			return regex;
+		}
 	}
 	
 	/**
 	 * Itera todos os itens de uma array JSON recursivamente,
 	 * criando uma string regex.
 	 * 
-	 * @param array Um array de objetos JSON
-	 * @return A expressao regular montada em String
+	 * @param array 					Um array de objetos JSON
+	 * 
+	 * @return 							A expressao regular montada em String
+	 * 
+	 * @throws MalformedMetadata		Se os metadados de um elemento nao estao no formato aceito pela
+	 * 									biblioteca DHTMLX Tree.
+	 * 
+	 * @throws NonExistentMetadata 		Se nao existem metadados em um elemento.
+	 * 
+	 * @throws UnrecognisedMetadata 	Se existe um metadado nao reconhecido pela aplicacao
+	 * 									em um dos elementos.
+	 * 
+	 * @throws UnrecognisedRule 		Se existe uma regra nao reconhecida pela aplicacao
+	 * 									em um dos elementos.
 	 */
-	//TODO Fazer codigo defensivo
-	private String textoRegex(JsonArray array){
+	private String textoRegex(JsonArray array) 
+			throws UnrecognisedMetadata, NonExistentMetadata,
+			UnrecognisedRule, MalformedMetadata {
 		
 		StringBuffer	buffer = new StringBuffer();
 		JsonArray		userdataArray;
@@ -118,7 +157,8 @@ public class Construtor {
 			}
 			//Se nao existe uma chave "userdata"
 			else {
-				//TODO Levantar excecao se nao existir uma chave userdata
+				throw new NonExistentMetadata(
+						"Nao foram encontrados metadados em um dos nos.");
 			}
 		}
 		
@@ -138,15 +178,25 @@ public class Construtor {
 	 * 
 	 * http://docs.dhtmlx.com/tree__syntax_templates.html#jsonformattemplate
 	 * 
-	 * @param userdata Um array de objetos JSON
-	 * @return Um objeto de transferencia UserdataTO
+	 * @param userdata 					Um array de objetos JSON
+	 * 
+	 * @return 							Um objeto de transferencia UserdataTO
+	 * 
+	 * @throws MalformedMetadata		Se os metadados de um elemento nao estao no formato aceito pela
+	 * 									biblioteca DHTMLX Tree.
+	 * 
+	 * @throws UnrecognisedMetadata 	Se existe um metadado nao reconhecido pela aplicacao
+	 * 									em um dos elementos.
 	 */
-	private TraducaoTO nodeData(JsonArray userdata){
+	private TraducaoTO nodeData(JsonArray userdata)
+			throws UnrecognisedMetadata, MalformedMetadata {
 		
-		TraducaoTO	to = new TraducaoTO();
-		JsonObject	data;
-		String		content, dataType;
-		RegraRegex	regra;
+		TraducaoTO	to		 = new TraducaoTO();
+		JsonObject	data	 = null;
+		String		content	 = null;
+		String		dataType = null;
+		RegraRegex	regra 	 = null;
+		
 		boolean		terminal;
 		int			nivel, numero1, numero2;
 		
@@ -156,13 +206,29 @@ public class Construtor {
 			//Faz cast do valor encontrado para objeto JSON
 			data = (JsonObject) jsonValue;
 			
-			//Recupera o nome do tipo de dado contido neste objeto JSON
-			//TODO Levantar execao se nao existir uma chave "name"
-			dataType = data.getString("name");
+			//Tenta recuperar valores de algumas chaves deste objeto JSON
+			try {
+				
+				//Recupera o nome do tipo de dado contido neste objeto JSON
+				dataType = data.getString("name");
+				
+				//Recupera o dado propriamente dito
+				content = data.getString("content");
+			}
 			
-			//Recupera o dado propriamente dito
-			//TODO Levantar execao se nao existir uma chave "content"
-			content = data.getString("content");
+			//Se uma das chaves nao existir ou nao puder ser armazenada em
+			//uma String, levanta uma execao de metadados mal formados
+			catch (NullPointerException|ClassCastException e) {
+				throw new MalformedMetadata(
+						"Os metadados de um no nao estao em um formato reconhecido.");
+			}
+			
+			//Se uma das chaves nao tiver um valor, levanta uma execao
+			//de metadados mal formados
+			if (dataType == null || content == null){
+				throw new MalformedMetadata(
+						"Os metadados de um no nao possuem valores validos.");
+			}
 			
 			switch (dataType) {
 				
@@ -204,8 +270,8 @@ public class Construtor {
 					break;
 					
 				default:
-					//TODO levantar execao se o tipo de metadado nao for reconhecido
-					break;
+					 throw new UnrecognisedMetadata(
+							 "Tipo de metadado nao reconhecido encontrado.");
 			}
 		}
 		
@@ -215,10 +281,15 @@ public class Construtor {
 	/**
 	 * Retorna um texto regex a partir dos metadados de um no terminal.
 	 * 
-	 * @param nodeData Os metadados.
-	 * @return Uma String com o texto regex equivalente ao no.
+	 * @param nodeData 					Os metadados.
+	 * 
+	 * @return 							Uma String com o texto regex equivalente ao no.
+	 * 
+	 * @throws UnrecognisedRule 		Se existe uma regra nao reconhecida pela aplicacao
+	 * 									em um dos elementos.
 	 */
-	private StringBuffer textoTerminal(TraducaoTO nodeData){
+	private StringBuffer textoTerminal(TraducaoTO nodeData)
+			throws UnrecognisedRule {
 		
 		StringBuffer buffer	= new StringBuffer();
 		RegraRegex	regra = nodeData.getTipoRegra();
@@ -302,8 +373,8 @@ public class Construtor {
 				buffer.append("[:xdigit:]");
 			
 			default:
-				//TODO Levantar execao se nao existir a regra terminal recebida
-				break;
+				throw new UnrecognisedRule(
+						"Regra terminal encontrada nao e reconhecida.");
 		}
 		
 		return buffer;
@@ -312,11 +383,26 @@ public class Construtor {
 	/**
 	 * Retorna um texto regex a partir de um no nao terminal.
 	 * 
-	 * @param node O no nao terminal
-	 * @param nodeData Os metadados deste no
-	 * @return Uma String com o texto regex equivalente ao no e todos os seus filhos.
+	 * @param node 						O no nao terminal.
+	 * 
+	 * @param nodeData 					Os metadados deste no.
+	 * 
+	 * @return 							Uma String com o texto regex equivalente ao no e todos os seus filhos.
+	 * 
+	 * @throws MalformedMetadata		Se os metadados de um elemento nao estao no formato aceito pela
+	 * 									biblioteca DHTMLX Tree.
+	 * 
+	 * @throws NonExistentMetadata 		Se nao existem metadados em um elemento.
+	 * 
+	 * @throws UnrecognisedMetadata 	Se existe um metadado nao reconhecido pela aplicacao
+	 * 									em um dos elementos.
+	 * 
+	 * @throws UnrecognisedRule 		Se existe uma regra nao reconhecida pela aplicacao
+	 * 									em um dos elementos.
 	 */
-	private StringBuffer textoNaoTerminal(JsonObject node, TraducaoTO nodeData){
+	private StringBuffer textoNaoTerminal(JsonObject node, TraducaoTO nodeData)
+			throws UnrecognisedMetadata, NonExistentMetadata,
+			UnrecognisedRule, MalformedMetadata {
 		
 		StringBuffer buffer	= new StringBuffer();
 		RegraRegex	 regra	= nodeData.getTipoRegra();
@@ -400,20 +486,10 @@ public class Construtor {
 				break;
 			
 			default:
-				//TODO Levantar execao se nao existir a regra nao terminal recebida
-				break;
+				throw new UnrecognisedRule(
+						"Regra nao terminal encontrada nao e reconhecida.");
 		}
 		
 		return buffer;
 	}
-	
-	/**
-	 * Para testes apenas.
-	 * @param args
-	 
-	public static void main(String[] args) {
-		
-		String teste = "{\"id\":\"0\", \"item\":[{ \"id\":\"1\", \"text\":\"Caracteres: a\", \"userdata\":[{ \"name\":\"nivel\" , \"content\":\"0\" },{ \"name\":\"original\" , \"content\":\"a\" },{ \"name\":\"regra\" , \"content\":\"CHARACTERS\" },{ \"name\":\"terminal\" , \"content\":\"true\" },{ \"name\":\"texto\" , \"content\":\"a\" }]}\n,{ \"id\":\"12\", \"open\":\"1\", \"select\":\"1\", \"text\":\"Um ou mais:\", \"userdata\":[{ \"name\":\"terminal\" , \"content\":\"false\" },{ \"name\":\"nivel\" , \"content\":\"0\" },{ \"name\":\"regra\" , \"content\":\"ONE_OR_MORE\" }], \"item\":[{ \"id\":\"13\", \"text\":\"Caracteres: bla\", \"userdata\":[{ \"name\":\"terminal\" , \"content\":\"true\" },{ \"name\":\"nivel\" , \"content\":\"1\" },{ \"name\":\"regra\" , \"content\":\"CHARACTERS\" },{ \"name\":\"texto\" , \"content\":\"bla\" }]}\n]\n}\n,{ \"id\":\"10\", \"open\":\"1\", \"text\":\"Zero ou mais:\", \"userdata\":[{ \"name\":\"terminal\" , \"content\":\"false\" },{ \"name\":\"nivel\" , \"content\":\"0\" },{ \"name\":\"regra\" , \"content\":\"ZERO_OR_MORE\" }], \"item\":[{ \"id\":\"11\", \"text\":\"Caracteres: nothing\", \"userdata\":[{ \"name\":\"terminal\" , \"content\":\"true\" },{ \"name\":\"nivel\" , \"content\":\"1\" },{ \"name\":\"regra\" , \"content\":\"CHARACTERS\" },{ \"name\":\"texto\" , \"content\":\"nothing\" }]}\n]\n}\n,{ \"id\":\"8\", \"open\":\"1\", \"text\":\"Pelo menos 9 repeticoes de:\", \"userdata\":[{ \"name\":\"terminal\" , \"content\":\"false\" },{ \"name\":\"nivel\" , \"content\":\"0\" },{ \"name\":\"regra\" , \"content\":\"AT_LEAST\" },{ \"name\":\"numero1\" , \"content\":\"9\" }], \"item\":[{ \"id\":\"9\", \"text\":\"Caracteres: sdhaksfdh\", \"userdata\":[{ \"name\":\"terminal\" , \"content\":\"true\" },{ \"name\":\"nivel\" , \"content\":\"1\" },{ \"name\":\"regra\" , \"content\":\"CHARACTERS\" },{ \"name\":\"texto\" , \"content\":\"sdhaksfdh\" }]}\n]\n}\n,{ \"id\":\"6\", \"open\":\"1\", \"text\":\"Entre 5 e 9 repeticoes de:\", \"userdata\":[{ \"name\":\"terminal\" , \"content\":\"false\" },{ \"name\":\"nivel\" , \"content\":\"0\" },{ \"name\":\"regra\" , \"content\":\"BETWEEN\" },{ \"name\":\"numero1\" , \"content\":\"5\" },{ \"name\":\"numero2\" , \"content\":\"9\" }], \"item\":[{ \"id\":\"7\", \"text\":\"Caracteres: teste\", \"userdata\":[{ \"name\":\"terminal\" , \"content\":\"true\" },{ \"name\":\"nivel\" , \"content\":\"1\" },{ \"name\":\"regra\" , \"content\":\"CHARACTERS\" },{ \"name\":\"texto\" , \"content\":\"teste\" }]}\n]\n}\n,{ \"id\":\"2\", \"open\":\"1\", \"text\":\"Pode ou nao ter:\", \"userdata\":[{ \"name\":\"terminal\" , \"content\":\"false\" },{ \"name\":\"nivel\" , \"content\":\"0\" },{ \"name\":\"regra\" , \"content\":\"CONDITIONAL\" }], \"item\":[{ \"id\":\"3\", \"text\":\"Caracteres: b\", \"userdata\":[{ \"name\":\"terminal\" , \"content\":\"true\" },{ \"name\":\"nivel\" , \"content\":\"1\" },{ \"name\":\"regra\" , \"content\":\"CHARACTERS\" },{ \"name\":\"texto\" , \"content\":\"b\" }]}\n,{ \"id\":\"4\", \"open\":\"1\", \"text\":\"Exatamente 5 repeticoes de:\", \"userdata\":[{ \"name\":\"terminal\" , \"content\":\"false\" },{ \"name\":\"nivel\" , \"content\":\"1\" },{ \"name\":\"regra\" , \"content\":\"EXACT\" },{ \"name\":\"numero1\" , \"content\":\"5\" }], \"item\":[{ \"id\":\"5\", \"text\":\"Caracteres: c\", \"userdata\":[{ \"name\":\"terminal\" , \"content\":\"true\" },{ \"name\":\"nivel\" , \"content\":\"2\" },{ \"name\":\"regra\" , \"content\":\"CHARACTERS\" },{ \"name\":\"texto\" , \"content\":\"c\" }]}\n]\n}\n]\n}\n]}";
-		System.out.println(construir(teste));
-	}*/
 }
