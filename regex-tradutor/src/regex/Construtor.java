@@ -11,6 +11,7 @@ import javax.json.JsonValue;
 import exception.MalformedJson;
 import exception.MalformedMetadata;
 import exception.NonExistentMetadata;
+import exception.ParentWithNoChildren;
 import exception.UnrecognisedMetadata;
 import exception.UnrecognisedRule;
 import regex.enumType.RegraRegex;
@@ -67,12 +68,14 @@ public class Construtor {
 		reader.close();
 		
 		//Recupera o 1o array do objeto JSON,
-		//que contem todos os item na raiz
+		//que contem todos os itens da raiz
 		itens = json.getJsonArray("item");
 		
 		//Se este array nao existir, levanta uma excecao
-		if (itens == null) {
-			throw new MalformedJson("JSON recebido nao esta no formato suportado.");
+		if (itens == null || itens.size() < 1) {
+			throw new MalformedJson(
+				"JSON recebido nao esta no formato suportado."
+			);
 		}
 		else {
 			//Constroi o texto regex a partir do itens do array
@@ -101,15 +104,23 @@ public class Construtor {
 	 * 
 	 * @throws UnrecognisedRule 		Se existe uma regra nao reconhecida pela aplicacao
 	 * 									em um dos elementos.
+	 * 
+	 * @throws ParentWithNoChildren		Se o array recebido for vazio.
 	 */
-	private String textoRegex(JsonArray array) 
+	private String textoRegex(JsonArray array)
 			throws UnrecognisedMetadata, NonExistentMetadata,
-			UnrecognisedRule, MalformedMetadata {
+			UnrecognisedRule, MalformedMetadata, ParentWithNoChildren {
 		
 		StringBuffer	buffer = new StringBuffer();
 		JsonArray		userdataArray;
 		JsonObject		node;
 		TraducaoTO		nodeData;
+		
+		if (array == null || array.size() < 1){
+			throw new ParentWithNoChildren(
+				"Um no nao terminal nao possui filhos."
+			);
+		}
 		
 		//Itera todos os valores do array
 		for (JsonValue jsonValue : array) {
@@ -117,48 +128,44 @@ public class Construtor {
 			//Faz cast do valor encontrado para objeto JSON
 			node = (JsonObject) jsonValue;
 			
-			//Checa se existe uma chave "userdata" neste objeto
-			if (node.containsKey("userdata")){
-				
-				//Recupera o valor da chave "userdata" como
-				//um array de objetos JSON
-				userdataArray = node.getJsonArray("userdata");
-				
-				/**
-				 * Itera todos os itens do array userdata, 
-				 * retornando um objeto de transferencia.
-				 * 
-				 * Este objeto contem os metadados de um
-				 * no especifico da arvore.
-				 */
-				nodeData = nodeData(userdataArray);
-				
-				//Se o no for terminal
-				if (nodeData.isTerminal()) {
-					
-					//Recupere o texto regex equivalente deste no
-					//e adicione-o ao String buffer
-					buffer.append(
-						textoTerminal(nodeData)
-					);
-				}
-				
-				//Se o no for nao terminal
-				else {
-					
-					//Recupera o texto regex equivalente deste no
-					//e de todos os seus filhos e adicione-o
-					//ao String buffer
-					buffer.append(
-						textoNaoTerminal(node, nodeData)
-					);
-				}
-				
-			}
-			//Se nao existe uma chave "userdata"
-			else {
+			//Recupera o valor da chave "userdata" como
+			//um array de objetos JSON
+			userdataArray = node.getJsonArray("userdata");
+			
+			if (userdataArray == null || userdataArray.size() < 1){
 				throw new NonExistentMetadata(
-						"Nao foram encontrados metadados em um dos nos.");
+					"Nao foram encontrados metadados em um dos nos."
+				);
+			}
+			
+			/**
+			 * Itera todos os itens do array userdata, 
+			 * retornando um objeto de transferencia.
+			 * 
+			 * Este objeto contem os metadados de um
+			 * no especifico da arvore.
+			 */
+			nodeData = nodeData(userdataArray);
+			
+			//Se o no for terminal
+			if (nodeData.isTerminal()) {
+				
+				//Recupere o texto regex equivalente deste no
+				//e adicione-o ao String buffer
+				buffer.append(
+					textoTerminal(nodeData)
+				);
+			}
+			
+			//Se o no for nao terminal
+			else {
+				
+				//Recupera o texto regex equivalente deste no
+				//e de todos os seus filhos e adicione-o
+				//ao String buffer
+				buffer.append(
+					textoNaoTerminal(node, nodeData)
+				);
 			}
 		}
 		
@@ -220,14 +227,16 @@ public class Construtor {
 			//uma String, levanta uma execao de metadados mal formados
 			catch (NullPointerException|ClassCastException e) {
 				throw new MalformedMetadata(
-						"Os metadados de um no nao estao em um formato reconhecido.");
+					"Os metadados de um no nao estao em um formato reconhecido."
+				);
 			}
 			
 			//Se uma das chaves nao tiver um valor, levanta uma execao
 			//de metadados mal formados
-			if (dataType == null || content == null){
+			if (dataType == "undefined" || content == "undefined"){
 				throw new MalformedMetadata(
-						"Os metadados de um no nao possuem valores validos.");
+					"Os metadados de um no nao possuem valores validos."
+				);
 			}
 			
 			switch (dataType) {
@@ -270,8 +279,9 @@ public class Construtor {
 					break;
 					
 				default:
-					 throw new UnrecognisedMetadata(
-							 "Tipo de metadado nao reconhecido encontrado.");
+					throw new UnrecognisedMetadata(
+						"Tipo de metadado nao reconhecido encontrado."
+					);
 			}
 		}
 		
@@ -374,7 +384,8 @@ public class Construtor {
 			
 			default:
 				throw new UnrecognisedRule(
-						"Regra terminal encontrada nao e reconhecida.");
+					"Regra terminal encontrada nao e reconhecida."
+				);
 		}
 		
 		return buffer;
@@ -399,10 +410,12 @@ public class Construtor {
 	 * 
 	 * @throws UnrecognisedRule 		Se existe uma regra nao reconhecida pela aplicacao
 	 * 									em um dos elementos.
+	 * 
+	 * @throws ParentWithNoChildren		Se um dos elementos nao terminais nao possuir filhos.
 	 */
 	private StringBuffer textoNaoTerminal(JsonObject node, TraducaoTO nodeData)
 			throws UnrecognisedMetadata, NonExistentMetadata,
-			UnrecognisedRule, MalformedMetadata {
+			UnrecognisedRule, MalformedMetadata, ParentWithNoChildren {
 		
 		StringBuffer buffer	= new StringBuffer();
 		RegraRegex	 regra	= nodeData.getTipoRegra();
@@ -487,7 +500,8 @@ public class Construtor {
 			
 			default:
 				throw new UnrecognisedRule(
-						"Regra nao terminal encontrada nao e reconhecida.");
+					"Regra nao terminal encontrada nao e reconhecida."
+				);
 		}
 		
 		return buffer;

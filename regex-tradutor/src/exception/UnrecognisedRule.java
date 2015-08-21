@@ -7,7 +7,7 @@ package exception;
  * @author tiso
  *
  */
-public class UnrecognisedRule extends Exception {
+public class UnrecognisedRule extends MalformedJson {
 	
 	private static final long serialVersionUID = 8002399404074649275L;
 	

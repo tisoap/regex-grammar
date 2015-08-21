@@ -10,7 +10,7 @@ package exception;
  * @author tiso
  *
  */
-public class MalformedMetadata extends Exception {
+public class MalformedMetadata extends MalformedJson {
 	
 	private static final long serialVersionUID = -8307807954745919831L;
 	

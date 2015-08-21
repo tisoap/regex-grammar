@@ -7,7 +7,7 @@ package exception;
  * @author tiso
  *
  */
-public class UnrecognisedMetadata extends Exception {
+public class UnrecognisedMetadata extends MalformedJson {
 	
 	private static final long serialVersionUID = 4072490455418228025L;
 	
