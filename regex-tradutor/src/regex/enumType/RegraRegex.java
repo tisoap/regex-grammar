@@ -2,7 +2,7 @@ package regex.enumType;
 
 /**
  * Enum com os nomes de todas as regras utilizadas pelo tradutor.
- * 
+ *
  * @author Tiso
  *
  */

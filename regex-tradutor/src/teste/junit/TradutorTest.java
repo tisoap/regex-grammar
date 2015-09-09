@@ -16,10 +16,10 @@ import regex.Traducao;
  *
  */
 public class TradutorTest {
-	
+
 	private Regex teste;
 	private Traducao traducao;
-	
+
 	private String[] regex = {
 			"a|b",
 			"(a)",
@@ -50,7 +50,7 @@ public class TradutorTest {
 			".",
 			"abc"
 			};
-	
+
 	private String[] traducoes = {
 			"Uma das opções:\n   Opção 1:\n      Caracteres: a\n   Opção 2:\n      Caracteres: b\n",
 			"Grupo 1:\n   Caracteres: a\n",
@@ -86,7 +86,7 @@ public class TradutorTest {
 	 */
 	@Before
 	public void setUp() throws Exception {
-		
+
 		traducao = null;
 	}
 
@@ -103,27 +103,27 @@ public class TradutorTest {
 	 */
 	@Test
 	public void testTraduzir() {
-		
+
 		for (int i = 0; i<regex.length; i++) {
-			
+
 			try {
 				teste = new Regex(regex[i]);
 			} catch (IOException e) {
 				fail("Erro de IO.");
 			}
-			
+
 			traducao = teste.traduzir();
-			
+
 			assertEquals(
 					"As traducoes devem ser iguais.",
 					traducoes[i],
 					traducao.getText()
 					);
-			
+
 			//System.out.println(traducao.getText());
 		}
-		
-		
+
+
 	}
 
 }

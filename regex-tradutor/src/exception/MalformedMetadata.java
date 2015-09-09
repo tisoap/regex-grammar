@@ -6,25 +6,26 @@ package exception;
  * <br>
  * O formato aceito pode ser visto nesta pagina:<br>
  * http://docs.dhtmlx.com/tree__syntax_templates.html#jsonformattemplate
- * 
+ *
  * @author tiso
  *
  */
 public class MalformedMetadata extends MalformedJson {
-	
+
 	private static final long serialVersionUID = -8307807954745919831L;
-	
+
 	public MalformedMetadata() {
 		super();
 	}
-	
+
 	public MalformedMetadata(String message) {
 		super(message);
 	}
-	
+
 	public MalformedMetadata(String message, Throwable cause) {
 		super(message, cause);
 	}
+
 	public MalformedMetadata(Throwable cause) {
 		super(cause);
 	}
