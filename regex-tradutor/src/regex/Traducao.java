@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.json.*;
 
+import helper.EscapeHelper;
 import regex.enumType.RegraRegex;
 import regex.transfer.TraducaoTO;
 
@@ -96,7 +97,7 @@ public class Traducao {
 	 * @return Uma String com as traducoes em formato de arvore, utilizando
 	 * listas nao ordenadas HTML.
 	 */
-	public String getTextHTML(){
+	public String getHtmlUnorderedList(){
 
 		posicao	= 0;
 		nivel	= 0;
@@ -214,7 +215,8 @@ public class Traducao {
 	}
 
 	/**
-	 * @return As traducoes com quebras de linha e identacoes com espacos.
+	 * @return As traducoes em texto puro, separadas por 
+	 *          quebras de linha e identadas com espacos.
 	 */
 	public String getText(){
 
@@ -234,8 +236,10 @@ public class Traducao {
 	}
 
 	/**
-	 * @return As traducoes com quebras de linha padrao Windows
-	 * (Carriage Return + New line) e identacoes com espacos.
+	 * @return As traducoes em texto puro, separadas por 
+	 *          quebras de linha no padrao Windows
+	 *          (Carriage Return + New Line) e identadas 
+	 *          com espacos.
 	 */
 	public String getTextWindows(){
 
@@ -252,6 +256,18 @@ public class Traducao {
 		}
 
 		return buffer.toString();
+	}
+	
+	/**
+	 * @return As traducoes em texto puro, separadas por 
+	 *          quebras de linha e identadas com espacos,
+	 *          com os caracteres especiais convertidos
+	 *          para entidades HTML.
+	 */
+	public String getTextHtml(){
+		
+		return EscapeHelper.encodeHtmlString(getText());
+		
 	}
 
 	/**
@@ -276,14 +292,10 @@ public class Traducao {
 
 		//Recupera um objeto JSON em formato String
 		String jsonString = getJSON().toString();
-
-		String quote = "\"";
-		String escape = "\\";
-		String escapedQuote = escape+escape+quote;
-
+		
 		//Escapa todas as aspas duplas com uma barra invertida
-		jsonString = jsonString.replaceAll(quote,escapedQuote);
-
+		jsonString = EscapeHelper.escapeString(jsonString);
+		
 		return jsonString;
 	}
 
@@ -423,7 +435,7 @@ public class Traducao {
 			//Texto original antes de ser traduzido
 			.add(factory.createObjectBuilder()
 				.add("name", "original")
-				.add("content",to.getTextoOriginal())
+				.add("content",EscapeHelper.encodeHtmlString(to.getTextoOriginal()))
 			)
 
 			//Regra que disparou a traducao
@@ -449,7 +461,7 @@ public class Traducao {
 			//Adiciona o texto que compoe a regra CHARACTERS
 			arrayBuilder.add(factory.createObjectBuilder()
 				.add("name", "texto")
-				.add("content",to.getTextoOriginal())
+				.add("content",EscapeHelper.encodeHtmlString(to.getTextoOriginal()))
 			);
 		}
 

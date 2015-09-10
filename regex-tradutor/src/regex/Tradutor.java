@@ -1,11 +1,10 @@
 package regex;
 
-import static org.apache.commons.lang3.StringEscapeUtils.escapeHtml4;
-
 import regex.enumType.RegraRegex;
 import regex.transfer.TraducaoTO;
 import gerado.RegularExpressionEREBaseVisitor;
 import gerado.RegularExpressionEREParser.*;
+import helper.EscapeHelper;
 
 /**
  * Utiliza o padrão Visitor para "visitar" uma parse tree e,
@@ -184,11 +183,8 @@ public class Tradutor extends RegularExpressionEREBaseVisitor<Void> {
 		/**
 		 * Faz o encode dos caracteres especiais da traducao
 		 * para entidades HTML e armazena o resultado.
-		 * utiliza a biblioteca "StringEscapeUtils":
-		 * 
-		 * http://commons.apache.org/proper/commons-lang/
 		 */
-		to.setTraducaoHTML(escapeHtml4(textoTraduzido));
+		to.setTraducaoHTML(EscapeHelper.encodeHtmlString(textoTraduzido));
 
 		return to;
 	}
