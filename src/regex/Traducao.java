@@ -1,5 +1,7 @@
 package regex;
 
+import static helper.EscapeHelper.*;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,7 +11,6 @@ import javax.json.JsonBuilderFactory;
 import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
 
-import helper.EscapeHelper;
 import regex.enumType.RegraRegex;
 import regex.transfer.TraducaoTO;
 
@@ -248,8 +249,11 @@ public class Traducao {
 
 			buffer.append(identacao(nivel));
 			buffer.append(to.getTraducao());
-			buffer.append("\n");
+			buffer.append('\n');
 		}
+		
+		//Remove a ultima quebra de linha
+		buffer.setLength(buffer.length()-1);
 
 		return buffer.toString();
 	}
@@ -274,6 +278,9 @@ public class Traducao {
 			buffer.append(to.getTraducao());
 			buffer.append("\r\n");
 		}
+		
+		//Remove a ultima quebra de linha e carrige return
+		buffer.setLength(buffer.length()-2);
 
 		return buffer.toString();
 	}
@@ -287,7 +294,7 @@ public class Traducao {
 	 */
 	public String getTextHtml(){
 		
-		return EscapeHelper.encodeHtmlString(getText());
+		return encodeHtmlString(getText());
 		
 	}
 
@@ -318,8 +325,11 @@ public class Traducao {
 		//Recupera um objeto JSON em formato String
 		String jsonString = getJSON().toString();
 		
-		//Escapa todas as aspas duplas com uma barra invertida
-		jsonString = EscapeHelper.escapeString(jsonString);
+		//Escapa todas as barras invertidas
+		jsonString = escapeReverseSolidus(jsonString);
+		
+		//Escapa todas as aspas duplas
+		jsonString = escapeDoubleQuote(jsonString);
 		
 		return jsonString;
 	}
@@ -467,7 +477,7 @@ public class Traducao {
 			//Texto original antes de ser traduzido
 			.add(factory.createObjectBuilder()
 				.add("name", "original")
-				.add("content",EscapeHelper.encodeHtmlString(to.getTextoOriginal()))
+				.add("content",encodeHtmlString(to.getTextoOriginal()))
 			)
 
 			//Regra que disparou a traducao
@@ -493,7 +503,7 @@ public class Traducao {
 			//Adiciona o texto que compoe a regra CHARACTERS
 			arrayBuilder.add(factory.createObjectBuilder()
 				.add("name", "texto")
-				.add("content",EscapeHelper.encodeHtmlString(to.getTextoOriginal()))
+				.add("content",encodeHtmlString(to.getTextoOriginal()))
 			);
 		}
 

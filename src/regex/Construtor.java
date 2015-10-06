@@ -24,7 +24,32 @@ import regex.transfer.TraducaoTO;
  * a partir de uma linguagem natural.
  */
 public class Construtor {
-
+	
+	/**
+	 * Array com todos os caracteres especiais de
+	 * Expressoes Regulares que precisam ser escapados para
+	 * que sejam interpretador literalmente.
+	 * 
+	 * A barra de escape '\' precisa ser o 1o item do array,
+	 * para evitar que escapes de outros caracteres sejam
+	 * escapados depois.
+	 */
+	private static final String[] specialChar = {
+		"\\",
+		"(",
+		")",
+		"[",
+		"]",
+		"{",
+		"}",
+		".",
+		"+",
+		"*",
+		"|",
+		"^",
+		"$"
+	};
+	
 	/**
 	 * Constroi uma expressao regular a partir de um Objeto JSON que contenha
 	 * uma expressao em linguagem natural.<br>
@@ -342,18 +367,26 @@ public class Construtor {
 
 		StringBuffer buffer  = new StringBuffer();
 		RegraRegex   regra   = nodeData.getTipoRegra();
-
-		//Altera o valor da variavel "texto" de acordo com a
-		//regra encontrada
+		
+		//Adiciona informacoes no buffer de String de acordo
+		//com a regra encontrada no nodeData
 		switch (regra) {
-
-			//Caso a regra seja de um tipo de caractere, recupera o texto dele
+		
 			case CHARACTERS:         //Varios caracteres seguidos
 			case CHARACTER:          //Um caractere
 			case LIST_CHARACTER:     //Um caractere de lista
 			case LIST_NO_SPECIAL:    //Um caractere de lista que perdeu seu significado especial ao ficar no inicio da lista
 			case LIST_LAST_ELEMENT:  //Um caractere de lista que perdeu seu significado especial ao ficar no final da lista
-				buffer.append(nodeData.getTextoOriginal());
+				
+				buffer.append(
+					
+					//Como e uma regra de texto literal,
+					//escapa todos os caracteres especiais do texto
+					//original para que eles sejam
+					//interpretados literalmente.
+					especialEscape(nodeData.getTextoOriginal())
+				);
+				
 				break;
 
 			case START_ANCHOR:
@@ -551,5 +584,26 @@ public class Construtor {
 		}
 
 		return buffer;
+	}
+	
+	/**
+	 * 
+	 * Escapa todos os caracteres especiais de Regex dentro de
+	 * uma String com barras invertidas.
+	 * 
+	 * @param texto
+	 * 	O texto original
+	 * 
+	 * @return
+	 * 	O texto original com todos os caracteres especiais
+	 * 	escapados com uma barra invertida.
+	 */
+	private String especialEscape(String texto){
+		
+		for (String string : specialChar) {
+			texto = texto.replace(string,"\\"+string );
+		}
+		
+		return texto;
 	}
 }

@@ -292,9 +292,13 @@ public class Tradutor extends RegularExpressionEREBaseVisitor<Void> {
 				//Se o proximo caractere nao for uma barra invertida,
 				//ignora a barra invertida atual, nao adicionando ela
 				//no buffer.
+				
+				//Como um caractere foi ignorado aqui, e
+				//preciso diminuir o tamanho do buffer
+				buffer.setLength(buffer.length()-1);
 			}
 		}
-
+		
 		return buffer.toString();
 	}
 
@@ -846,7 +850,7 @@ public class Tradutor extends RegularExpressionEREBaseVisitor<Void> {
 		//Remove todas as barra invertidas, caso essa colecao
 		//tenha caracteres escapados
 		String semEscape = removeEscape(caracteres);
-
+		
 		armazena(RegraRegex.CHARACTERS, ctx.getText(), "Caracteres: " + semEscape, true);
 
 		return null;
@@ -856,7 +860,7 @@ public class Tradutor extends RegularExpressionEREBaseVisitor<Void> {
 	@Override
 	public Void visitCharacter(CharacterContext ctx) {
 
-		armazena(RegraRegex.CHARACTER, ctx.getText(), ctx.getText(), true);
+		armazena(RegraRegex.CHARACTER, ctx.getText(), "Caracteres: " + ctx.getText(), true);
 
 		return null;
 	}
