@@ -8,54 +8,29 @@ import org.apache.commons.lang3.StringEscapeUtils;
 public class EscapeHelper {
 	
 	/**
-	 * Escapa todas as aspas duplas de um texto.
+	 * Escapa todas as aspas duplas de um texto com
+	 * barras invertidas, e remove todas as quebras de
+	 * linha do mesmo.
 	 * 
 	 * @param string
 	 *  O texto a ser escapado.
 	 *  
 	 * @return
-	 *  O texto com as aspas duplas escapadas.
+	 *  O texto escapado e sem quebras de linha.
 	 */
-	public static String escapeDoubleQuote(String string){
+	public static String escapeString(String string){
+
+		String quote = "\"";
+		String escape = "\\";
+		String escapedQuote = escape+escape+quote;
+
+		//Escapa todas as aspas duplas com uma barra invertida
+		string = string.replaceAll(quote,escapedQuote);
 		
-		return string.replaceAll("\"", "\\\\\"");
-        //     string.replaceAll( " , \\" );  <- O que as Strings representam
-        //     string.replaceAll( " , \" );   <- O que a maquina regex entende
-	}
-	
-	/**
-	 * Escapa todas as barras invertidas de um texto.
-	 * 
-	 * @param string
-	 * 	O texto a ser escapado.
-	 * 
-	 * @return
-	 * 	O texto com as barras invertidas escapadas.
-	 */
-	public static String escapeReverseSolidus(String string){
-		
-		return string.replaceAll("\\\\","\\\\\\\\");
-        //     string.replaceAll( \\ , \\\\ );  <- O que as Strings representam  
-        //     string.replaceAll( \ , \\ );     <- O que a maquina regex entende  
-		
-	}
-	
-	/**
-	 * Remove todas as quebras de linha de um texto.
-	 * Sao removidos os caracteres "New Line" e
-	 * "Carriage Return".
-	 * 
-	 * @param string
-	 * 	O texto com quebras de linha.
-	 * 
-	 * @return
-	 * 	O texto sem quebras de linha.
-	 */
-	public static String removeNewLines(String string){
-		
-		// \r?  -> Pode ou nao ter "Carriage Return"
-		// \n   -> "New Line"
-		return string.replaceAll("\r?\n", "");
+		//Remove todas as quebras de linha
+		string = string.replaceAll("\r?\n", "");
+
+		return string;
 	}
 	
 	/**
@@ -70,17 +45,9 @@ public class EscapeHelper {
 	 */
 	public static String encodeHtmlString(String html) {
 		
-		return StringEscapeUtils.escapeHtml4(html);
+		html = StringEscapeUtils.escapeHtml4(html);
 		
-		/**
-		return html
-				.replaceAll("\"","&quot;")
-				.replaceAll("'","&#39;")
-				.replaceAll("<","&lt;")
-				.replaceAll(">","&gt;")
-				.replaceAll("&","&amp;")
-				;
-		*/
+		return html;
 	}
 	
 	/**
@@ -94,17 +61,11 @@ public class EscapeHelper {
 	 *  O texto com caracteres especiais.
 	 */
 	public static String decodeHtmlString(String html) {
-		/**
-		return html
-				.replaceAll("&quot;","\"")
-				.replaceAll("&#39;","'")
-				.replaceAll("&lt;","<")
-				.replaceAll("&gt;",">")
-				.replaceAll("&amp;","&")
-				;
-		*/
 		
-		return StringEscapeUtils.unescapeHtml4(html);
+		html = StringEscapeUtils.unescapeHtml4(html);
+		
+		return html;
+		
 	}
 	
 }
