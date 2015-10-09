@@ -252,9 +252,12 @@ public class Traducao {
 			buffer.append('\n');
 		}
 		
-		//Remove a ultima quebra de linha
-		buffer.setLength(buffer.length()-1);
-
+		//Remove a ultima quebra de linha 
+		//se o buffer nao estiver vazio
+		if ( !(buffer.length() < 1) ){
+			buffer.setLength(buffer.length()-1);
+		}
+		
 		return buffer.toString();
 	}
 
@@ -279,9 +282,12 @@ public class Traducao {
 			buffer.append("\r\n");
 		}
 		
-		//Remove a ultima quebra de linha e carrige return
-		buffer.setLength(buffer.length()-2);
-
+		//Remove a ultima quebra de linha e carrige return,
+		//se o buffer nao estiver vazio
+		if ( !(buffer.length() < 2) ){
+			buffer.setLength(buffer.length()-2);
+		}
+		
 		return buffer.toString();
 	}
 	
