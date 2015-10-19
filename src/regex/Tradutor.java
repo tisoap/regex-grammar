@@ -4,7 +4,6 @@ import regex.enumType.RegraRegex;
 import regex.transfer.TraducaoTO;
 import generated.RegularExpressionEREBaseVisitor;
 import generated.RegularExpressionEREParser.*;
-import helper.EscapeHelper;
 
 /**
  * Utiliza o padrão Visitor para "visitar" uma parse tree e,
@@ -226,13 +225,7 @@ public class Tradutor extends RegularExpressionEREBaseVisitor<Void> {
 		to.setTextoOriginal(textoOriginal);
 		to.setTraducao(textoTraduzido);
 		to.setTerminal(terminal);
-
-		/**
-		 * Faz o encode dos caracteres especiais da traducao
-		 * para entidades HTML e armazena o resultado.
-		 */
-		to.setTraducaoHTML(EscapeHelper.encodeHtmlString(textoTraduzido));
-
+		
 		return to;
 	}
 
@@ -433,6 +426,7 @@ public class Tradutor extends RegularExpressionEREBaseVisitor<Void> {
 	 */
 	@Override
 	public Void visitRepetition(RepetitionContext ctx) {
+		
 		//Visita o simbolo quantificador
 		visit(ctx.quantifier());
 

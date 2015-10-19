@@ -1,8 +1,6 @@
 package test;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 
 import regex.Regex;
 import regex.Traducao;
@@ -52,16 +50,26 @@ public class Main {
 				return;
 			}
 		}
-
+		
+		//Alterar texto conforme necessario para o teste.
+		String input = "[abc]";
+		
+		/**
+		
+		Eclipse adiquiriu um bug onde e impossivel ler entradas
+		de texto a partir do console.
+		
 		//Cria um leitor que le a entrada padrao, no caso o console
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-
+		
 		//Leia a entrada ate a primeira quebra de linha e salve em uma String
 		String input = br.readLine();
-
+		
 		//Fecha o leitor
 		br.close();
-
+		
+		*/
+		
 		//Envia o texto recebido para a classe Regex
 		Regex regex = new Regex(input);
 
@@ -79,7 +87,7 @@ public class Main {
 
 		//Se nenhum parametro foi passado
 		else {
-
+			
 			System.out.println("");
 
 			//Traduz a expressao para linguagem natural
@@ -96,6 +104,7 @@ public class Main {
 			else {
 				System.out.println(traducao.getText());
 				System.out.println(traducao.getJSONString());
+				System.out.println(traducao.getHtmlUnorderedList());
 			}
 
 			System.out.println("");

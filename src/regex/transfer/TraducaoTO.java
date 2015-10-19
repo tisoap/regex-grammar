@@ -14,10 +14,6 @@ public class TraducaoTO {
 
 	/** A traducao recebida. */
 	private String traducao;
-	
-	/** A traducao recebida, onde os caracteres especiais sao
-	 *  entidades HTML. */
-	private String traducaoHTML;
 
 	/** O texto original do elemento, incluindo todos os textos abaixo dele. */
 	private String textoOriginal;
@@ -68,10 +64,7 @@ public class TraducaoTO {
 	public int getNumero2() {
 		return numero2;
 	}
-	public String getTraducaoHTML() {
-		return traducaoHTML;
-	}
-
+	
 	// ----- SETTERS -----
 	public void setNivel(int nivel) {
 		this.nivel = nivel;
@@ -99,9 +92,6 @@ public class TraducaoTO {
 	}
 	public void setNumero2(int numero2) {
 		this.numero2 = numero2;
-	}
-	public void setTraducaoHTML(String traducaoHTML) {
-		this.traducaoHTML = traducaoHTML;
 	}
 
 }

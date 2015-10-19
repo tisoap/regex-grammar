@@ -164,9 +164,12 @@ public class Traducao {
 			if (novoNivel == nivel && traducaoAtual.isTerminal()) {
 
 				bufferLocal.append("<li>");
-				bufferLocal.append(traducaoAtual.getTraducaoHTML());
+				bufferLocal.append( encodeHtmlString(traducaoAtual.getTraducao()) );
 				bufferLocal.append("</li>");
 				bufferLocal.append("\n");
+				
+				//incrementa a variavel de posicao
+				posicao++;
 			}
 
 			//Se o nivel se manteve e a traducao atual nao e terminal
@@ -177,7 +180,7 @@ public class Traducao {
 
 				//Abre um item de lista e insere a traducao nele
 				bufferLocal.append("<li>");
-				bufferLocal.append(traducaoAtual.getTraducaoHTML());
+				bufferLocal.append( encodeHtmlString(traducaoAtual.getTraducao()) );
 				bufferLocal.append("\n");
 
 				//Dentro do item de lista, abre uma lista nao ordenada
@@ -396,10 +399,13 @@ public class Traducao {
 				arrayBuilder.add(
 					factory.createObjectBuilder()
 					.add("id", contadorId++)
-					.add("text", traducaoAtual.getTraducaoHTML())
+					.add("text", traducaoAtual.getTraducao())
 					.add("child", 0)
 					.add("userdata",criarUserdata(traducaoAtual))
 				);
+				
+				//incrementa a variavel de posicao
+				posicao++;
 
 			}
 
@@ -419,7 +425,7 @@ public class Traducao {
 				arrayBuilder.add(
 					factory.createObjectBuilder()
 					.add("id", contadorId++)
-					.add("text", traducaoAtual.getTraducaoHTML())
+					.add("text", traducaoAtual.getTraducao())
 					.add("child", 1)
 					.add("userdata",criarUserdata(traducaoAtual))
 					.add("item", jsonRecursivo())
@@ -483,7 +489,11 @@ public class Traducao {
 			//Texto original antes de ser traduzido
 			.add(factory.createObjectBuilder()
 				.add("name", "original")
-				.add("content",encodeHtmlString(to.getTextoOriginal()))
+				
+				//A funcao "add" neste contexto faz escape,
+				//entao qualquer escape anterior precisa ser retirado
+				//para nao criar problemas
+				.add("content", unescapeDoubleQuote(to.getTextoOriginal()) )
 			)
 
 			//Regra que disparou a traducao
@@ -509,7 +519,11 @@ public class Traducao {
 			//Adiciona o texto que compoe a regra CHARACTERS
 			arrayBuilder.add(factory.createObjectBuilder()
 				.add("name", "texto")
-				.add("content",encodeHtmlString(to.getTextoOriginal()))
+				
+				//A funcao "add" neste contexto faz escape,
+				//entao qualquer escape anterior precisa ser retirado
+				//para nao criar problemas
+				.add("content", unescapeDoubleQuote(to.getTextoOriginal()) )
 			);
 		}
 
