@@ -1,5 +1,6 @@
 package generated;
 
+// Generated from RegularExpressionERE.g4 by ANTLR 4.5.1
 import org.antlr.v4.runtime.tree.ParseTreeVisitor;
 
 /**
@@ -130,6 +131,24 @@ public interface RegularExpressionEREVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitList(RegularExpressionEREParser.ListContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link RegularExpressionEREParser#emptyList}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitEmptyList(RegularExpressionEREParser.EmptyListContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link RegularExpressionEREParser#emptyPositiveList}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitEmptyPositiveList(RegularExpressionEREParser.EmptyPositiveListContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link RegularExpressionEREParser#emptyNegativeList}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitEmptyNegativeList(RegularExpressionEREParser.EmptyNegativeListContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link RegularExpressionEREParser#negativeList}.
 	 * @param ctx the parse tree

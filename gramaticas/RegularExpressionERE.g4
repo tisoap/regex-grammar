@@ -1,14 +1,14 @@
 /**
  * Gramatica para expressoes regulares, padrao POSIX ERE
  * (Portable Operating System Interface Extended Regular Expressions)
- * 
+ *
  * http://pubs.opengroup.org/onlinepubs/9699919799/basedefs/V1_chap09.html
- * 
+ *
  * E assumido local UTF-8 para as entradas, entao nao existe implementacao
  * de “Collating Sequences” e “Character Equivalents”.
- * 
+ *
  * http://www.regular-expressions.info/posixbrackets.html
- * 
+ *
  */
 
 grammar RegularExpressionERE;
@@ -18,30 +18,30 @@ options { tokenVocab=RegularExpressionERELexer; }
 
 //Adiciona os metodos de validacao nas classes Java geradas
 @members {
-	
-	/**
-	 * Recebe duas Strings e as converte para inteiros.
-	 * Compara se a primeira e menor ou igual a segunda
-	 * e retorna um boolean.
-	 */
-	protected boolean menorOuIgual(String primeiro, String segundo) {
-		int a = Integer.parseInt(primeiro);
-		int b = Integer.parseInt(segundo);
-		return (a<=b);
-	}
-	
-	/**
-	 * Recebe duas Strings e extrai o primeiro caractere de cada.
-	 * Descobre o numero Unicode dos caracteres, e compara se
-	 * o primeiro e menor ou igual ao segundo. Retorna um boolean.
-	 */
-	protected boolean vemAntesDe(String primeiro, String segundo) {
-		char a = primeiro.charAt(0);
-		char b = segundo.charAt(0);
-		int unicodeA = (int) a;
-		int unicodeB = (int) b;
-		return (unicodeA<=unicodeB);
-	}
+
+    /**
+     * Recebe duas Strings e as converte para inteiros.
+     * Compara se a primeira e menor ou igual a segunda
+     * e retorna um boolean.
+     */
+    protected boolean menorOuIgual(String primeiro, String segundo) {
+        int a = Integer.parseInt(primeiro);
+        int b = Integer.parseInt(segundo);
+        return (a<=b);
+    }
+
+    /**
+     * Recebe duas Strings e extrai o primeiro caractere de cada.
+     * Descobre o numero Unicode dos caracteres, e compara se
+     * o primeiro e menor ou igual ao segundo. Retorna um boolean.
+     */
+    protected boolean vemAntesDe(String primeiro, String segundo) {
+        char a = primeiro.charAt(0);
+        char b = segundo.charAt(0);
+        int unicodeA = (int) a;
+        int unicodeB = (int) b;
+        return (unicodeA<=unicodeB);
+    }
 }
 
 //Definicao de uma exprecao regular, que pode ser:
@@ -53,8 +53,8 @@ expression : group                   //Um grupo
            | list                    //Uma lista de caracteres
            | anychar                 //Qualquer caractere
            | characters              //Caracteres em sequencia
-           
-           //Regra especial para ignorar alguns caracteres
+
+             //Regra especial para ignorar alguns caracteres
            | WS
            ;
 
@@ -63,7 +63,7 @@ multiple : subExpression (PIPE subExpression)+ ;
 
 /** Uma subexpressao e como uma expressao, mas sem multiplas opcoes.
  * Para se ter multiplas opcoes dentro de multiplas opcoes,
- * estas obrigatoriamente devem estar dentro de um grupo. 
+ * estas obrigatoriamente devem estar dentro de um grupo.
  */
 subExpression : group                         //Um grupo de captura
               | anchor                        //Uma posicao
@@ -99,7 +99,7 @@ quantified : group
            | character
            ;
 
-//Um quantificador pode ser: 
+//Um quantificador pode ser:
 quantifier : oneOrMore    //Um ou mais
            | zeroOrMore   //Zero ou mais
            | conditional  //Pode ou nao conter (condicional)
@@ -121,60 +121,61 @@ atLeast     : CURLYOPEN value COMMA CURLYCLOSE ;  //{n,}
  * no formato {...}?. A regra so sera verdadeira se a condicional for verdadeira.
  */
 between :
-	
-	//Armazena "firstValue" na variavel local 'a' e "lastValue" na variavel local 'b'
-	CURLYOPEN a=firstValue COMMA b=lastValue CURLYCLOSE
-	
-	//Semantic Predicate
-	//Compara se o valor 'a' e menor ou igual ao valor 'b'
-	{menorOuIgual($a.text,$b.text)}?
-	
-	;
+
+    //Armazena "firstValue" na variavel local 'a' e "lastValue" na variavel local 'b'
+    CURLYOPEN a=firstValue COMMA b=lastValue CURLYCLOSE
+
+    //Semantic Predicate
+    //Compara se o valor 'a' e menor ou igual ao valor 'b'
+    {menorOuIgual($a.text,$b.text)}?
+
+    ;
 
 //Um numero inteiro positivo
 value      : DIGIT+ ;
 firstValue : DIGIT+ ;
 lastValue  : DIGIT+ ;
 
-//Uma lista pode ser positiva ou negativa, e fica entre colchetes
-list : 
-       //Previne que sejam criadas listas vazias
-       (LISTOPEN LISTCLOSE | LISTOPEN CIRCUMFLEX LISTCLOSE)
+//Uma lista pode ser positiva ou negativa. Pode ocorrer da lista ser vazia.
+list :
+       //Listas vazias sao tratadas como erros
+       emptyList
        {notifyErrorListeners("Lista vazia.");}
-     
-     | LISTOPEN (negativeList|positiveList) LISTCLOSE
+
+     | negativeList
+     | positiveList
      ;
 
 /**
- * Uma lista negativa e um conjunto nao vazio de elementos de lista
- * precedidos por '^'.
+ * Uma lista vazia pode ser positiva ou negativa.
  */
-negativeList : CIRCUMFLEX listElements ;
+emptyList : emptyPositiveList
+          | emptyNegativeList
+          ;
+
+//Uma lista vazia positiva e []
+emptyPositiveList : LISTOPEN LISTCLOSE;
+
+//Uma lista vazia negativa e [^]
+emptyNegativeList : LISTOPEN CIRCUMFLEX LISTCLOSE;
 
 /**
- * Uma lista positiva e um conjunto nao vazio de elementos de lista.
+ * Uma lista negativa sao elementos de lista
+ * precedidos por um acento circumflexo ^
  */
-positiveList : listElements ;
+negativeList : LISTOPEN CIRCUMFLEX listElements LISTCLOSE;
+
+/**
+ * Uma lista positiva sao elementos de lista
+ */
+positiveList : LISTOPEN listElements LISTCLOSE;
 
 /**
  * Um conjunto de elementos de lista sao um ou mais elementos
- * de lista.
+ * de lista. Pode ou nao conter casos especiais de elementos
+ * na primeira ou ultima posicao.
  */
-listElements : 
-               //Elementos de lista, podendo ou nao conter casos especiais
-               //de inicio ou fim
-               listFirstElement? listElement+ listLastElement?
-               
-               //Apenas o caso especial de inicio
-             | listFirstElement
-             
-               //Apenas o caso especial de fim
-             | listLastElement
-             
-               //Apenas os casos especiais de inicio e fim
-             | listFirstElement listLastElement
-             
-             ;
+listElements : listFirstElement? listElement*  listLastElement?;
 
 //Um elemento de lista pode ser:
 listElement : range            //Uma serie de caracteres
@@ -184,41 +185,34 @@ listElement : range            //Uma serie de caracteres
 
 /**
  * Uma serie sao dois caracteres separados por um traco.
- * 
- * Os caracteres '-' (traco) e ']' (fecha colchetes) podem ser o 
- * segundo caractere em uma serie, perdendo assim seu significado
- * especial dentro de uma lista.
- * 
+ *
+ * O caractere '-' (traco) pode ser o segundo caractere em uma serie,
+ * perdendo assim seu significado especial dentro de uma lista.
+ *
  * O primeiro caractere deve preceder o segundo. Para garantir isto,
  * a regra abaixo contem um "predicador semantico" (Semantic Predicate),
  * que e uma condicional em linguagem Java no formato {...}? .
+ *
  * A regra so sera verdadeira se a condicional for verdadeira.
  */
 range :
-	
-	//Armazena o primeiro caractere na variavel local 'a',
-	//e o segundo caractere na variavel local 'b'
-	a=listCharacter DASH b=listCharacter
-	
-	//Semantic Predicate: Compara se o valor 'a' vem antes ou e igual a 'b'
-	{vemAntesDe($a.text,$b.text)}?
-	
-	|
-	
-	//caso especial de traco como sendo o segundo caractere
-	c=listCharacter DASH d=DASH
-	{vemAntesDe($c.text,$d.text)}?
-	
-	|
-	
-	//caso especial de fecha colchete como sendo o segundo caractere
-	e=listCharacter DASH f=LISTCLOSE
-	{vemAntesDe($e.text,$f.text)}?
-	
-	;
+
+    //Armazena o primeiro caractere na variavel local 'a',
+    //e o segundo caractere na variavel local 'b'
+    a=listCharacter DASH b=listCharacter
+
+    //Semantic Predicate: Compara se o valor 'a' vem antes ou e igual a 'b'
+    {vemAntesDe($a.text,$b.text)}?
+
+    |
+
+    //Caso especial de traco como sendo o segundo caractere
+    c=listCharacter DASH d=DASH
+    {vemAntesDe($c.text,$d.text)}?
+    ;
 
 /**
- * O primeiro elemento da lista pode ser um caractere que 
+ * O primeiro elemento da lista pode ser um caractere que
  * perdeu seu significado especial, ou este mesmo caractere
  * porem dentro de uma serie.
  */
@@ -237,7 +231,7 @@ listNoSpecial : LISTCLOSE
 /**
  * E possivel que o traco ou fecha colchetes que reside no primeiro elemento da lista
  * seja parte de uma serie de caracteres.
- * 
+ *
  * Esta e a unica situacao em que o traco pode ser o primeiro elemento em uma
  * serie de caracteres.
  */

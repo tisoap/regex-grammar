@@ -47,7 +47,8 @@ public class Construtor {
 		"*",
 		"|",
 		"^",
-		"$"
+		"$",
+		"?"
 	};
 	
 	/**
@@ -374,9 +375,6 @@ public class Construtor {
 		
 			case CHARACTERS:         //Varios caracteres seguidos
 			case CHARACTER:          //Um caractere
-			case LIST_CHARACTER:     //Um caractere de lista
-			case LIST_NO_SPECIAL:    //Um caractere de lista que perdeu seu significado especial ao ficar no inicio da lista
-			case LIST_LAST_ELEMENT:  //Um caractere de lista que perdeu seu significado especial ao ficar no final da lista
 				
 				buffer.append(
 					
@@ -387,6 +385,13 @@ public class Construtor {
 					especialEscape(nodeData.getTextoOriginal())
 				);
 				
+				break;
+				
+			case LIST_CHARACTER:     //Um caractere de lista
+			case LIST_CHARACTERS:    //Caracteres de lista
+			case LIST_NO_SPECIAL:    //Um caractere de lista que perdeu seu significado especial ao ficar no inicio da lista
+			case LIST_LAST_ELEMENT:  //Um caractere de lista que perdeu seu significado especial ao ficar no final da lista
+				buffer.append(nodeData.getTextoOriginal());
 				break;
 
 			case START_ANCHOR:
@@ -461,7 +466,7 @@ public class Construtor {
 
 		return buffer;
 	}
-
+	
 	/**
 	 * Retorna um texto regex a partir de um no nao terminal.
 	 *
@@ -606,4 +611,5 @@ public class Construtor {
 		
 		return texto;
 	}
+
 }

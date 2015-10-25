@@ -1,5 +1,6 @@
 package generated;
 
+// Generated from RegularExpressionERE.g4 by ANTLR 4.5.1
 import org.antlr.v4.runtime.tree.AbstractParseTreeVisitor;
 
 /**
@@ -151,6 +152,27 @@ public class RegularExpressionEREBaseVisitor<T> extends AbstractParseTreeVisitor
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
 	@Override public T visitList(RegularExpressionEREParser.ListContext ctx) { return visitChildren(ctx); }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation returns the result of calling
+	 * {@link #visitChildren} on {@code ctx}.</p>
+	 */
+	@Override public T visitEmptyList(RegularExpressionEREParser.EmptyListContext ctx) { return visitChildren(ctx); }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation returns the result of calling
+	 * {@link #visitChildren} on {@code ctx}.</p>
+	 */
+	@Override public T visitEmptyPositiveList(RegularExpressionEREParser.EmptyPositiveListContext ctx) { return visitChildren(ctx); }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation returns the result of calling
+	 * {@link #visitChildren} on {@code ctx}.</p>
+	 */
+	@Override public T visitEmptyNegativeList(RegularExpressionEREParser.EmptyNegativeListContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *

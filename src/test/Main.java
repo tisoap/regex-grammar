@@ -52,12 +52,12 @@ public class Main {
 		}
 		
 		//Alterar texto conforme necessario para o teste.
-		String input = "[abc]";
+		String input = "[-a]";
 		
 		/**
 		
 		Eclipse adiquiriu um bug onde e impossivel ler entradas
-		de texto a partir do console.
+		de texto a partir do console quando em modo debug.
 		
 		//Cria um leitor que le a entrada padrao, no caso o console
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));

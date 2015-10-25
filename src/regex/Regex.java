@@ -2,6 +2,7 @@ package regex;
 
 import java.io.IOException;
 
+import org.antlr.v4.gui.Trees;
 import org.antlr.v4.runtime.*;
 
 import generated.RegularExpressionERELexer;
@@ -250,12 +251,17 @@ public class Regex {
 	 * Para testes apenas.
 	 */
 	public void parserTreeGui(){
-
+		
 		analisar();
+		
+		// http://stackoverflow.com/questions/29353114/running-antrl-testrig-gui-from-within-a-java-application
+		
+		//Versao 4.5 e anteriores
+		//parseTreeContext.inspect(parser);
+		
+		//Versao 4.5.1 e superiores
+		Trees.inspect(parseTreeContext, parser);
 
-		//http://stackoverflow.com/questions/29353114/running-antrl-testrig-gui-from-within-a-java-application
-		//http:/www.antlr.org/api/JavaTool/org/antlr/v4/runtime/RuleContext.html#inspect%28org.antlr.v4.runtime.Parser%29
-		parseTreeContext.inspect(parser);
 	}
 
 }
