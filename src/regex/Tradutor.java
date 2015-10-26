@@ -68,6 +68,7 @@ public class Tradutor extends RegularExpressionEREBaseVisitor<Void> {
 
 	/** A quantidade de grupos de captura encontrados.
 	 *  Este numero e usado no texto da traducao. (Ex: "Grupo 2:")*/
+	@SuppressWarnings("unused")
 	private int contadorGrupos = 0;
 
 	/** A quantidade de multiplas opcoes encontradas.
@@ -340,7 +341,7 @@ public class Tradutor extends RegularExpressionEREBaseVisitor<Void> {
 		if (pai != filho){
 			contadorOpcoes++;
 
-			armazena(RegraRegex.SUB_EXPRESSION, ctx.getText(), "Opção " + contadorOpcoes + ":", false);
+			armazena(RegraRegex.SUB_EXPRESSION, ctx.getText(), "Opção:", false);
 
 			nivelAtual++;
 			visitChildren(ctx);
@@ -359,7 +360,7 @@ public class Tradutor extends RegularExpressionEREBaseVisitor<Void> {
 
 		contadorGrupos++;
 
-		armazena(RegraRegex.GROUP, ctx.getText(), "Grupo " + contadorGrupos + ":", false);
+		armazena(RegraRegex.GROUP, ctx.getText(), "Grupo:", false);
 
 		nivelAtual++;
 		visitChildren(ctx);
