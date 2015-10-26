@@ -1,6 +1,9 @@
 package regex;
 
-import static helper.EscapeHelper.*;
+import static helper.EscapeHelper.encodeHtmlString;
+import static helper.EscapeHelper.escapeDoubleQuote;
+import static helper.EscapeHelper.escapeReverseSolidus;
+import static helper.EscapeHelper.unescapeDoubleQuote;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,14 +31,14 @@ public class Traducao {
 	/** Fabrica de construtores de objetos JSON. */
 	private JsonBuilderFactory factory;
 
-	/** Indica se ocorreu um erro na producao deste objeto. 
+	/** Indica se ocorreu um erro na producao deste objeto.
 	 *  Falso por padrao.*/
 	private boolean ocorreuErro = false;
 
 	/** Mensagem indentificando o tipo de erro ocorrido
 	 *  durante a producao deste objeto. Vazio por padrao.*/
 	private String mensagemErro = "";
-	
+
 	/** Texto Identificando a posicao do erro em relacao
 	 *  ao texto original, usando caracteres '^'. So sera util
 	 *  se exibido em fonte monoespacada. Vazio por padrao.*/
@@ -55,7 +58,7 @@ public class Traducao {
 	public String getPosicaoErro() {
 		return posicaoErro;
 	}
-	
+
 	/**
 	 * @return A lista contendo todos os objetos de traducao.
 	 */
@@ -81,7 +84,7 @@ public class Traducao {
 
 	/**
 	 * Adiciona um novo objeto de traducao na lista de traducoes.
-	 * 
+	 *
 	 * @param to
 	 *  Um objeto de transferencia TraducaoTO
 	 */
@@ -95,7 +98,7 @@ public class Traducao {
 	 *
 	 * @param n
 	 *  O nivel de identacao desejado.
-	 *  
+	 *
 	 * @return
 	 *  Uma String contendo a identacao em espaços.
 	 */
@@ -103,10 +106,9 @@ public class Traducao {
 
 		String ident = "";
 
-		for (int i = 0; i < n; i++) {
+		for (int i = 0; i < n; i++)
 			ident += "   ";
-		}
-		
+
 		return ident;
 	}
 
@@ -161,13 +163,13 @@ public class Traducao {
 
 			//Se o nivel se manteve e a traducao atual e terminal,
 			//insere a traducao em uma tag 'li'
-			if (novoNivel == nivel && traducaoAtual.isTerminal()) {
+			if ((novoNivel == nivel) && traducaoAtual.isTerminal()) {
 
 				bufferLocal.append("<li>");
 				bufferLocal.append( encodeHtmlString(traducaoAtual.getTraducao()) );
 				bufferLocal.append("</li>");
 				bufferLocal.append("\n");
-				
+
 				//incrementa a variavel de posicao
 				posicao++;
 			}
@@ -176,7 +178,7 @@ public class Traducao {
 			//insere a traducao dentro de uma tag 'li', e dentro dela
 			//abre uma nova tag 'ul' e chama o metodo recursivamente
 			//antes de fecha-la
-			else if (novoNivel == nivel && !traducaoAtual.isTerminal()){
+			else if ((novoNivel == nivel) && !traducaoAtual.isTerminal()){
 
 				//Abre um item de lista e insere a traducao nele
 				bufferLocal.append("<li>");
@@ -238,7 +240,7 @@ public class Traducao {
 
 	/**
 	 * @return
-	 *  As traducoes em texto puro, separadas por 
+	 *  As traducoes em texto puro, separadas por
 	 *  quebras de linha e identadas com espacos.
 	 */
 	public String getText(){
@@ -254,21 +256,20 @@ public class Traducao {
 			buffer.append(to.getTraducao());
 			buffer.append('\n');
 		}
-		
-		//Remove a ultima quebra de linha 
+
+		//Remove a ultima quebra de linha
 		//se o buffer nao estiver vazio
-		if ( !(buffer.length() < 1) ){
+		if ( !(buffer.length() < 1) )
 			buffer.setLength(buffer.length()-1);
-		}
-		
+
 		return buffer.toString();
 	}
 
 	/**
 	 * @return
-	 *  As traducoes em texto puro, separadas por 
+	 *  As traducoes em texto puro, separadas por
 	 *  quebras de linha no padrao Windows
-	 *  (Carriage Return + New Line) e identadas 
+	 *  (Carriage Return + New Line) e identadas
 	 *  com espacos.
 	 */
 	public String getTextWindows(){
@@ -284,27 +285,26 @@ public class Traducao {
 			buffer.append(to.getTraducao());
 			buffer.append("\r\n");
 		}
-		
+
 		//Remove a ultima quebra de linha e carrige return,
 		//se o buffer nao estiver vazio
-		if ( !(buffer.length() < 2) ){
+		if ( !(buffer.length() < 2) )
 			buffer.setLength(buffer.length()-2);
-		}
-		
+
 		return buffer.toString();
 	}
-	
+
 	/**
 	 * @return
-	 *  As traducoes em texto puro, separadas por 
+	 *  As traducoes em texto puro, separadas por
 	 *  quebras de linha e identadas com espacos,
 	 *  com os caracteres especiais convertidos
 	 *  para entidades HTML.
 	 */
 	public String getTextHtml(){
-		
+
 		return encodeHtmlString(getText());
-		
+
 	}
 
 	/**
@@ -312,7 +312,7 @@ public class Traducao {
 	 *  Uma string contendo um objeto JSON com as traducoes,
 	 *  no formato aceito pela biblioteca dhtmlxTree.<br>
 	 *  <br>
-	 *  
+	 *
 	 *  http://docs.dhtmlx.com/tree__syntax_templates.html#jsonformattemplate
 	 */
 	public String getJSONString(){
@@ -326,20 +326,20 @@ public class Traducao {
 	 *  no formato aceito pela biblioteca dhtmlxTree, com as aspas
 	 *  escapadas por barras insveridas.<br>
 	 *  <br>
-	 *  
+	 *
 	 *  http://docs.dhtmlx.com/tree__syntax_templates.html#jsonformattemplate
 	 */
 	public String getEscapedJSONString(){
 
 		//Recupera um objeto JSON em formato String
 		String jsonString = getJSON().toString();
-		
+
 		//Escapa todas as barras invertidas
 		jsonString = escapeReverseSolidus(jsonString);
-		
+
 		//Escapa todas as aspas duplas
 		jsonString = escapeDoubleQuote(jsonString);
-		
+
 		return jsonString;
 	}
 
@@ -347,7 +347,7 @@ public class Traducao {
 	 * @return
 	 *  Um objeto JSON (javax.json) com as traducoes,
 	 *  no formato aceito pela biblioteca dhtmlxTree.<br>
-	 *  
+	 *
 	 *  <br>
 	 *  http://docs.dhtmlx.com/tree__syntax_templates.html#jsonformattemplate
 	 */
@@ -394,16 +394,16 @@ public class Traducao {
 
 			//Se o nivel se manteve e a traducao atual e terminal,
 			//insere a traducao em um objeto
-			if (novoNivel == nivel && traducaoAtual.isTerminal()) {
+			if ((novoNivel == nivel) && traducaoAtual.isTerminal()) {
 
 				arrayBuilder.add(
-					factory.createObjectBuilder()
-					.add("id", contadorId++)
-					.add("text", traducaoAtual.getTraducao())
-					.add("child", 0)
-					.add("userdata",criarUserdata(traducaoAtual))
-				);
-				
+						factory.createObjectBuilder()
+						.add("id", contadorId++)
+						.add("text", traducaoAtual.getTraducao())
+						.add("child", 0)
+						.add("userdata",criarUserdata(traducaoAtual))
+						);
+
 				//incrementa a variavel de posicao
 				posicao++;
 
@@ -411,7 +411,7 @@ public class Traducao {
 
 			//Se o nivel se manteve e a traducao atual nao e terminal,
 			//insere a traducao em um objeto e chama recursivamente o metodo
-			else if (novoNivel == nivel && !traducaoAtual.isTerminal()){
+			else if ((novoNivel == nivel) && !traducaoAtual.isTerminal()){
 
 				//Antes de chamar o metodo recursivamente, aumenta o nivel atual
 				//pois como a regra atual nao e terminal, as proximas regras serao
@@ -423,13 +423,13 @@ public class Traducao {
 				posicao = i+1;
 
 				arrayBuilder.add(
-					factory.createObjectBuilder()
-					.add("id", contadorId++)
-					.add("text", traducaoAtual.getTraducao())
-					.add("child", 1)
-					.add("userdata",criarUserdata(traducaoAtual))
-					.add("item", jsonRecursivo())
-				);
+						factory.createObjectBuilder()
+						.add("id", contadorId++)
+						.add("text", traducaoAtual.getTraducao())
+						.add("child", 1)
+						.add("userdata",criarUserdata(traducaoAtual))
+						.add("item", jsonRecursivo())
+						);
 
 				//Atualiza a variavel de busca, para que o metodo nao passe
 				//pelos mesmos itens que o metodo recursivo ja passou
@@ -467,7 +467,7 @@ public class Traducao {
 	 *
 	 * @param to
 	 *  Um objeto TraducaoTO de onde serao extraidas as informacoes.
-	 *  
+	 *
 	 * @return
 	 *  Um array builder de objetos JSON, populado com as informacoes
 	 *  do objeto TraducaoTO recebido.
@@ -480,101 +480,86 @@ public class Traducao {
 		//Adiciona os objetos com as informacoes adicionais
 		arrayBuilder
 
-			//Nivel de profundidade da arvore em que o elemento foi encontrado
-			.add(factory.createObjectBuilder()
+		//Nivel de profundidade da arvore em que o elemento foi encontrado
+		.add(factory.createObjectBuilder()
 				.add("name", "nivel")
 				.add("content",to.getNivel())
-			)
+				)
 
-			//Texto original antes de ser traduzido
-			.add(factory.createObjectBuilder()
+		//Texto original antes de ser traduzido
+		.add(factory.createObjectBuilder()
 				.add("name", "original")
-				
+
 				//A funcao "add" neste contexto faz escape,
 				//entao qualquer escape anterior precisa ser retirado
 				//para nao criar problemas
 				.add("content", unescapeDoubleQuote(to.getTextoOriginal()) )
-			)
+				)
 
-			//Regra que disparou a traducao
-			.add(factory.createObjectBuilder()
+		//Regra que disparou a traducao
+		.add(factory.createObjectBuilder()
 				.add("name", "regra")
 				.add("content",to.getTipoRegra().toString())
-			)
+				)
 
-			//Se a regra e terminal ou nao
-			.add(factory.createObjectBuilder()
+		//Se a regra e terminal ou nao
+		.add(factory.createObjectBuilder()
 				.add("name", "terminal")
 				.add("content",to.isTerminal())
-			)
+				)
 		;
 
 		//Se a traducao for do tipo "CHARACTERS"
 		if (
-			to.getTipoRegra() == RegraRegex.CHARACTERS ||
-			to.getTipoRegra() == RegraRegex.CHARACTER
-			)
-		{
+				(to.getTipoRegra() == RegraRegex.CHARACTERS)     ||
+				(to.getTipoRegra() == RegraRegex.CHARACTER)      ||
+				(to.getTipoRegra() == RegraRegex.LIST_CHARACTER) ||
+				(to.getTipoRegra() == RegraRegex.LIST_CHARACTERS)
+				)
 
 			//Adiciona o texto que compoe a regra CHARACTERS
 			arrayBuilder.add(factory.createObjectBuilder()
-				.add("name", "texto")
-				
-				//A funcao "add" neste contexto faz escape,
-				//entao qualquer escape anterior precisa ser retirado
-				//para nao criar problemas
-				.add("content", unescapeDoubleQuote(to.getTextoOriginal()) )
-			);
-		}
+					.add("name", "texto")
 
-		//Se a traducao for do tipo "ONE_OR_MORE" ou "AT_LEAST"
+					//A funcao "add" neste contexto faz escape,
+					//entao qualquer escape anterior precisa ser retirado
+					//para nao criar problemas
+					.add("content", unescapeDoubleQuote(to.getTextoOriginal()) )
+					);
 		else if (
-				to.getTipoRegra() == RegraRegex.EXACT     ||
-				to.getTipoRegra() == RegraRegex.AT_LEAST
+				(to.getTipoRegra() == RegraRegex.EXACT)     ||
+				(to.getTipoRegra() == RegraRegex.AT_LEAST)
 				)
-		{
-
 			//Adiciona o valor numerico da repeticao
 			arrayBuilder.add(factory.createObjectBuilder()
-				.add("name", "numero1")
-				.add("content",to.getNumero1())
-			);
-
-		}
-
-		//Se a traducao for do tipo "BETWEEN"
-		else if (to.getTipoRegra() == RegraRegex.BETWEEN){
-
+					.add("name", "numero1")
+					.add("content",to.getNumero1())
+					);
+		else if (to.getTipoRegra() == RegraRegex.BETWEEN)
 			//Adiciona os valores numericos da repeticao
 			arrayBuilder.add(factory.createObjectBuilder()
-				.add("name", "numero1")
-				.add("content",to.getNumero1())
-			)
+					.add("name", "numero1")
+					.add("content",to.getNumero1())
+					)
 
 			.add(factory.createObjectBuilder()
-				.add("name", "numero2")
-				.add("content",to.getNumero2())
-			);
-
-		}
-
-		//Se a traducao for do tipo "RANGE" ou "LIST_FIRST_RANGE"
+					.add("name", "numero2")
+					.add("content",to.getNumero2())
+					);
 		else if (
-				to.getTipoRegra() == RegraRegex.RANGE ||
-				to.getTipoRegra() == RegraRegex.LIST_FIRST_RANGE
+				(to.getTipoRegra() == RegraRegex.RANGE) ||
+				(to.getTipoRegra() == RegraRegex.LIST_FIRST_RANGE)
 				)
-		{
 			//Adiciona os caracteres da serie
 			arrayBuilder.add(factory.createObjectBuilder()
-				.add("name", "caractere1")
-				.add("content",to.getCaractere1())
-			)
+					.add("name", "caractere1")
+					.add("content",to.getCaractere1())
+					)
 
 			.add(factory.createObjectBuilder()
-				.add("name", "caractere2")
-				.add("content",to.getCaractere2())
-			);
-		}
+					.add("name", "caractere2")
+					.add("content",to.getCaractere2())
+					);
 
 		return arrayBuilder;
 	}
