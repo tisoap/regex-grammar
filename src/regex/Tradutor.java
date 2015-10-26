@@ -1,9 +1,54 @@
 package regex;
 
+import static helper.EscapeHelper.removeEscape;
+
+import generated.RegularExpressionEREBaseVisitor;
+import generated.RegularExpressionEREParser.AlnumContext;
+import generated.RegularExpressionEREParser.AlphaContext;
+import generated.RegularExpressionEREParser.AnchorContext;
+import generated.RegularExpressionEREParser.AnycharContext;
+import generated.RegularExpressionEREParser.AtLeastContext;
+import generated.RegularExpressionEREParser.BetweenContext;
+import generated.RegularExpressionEREParser.BlankContext;
+import generated.RegularExpressionEREParser.CharacterContext;
+import generated.RegularExpressionEREParser.CharactersContext;
+import generated.RegularExpressionEREParser.CharclassContext;
+import generated.RegularExpressionEREParser.ClassnameContext;
+import generated.RegularExpressionEREParser.CntrlContext;
+import generated.RegularExpressionEREParser.ConditionalContext;
+import generated.RegularExpressionEREParser.DigitclassContext;
+import generated.RegularExpressionEREParser.EndAnchorContext;
+import generated.RegularExpressionEREParser.ExactContext;
+import generated.RegularExpressionEREParser.ExpressionContext;
+import generated.RegularExpressionEREParser.GraphContext;
+import generated.RegularExpressionEREParser.GroupContext;
+import generated.RegularExpressionEREParser.ListCharacterContext;
+import generated.RegularExpressionEREParser.ListContext;
+import generated.RegularExpressionEREParser.ListElementContext;
+import generated.RegularExpressionEREParser.ListElementsContext;
+import generated.RegularExpressionEREParser.ListFirstElementContext;
+import generated.RegularExpressionEREParser.ListFirstRangeContext;
+import generated.RegularExpressionEREParser.ListLastElementContext;
+import generated.RegularExpressionEREParser.ListNoSpecialContext;
+import generated.RegularExpressionEREParser.LowerContext;
+import generated.RegularExpressionEREParser.MultipleContext;
+import generated.RegularExpressionEREParser.NegativeListContext;
+import generated.RegularExpressionEREParser.OneOrMoreContext;
+import generated.RegularExpressionEREParser.PositiveListContext;
+import generated.RegularExpressionEREParser.PrintContext;
+import generated.RegularExpressionEREParser.PunctContext;
+import generated.RegularExpressionEREParser.QuantifiedContext;
+import generated.RegularExpressionEREParser.QuantifierContext;
+import generated.RegularExpressionEREParser.RangeContext;
+import generated.RegularExpressionEREParser.RepetitionContext;
+import generated.RegularExpressionEREParser.SpaceclassContext;
+import generated.RegularExpressionEREParser.StartAnchorContext;
+import generated.RegularExpressionEREParser.SubExpressionContext;
+import generated.RegularExpressionEREParser.UpperContext;
+import generated.RegularExpressionEREParser.XdigitContext;
+import generated.RegularExpressionEREParser.ZeroOrMoreContext;
 import regex.enumType.RegraRegex;
 import regex.transfer.TraducaoTO;
-import generated.RegularExpressionEREBaseVisitor;
-import generated.RegularExpressionEREParser.*;
 
 /**
  * Utiliza o padrão Visitor para "visitar" uma parse tree e,
@@ -39,7 +84,7 @@ public class Tradutor extends RegularExpressionEREBaseVisitor<Void> {
 	 *
 	 * @param ctx
 	 *  Uma parse Tree
-	 *  
+	 *
 	 * @return
 	 *  Um objeto Traducao
 	 */
@@ -58,13 +103,13 @@ public class Tradutor extends RegularExpressionEREBaseVisitor<Void> {
 	 *
 	 * @param tipoRegra
 	 *  A regra no qual a traducao pertence.
-	 *  
+	 *
 	 * @param textoOriginal
 	 *  O texto original antes de ser traduzido.
-	 *  
+	 *
 	 * @param textoTraduzido
 	 *  A traducao.
-	 *  
+	 *
 	 * @param terminal
 	 *  Indicacao se a regra e terminal.
 	 */
@@ -89,18 +134,18 @@ public class Tradutor extends RegularExpressionEREBaseVisitor<Void> {
 	 * Sobrecarga do metodo armazenar() para incluir o numero encontrado
 	 * em uma regra de repeticao "EXACT" ou "AT_LEAST".
 	 *
-	 * @param tipoRegra 
+	 * @param tipoRegra
 	 *  A regra no qual a traducao pertence.
-	 *  
+	 *
 	 * @param textoOriginal
 	 *  O texto original antes de ser traduzido.
-	 *  
+	 *
 	 * @param textoTraduzido
 	 *  A traducao.
-	 *  
+	 *
 	 * @param terminal
 	 *  Indicacao se a regra e terminal.
-	 *  
+	 *
 	 * @param numero1
 	 *  O valor numerico da repeticao.
 	 */
@@ -124,18 +169,18 @@ public class Tradutor extends RegularExpressionEREBaseVisitor<Void> {
 	 *
 	 * @param tipoRegra
 	 *  A regra no qual a traducao pertence.
-	 *  
+	 *
 	 * @param textoOriginal
 	 *  O texto original antes de ser traduzido.
-	 *  
+	 *
 	 * @param textoTraduzido
 	 *  A traducao.
 	 * @param terminal
 	 *  Indicacao se a regra e terminal.
-	 *  
+	 *
 	 * @param numero1
 	 *  O primeiro valor numerico da repeticao.
-	 *  
+	 *
 	 * @param numero2
 	 *  O segundo valor numerico da repeticao.
 	 */
@@ -161,19 +206,19 @@ public class Tradutor extends RegularExpressionEREBaseVisitor<Void> {
 	 *
 	 * @param tipoRegra
 	 *  A regra no qual a traducao pertence.
-	 *  
+	 *
 	 * @param textoOriginal
 	 *  O texto original antes de ser traduzido.
-	 *  
+	 *
 	 * @param textoTraduzido
 	 *  A traducao.
-	 *  
+	 *
 	 * @param terminal
 	 *  Indicacao se a regra e terminal.
-	 *  
+	 *
 	 * @param caractere1
 	 *  O primeiro caractere da serie.
-	 *  
+	 *
 	 * @param caractere2
 	 *  O segundo caractere da serie.
 	 */
@@ -199,16 +244,16 @@ public class Tradutor extends RegularExpressionEREBaseVisitor<Void> {
 	 *
 	 * @param tipoRegra
 	 *  A regra no qual a traducao pertence.
-	 *  
+	 *
 	 * @param textoOriginal
 	 *  O texto original antes de ser traduzido.
-	 *  
+	 *
 	 * @param textoTraduzido
 	 *  A traducao.
-	 *  
+	 *
 	 * @param terminal
 	 *  Indicacao se a regra e terminal.
-	 *  
+	 *
 	 * @return
 	 *  Um objeto de transferencia TraducaoTO
 	 */
@@ -225,74 +270,8 @@ public class Tradutor extends RegularExpressionEREBaseVisitor<Void> {
 		to.setTextoOriginal(textoOriginal);
 		to.setTraducao(textoTraduzido);
 		to.setTerminal(terminal);
-		
+
 		return to;
-	}
-
-	/**
-	 * Remove todas as ocorrencias do caractere de escape \ dentro
-	 * de um texto, salvo ocorrencias de \\ que viram \ .
-	 *
-	 * @param
-	 *  texto O texto que deve ser alterado
-	 *  
-	 * @return
-	 *  Um novo texto que nao contem \
-	 */
-	private String removeEscape(String texto){
-
-		int  posicaoAtual      = 0    ; //Posicao atual no buffer
-		char escape            = '\\' ; //Barra invertida
-		char caractereAtual;            //Caractere atual do texto de entrada
-		char proximoCaractere;          //Caractere seguinte ao atual do texto de entrada
-
-		//Buffer de String, para fazer a construcao da nova String
-		StringBuffer buffer = new StringBuffer(texto.length());
-
-		//Tamanho maximo do buffer
-		buffer.setLength(texto.length());
-
-		//Para todos os caracteres no texto de entrada
-		for (int i=0; i<texto.length(); i++){
-
-			//Recupera o caractere atual
-			caractereAtual = texto.charAt(i);
-
-			//Verefica se ele nao e uma barra invertida
-			if(caractereAtual != escape){
-
-				//Adiciona o caractere no buffer
-				buffer.setCharAt(posicaoAtual++, caractereAtual);
-			}
-
-			//Se o caractere for uma barra invertida
-			else {
-
-				//Recupera o proximo caractere
-				proximoCaractere = texto.charAt(i+1);
-
-				//Se o proximo caractere tambem for uma barra invertida
-				if(proximoCaractere == escape){
-
-					//Adiciona o proximo caractere (a barra invertida) no buffer
-					buffer.setCharAt(posicaoAtual++, proximoCaractere);
-
-					//Aumenta o contador uma posicao a mais, para
-					//pular a leitura da barra invertida
-					i++;
-				}
-
-				//Se o proximo caractere nao for uma barra invertida,
-				//ignora a barra invertida atual, nao adicionando ela
-				//no buffer.
-				
-				//Como um caractere foi ignorado aqui, e
-				//preciso diminuir o tamanho do buffer
-				buffer.setLength(buffer.length()-1);
-			}
-		}
-		
-		return buffer.toString();
 	}
 
 
@@ -366,13 +345,8 @@ public class Tradutor extends RegularExpressionEREBaseVisitor<Void> {
 			nivelAtual++;
 			visitChildren(ctx);
 			nivelAtual--;
-		}
-
-		//Se o pai for uma subexpressao
-		else {
-
+		} else
 			visitChildren(ctx);
-		}
 
 		return null;
 	}
@@ -426,7 +400,7 @@ public class Tradutor extends RegularExpressionEREBaseVisitor<Void> {
 	 */
 	@Override
 	public Void visitRepetition(RepetitionContext ctx) {
-		
+
 		//Visita o simbolo quantificador
 		visit(ctx.quantifier());
 
@@ -844,7 +818,7 @@ public class Tradutor extends RegularExpressionEREBaseVisitor<Void> {
 		//Remove todas as barra invertidas, caso essa colecao
 		//tenha caracteres escapados
 		String semEscape = removeEscape(caracteres);
-		
+
 		armazena(RegraRegex.CHARACTERS, ctx.getText(), "Caracteres: " + semEscape, true);
 
 		return null;

@@ -1,5 +1,7 @@
 package regex;
 
+import static helper.EscapeHelper.removeEscape;
+
 import java.io.IOException;
 import java.io.StringReader;
 
@@ -15,7 +17,6 @@ import exception.NonExistentMetadata;
 import exception.ParentWithNoChildren;
 import exception.UnrecognisedMetadata;
 import exception.UnrecognisedRule;
-
 import regex.enumType.RegraRegex;
 import regex.transfer.TraducaoTO;
 
@@ -24,33 +25,33 @@ import regex.transfer.TraducaoTO;
  * a partir de uma linguagem natural.
  */
 public class Construtor {
-	
+
 	/**
 	 * Array com todos os caracteres especiais de
 	 * Expressoes Regulares que precisam ser escapados para
 	 * que sejam interpretador literalmente.
-	 * 
+	 *
 	 * A barra de escape '\' precisa ser o 1o item do array,
 	 * para evitar que escapes de outros caracteres sejam
 	 * escapados depois.
 	 */
 	private static final String[] specialChar = {
-		"\\",
-		"(",
-		")",
-		"[",
-		"]",
-		"{",
-		"}",
-		".",
-		"+",
-		"*",
-		"|",
-		"^",
-		"$",
-		"?"
+			"\\",
+			"(",
+			")",
+			"[",
+			"]",
+			"{",
+			"}",
+			".",
+			"+",
+			"*",
+			"|",
+			"^",
+			"$",
+			"?"
 	};
-	
+
 	/**
 	 * Constroi uma expressao regular a partir de um Objeto JSON que contenha
 	 * uma expressao em linguagem natural.<br>
@@ -59,7 +60,7 @@ public class Construtor {
 	 * pela biblioteca DHTMLX Tree:<br>
 	 * <br>
 	 * {@link http://docs.dhtmlx.com/tree__syntax_templates.html#jsonformattemplate }
-	 * 
+	 *
 	 *
 	 * @param jsonString
 	 *  Um objeto JSON em String.
@@ -85,7 +86,7 @@ public class Construtor {
 	 * @throws UnrecognisedRule
 	 *  Se existe uma regra nao reconhecida pela aplicacao
 	 *  em um dos elementos.
-	 * 
+	 *
 	 * @throws IOException
 	 *  Se ocorreu um erro de IO durante a validacao.
 	 */
@@ -111,20 +112,19 @@ public class Construtor {
 		itens = json.getJsonArray("item");
 
 		//Se este array nao existir, levanta uma excecao
-		if (itens == null || itens.size() < 1) {
+		if ((itens == null) || (itens.size() < 1))
 			throw new MalformedJson(
-				"JSON recebido nao esta no formato suportado."
-			);
-		}
+					"JSON recebido nao esta no formato suportado."
+					);
 		else {
-			
+
 			//Constroi o texto regex a partir do itens do array
 			strigRegex = textoRegex(itens);
-			
+
 			//Valida o texto usando a classe Regex
 			regex = new Regex(strigRegex);
 			regex.validar();
-			
+
 			//Retorna a instancia da classe Regex, que
 			//contem a expressao e informacoes sobre a
 			//validacao.
@@ -169,11 +169,10 @@ public class Construtor {
 		JsonObject    node;
 		TraducaoTO    nodeData;
 
-		if (array == null || array.size() < 1){
+		if ((array == null) || (array.size() < 1))
 			throw new ParentWithNoChildren(
-				"Um no nao terminal nao possui filhos."
-			);
-		}
+					"Um no nao terminal nao possui filhos."
+					);
 
 		//Itera todos os valores do array
 		for (JsonValue jsonValue : array) {
@@ -185,11 +184,10 @@ public class Construtor {
 			//um array de objetos JSON
 			userdataArray = node.getJsonArray("userdata");
 
-			if (userdataArray == null || userdataArray.size() < 1){
+			if ((userdataArray == null) || (userdataArray.size() < 1))
 				throw new NonExistentMetadata(
-					"Nao foram encontrados metadados em um dos nos."
-				);
-			}
+						"Nao foram encontrados metadados em um dos nos."
+						);
 
 			/**
 			 * Itera todos os itens do array userdata,
@@ -201,25 +199,19 @@ public class Construtor {
 			nodeData = nodeData(userdataArray);
 
 			//Se o no for terminal
-			if (nodeData.isTerminal()) {
-
+			if (nodeData.isTerminal())
 				//Recupere o texto regex equivalente deste no
 				//e adicione-o ao String buffer
 				buffer.append(
-					textoTerminal(nodeData)
-				);
-			}
-
-			//Se o no for nao terminal
-			else {
-
+						textoTerminal(nodeData)
+						);
+			else
 				//Recupera o texto regex equivalente deste no
 				//e de todos os seus filhos e adicione-o
 				//ao String buffer
 				buffer.append(
-					textoNaoTerminal(node, nodeData)
-				);
-			}
+						textoNaoTerminal(node, nodeData)
+						);
 		}
 
 		return buffer.toString();
@@ -230,10 +222,10 @@ public class Construtor {
 	 * "userdata" de um objeto JSON especifico, e retorna um objeto de
 	 * transferencia populado com estas informacoes.<br>
 	 * <br>
-	 * 
+	 *
 	 * Estas informacoes sao os metadados de um no da arvore.<br>
 	 * <br>
-	 * 
+	 *
 	 * Cada objeto deste array deve ser composto por dois pares de chave/valor.
 	 * As chaves serao sempre "name" e "content". Este e o padrao definido
 	 * pela biblioteca DHTMLX Tree:<br>
@@ -246,7 +238,7 @@ public class Construtor {
 	 * @return
 	 *  Um objeto de transferencia UserdataTO
 	 *
-	 * @throws MalformedMetadata 
+	 * @throws MalformedMetadata
 	 *  Se os metadados de um elemento nao estao no formato aceito pela
 	 *  biblioteca DHTMLX Tree.
 	 *
@@ -286,64 +278,63 @@ public class Construtor {
 			//uma String, levanta uma execao de metadados mal formados
 			catch (NullPointerException|ClassCastException e) {
 				throw new MalformedMetadata(
-					"Os metadados de um no nao estao em um formato reconhecido."
-				);
+						"Os metadados de um no nao estao em um formato reconhecido."
+						);
 			}
 
 			//Se uma das chaves nao tiver um valor, levanta uma execao
 			//de metadados mal formados
-			if (dataType == "undefined" || content == "undefined"){
+			if ((dataType == "undefined") || (content == "undefined"))
 				throw new MalformedMetadata(
-					"Os metadados de um no nao possuem valores validos."
-				);
-			}
+						"Os metadados de um no nao possuem valores validos."
+						);
 
 			switch (dataType) {
 
-				case "regra":
-					regra = RegraRegex.valueOf(content);
-					to.setTipoRegra(regra);
-					break;
+			case "regra":
+				regra = RegraRegex.valueOf(content);
+				to.setTipoRegra(regra);
+				break;
 
-				case "terminal":
-					terminal = Boolean.parseBoolean(content);
-					to.setTerminal(terminal);
-					break;
+			case "terminal":
+				terminal = Boolean.parseBoolean(content);
+				to.setTerminal(terminal);
+				break;
 
-				case "nivel":
-					nivel = Integer.parseInt(content);
-					to.setNivel(nivel);
-					break;
+			case "nivel":
+				nivel = Integer.parseInt(content);
+				to.setNivel(nivel);
+				break;
 
-				case "texto":
-					to.setTextoOriginal(content);
-					break;
+			case "texto":
+				to.setTextoOriginal(content);
+				break;
 
-				case "numero1":
-					numero1 = Integer.parseInt(content);
-					to.setNumero1(numero1);
-					break;
+			case "numero1":
+				numero1 = Integer.parseInt(content);
+				to.setNumero1(numero1);
+				break;
 
-				case "numero2":
-					numero2 = Integer.parseInt(content);
-					to.setNumero2(numero2);
-					break;
+			case "numero2":
+				numero2 = Integer.parseInt(content);
+				to.setNumero2(numero2);
+				break;
 
-				case "caractere1":
-					to.setCaractere1(content);
-					break;
+			case "caractere1":
+				to.setCaractere1(content);
+				break;
 
-				case "caractere2":
-					to.setCaractere2(content);
-					break;
-					
-				case "original":
-					break;
+			case "caractere2":
+				to.setCaractere2(content);
+				break;
 
-				default:
-					throw new UnrecognisedMetadata(
+			case "original":
+				break;
+
+			default:
+				throw new UnrecognisedMetadata(
 						"Tipo de metadado nao reconhecido encontrado."
-					);
+						);
 			}
 		}
 
@@ -368,105 +359,109 @@ public class Construtor {
 
 		StringBuffer buffer  = new StringBuffer();
 		RegraRegex   regra   = nodeData.getTipoRegra();
-		
+
 		//Adiciona informacoes no buffer de String de acordo
 		//com a regra encontrada no nodeData
 		switch (regra) {
-		
-			case CHARACTERS:         //Varios caracteres seguidos
-			case CHARACTER:          //Um caractere
-				
-				buffer.append(
-					
+
+		case CHARACTERS:         //Varios caracteres seguidos
+		case CHARACTER:          //Um caractere
+
+			buffer.append(
+
 					//Como e uma regra de texto literal,
 					//escapa todos os caracteres especiais do texto
 					//original para que eles sejam
 					//interpretados literalmente.
-					especialEscape(nodeData.getTextoOriginal())
-				);
-				
-				break;
-				
-			case LIST_CHARACTER:     //Um caractere de lista
-			case LIST_CHARACTERS:    //Caracteres de lista
-			case LIST_NO_SPECIAL:    //Um caractere de lista que perdeu seu significado especial ao ficar no inicio da lista
-			case LIST_LAST_ELEMENT:  //Um caractere de lista que perdeu seu significado especial ao ficar no final da lista
-				buffer.append(nodeData.getTextoOriginal());
-				break;
+					especialEscape(
+							removeEscape(
+									nodeData.getTextoOriginal()
+									)
+							)
+					);
 
-			case START_ANCHOR:
-				buffer.append("^");
-				break;
+			break;
 
-			case END_ANCHOR:
-				buffer.append("$");
-				break;
+		case LIST_CHARACTER:     //Um caractere de lista
+		case LIST_CHARACTERS:    //Caracteres de lista
+		case LIST_NO_SPECIAL:    //Um caractere de lista que perdeu seu significado especial ao ficar no inicio da lista
+		case LIST_LAST_ELEMENT:  //Um caractere de lista que perdeu seu significado especial ao ficar no final da lista
+			buffer.append(nodeData.getTextoOriginal());
+			break;
 
-			case ANY_CHAR:
-				buffer.append(".");
-				break;
+		case START_ANCHOR:
+			buffer.append("^");
+			break;
 
-			case RANGE:             //Serie de caracteres
-			case LIST_FIRST_RANGE:  //Caso especial de serie de caracteres no inicio da lista
-				buffer.append(nodeData.getCaractere1() + "-" + nodeData.getCaractere2());
-				break;
+		case END_ANCHOR:
+			buffer.append("$");
+			break;
 
-			case ALNUM:
-				buffer.append("[:alnum:]");
-				break;
+		case ANY_CHAR:
+			buffer.append(".");
+			break;
 
-			case DIGIT_CLASS:
-				buffer.append("[:digit:]");
-				break;
+		case RANGE:             //Serie de caracteres
+		case LIST_FIRST_RANGE:  //Caso especial de serie de caracteres no inicio da lista
+			buffer.append(nodeData.getCaractere1() + "-" + nodeData.getCaractere2());
+			break;
 
-			case SPACE_CLASS:
-				buffer.append("[:space:]");
-				break;
+		case ALNUM:
+			buffer.append("[:alnum:]");
+			break;
 
-			case ALPHA:
-				buffer.append("[:alpha:]");
-				break;
+		case DIGIT_CLASS:
+			buffer.append("[:digit:]");
+			break;
 
-			case BLANK:
-				buffer.append("[:blank:]");
-				break;
+		case SPACE_CLASS:
+			buffer.append("[:space:]");
+			break;
 
-			case CNTRL:
-				buffer.append("[:cntrl:]");
-				break;
+		case ALPHA:
+			buffer.append("[:alpha:]");
+			break;
 
-			case GRAPH:
-				buffer.append("[:graph:]");
-				break;
+		case BLANK:
+			buffer.append("[:blank:]");
+			break;
 
-			case LOWER:
-				buffer.append("[:lower:]");
-				break;
+		case CNTRL:
+			buffer.append("[:cntrl:]");
+			break;
 
-			case PRINT:
-				buffer.append("[:print:]");
-				break;
+		case GRAPH:
+			buffer.append("[:graph:]");
+			break;
 
-			case PUNCT:
-				buffer.append("[:punct:]");
-				break;
+		case LOWER:
+			buffer.append("[:lower:]");
+			break;
 
-			case UPPER:
-				buffer.append("[:upper:]");
-				break;
+		case PRINT:
+			buffer.append("[:print:]");
+			break;
 
-			case X_DIGIT:
-				buffer.append("[:xdigit:]");
+		case PUNCT:
+			buffer.append("[:punct:]");
+			break;
 
-			default:
-				throw new UnrecognisedRule(
+		case UPPER:
+			buffer.append("[:upper:]");
+			break;
+
+		case X_DIGIT:
+			buffer.append("[:xdigit:]");
+
+		default:
+			throw new UnrecognisedRule(
 					"Regra terminal encontrada nao e reconhecida."
-				);
+					);
 		}
 
 		return buffer;
 	}
-	
+
 	/**
 	 * Retorna um texto regex a partir de um no nao terminal.
 	 *
@@ -510,105 +505,104 @@ public class Construtor {
 		//regra do no.
 		switch (regra) {
 
-			case ONE_OR_MORE:
-				buffer.append(texto);
-				buffer.append("+");
-				break;
+		case ONE_OR_MORE:
+			buffer.append(texto);
+			buffer.append("+");
+			break;
 
-			case ZERO_OR_MORE:
-				buffer.append(texto);
-				buffer.append("*");
-				break;
+		case ZERO_OR_MORE:
+			buffer.append(texto);
+			buffer.append("*");
+			break;
 
-			case CONDITIONAL:
-				buffer.append(texto);
-				buffer.append("?");
-				break;
+		case CONDITIONAL:
+			buffer.append(texto);
+			buffer.append("?");
+			break;
 
-			case EXACT:
-				buffer.append(texto);
-				buffer.append("{");
-				buffer.append(nodeData.getNumero1());
-				buffer.append("}");
-				break;
+		case EXACT:
+			buffer.append(texto);
+			buffer.append("{");
+			buffer.append(nodeData.getNumero1());
+			buffer.append("}");
+			break;
 
-			case AT_LEAST:
-				buffer.append(texto);
-				buffer.append("{");
-				buffer.append(nodeData.getNumero1());
-				buffer.append(",}");
-				break;
+		case AT_LEAST:
+			buffer.append(texto);
+			buffer.append("{");
+			buffer.append(nodeData.getNumero1());
+			buffer.append(",}");
+			break;
 
-			case BETWEEN:
-				buffer.append(texto);
-				buffer.append("{");
-				buffer.append(nodeData.getNumero1());
-				buffer.append(",");
-				buffer.append(nodeData.getNumero2());
-				buffer.append("}");
-				break;
+		case BETWEEN:
+			buffer.append(texto);
+			buffer.append("{");
+			buffer.append(nodeData.getNumero1());
+			buffer.append(",");
+			buffer.append(nodeData.getNumero2());
+			buffer.append("}");
+			break;
 
-			case MULTIPLE:
+		case MULTIPLE:
 
-				buffer.append(texto);
+			buffer.append(texto);
 
-				/** Remove o ultimo caractere do buffer,
-				 *  que sera um "|", para que as multiplas
-				 *  opcoes fiquem com sintaxe correta. */
-				buffer.deleteCharAt(buffer.length()-1);
+			/** Remove o ultimo caractere do buffer,
+			 *  que sera um "|", para que as multiplas
+			 *  opcoes fiquem com sintaxe correta. */
+			buffer.deleteCharAt(buffer.length()-1);
 
-				break;
+			break;
 
-			case SUB_EXPRESSION:
-				buffer.append(texto);
-				buffer.append("|");
-				break;
+		case SUB_EXPRESSION:
+			buffer.append(texto);
+			buffer.append("|");
+			break;
 
-			case GROUP:
-				buffer.append("(");
-				buffer.append(texto);
-				buffer.append(")");
-				break;
+		case GROUP:
+			buffer.append("(");
+			buffer.append(texto);
+			buffer.append(")");
+			break;
 
-			case POSITIVE_LIST:
-				buffer.append("[");
-				buffer.append(texto);
-				buffer.append("]");
-				break;
+		case POSITIVE_LIST:
+			buffer.append("[");
+			buffer.append(texto);
+			buffer.append("]");
+			break;
 
-			case NEGATIVE_LIST:
-				buffer.append("[^");
-				buffer.append(texto);
-				buffer.append("]");
-				break;
+		case NEGATIVE_LIST:
+			buffer.append("[^");
+			buffer.append(texto);
+			buffer.append("]");
+			break;
 
-			default:
-				throw new UnrecognisedRule(
+		default:
+			throw new UnrecognisedRule(
 					"Regra nao terminal encontrada nao e reconhecida."
-				);
+					);
 		}
 
 		return buffer;
 	}
-	
+
 	/**
-	 * 
+	 *
 	 * Escapa todos os caracteres especiais de Regex dentro de
 	 * uma String com barras invertidas.
-	 * 
+	 *
 	 * @param texto
 	 * 	O texto original
-	 * 
+	 *
 	 * @return
 	 * 	O texto original com todos os caracteres especiais
 	 * 	escapados com uma barra invertida.
 	 */
 	private String especialEscape(String texto){
-		
-		for (String string : specialChar) {
+
+		for (String string : specialChar)
 			texto = texto.replace(string,"\\"+string );
-		}
-		
+
 		return texto;
 	}
 

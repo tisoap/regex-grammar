@@ -13,19 +13,19 @@ public class Main {
 	 * e imprimido na tela uma versao em estrutura de arvore e linguagem natural da
 	 * expressao. Opcionalmente pode ser exibida uma representacao da parse tree gerada.
 	 * <br>
-	 * 
+	 *
 	 * @param args
 	 *  Uma lista de argumentos String[]<br>
 	 *  <br>
-	 * 
+	 *
 	 *  Opcionalmente pode ser passado um argumento de modo de visualizacao.<br>
 	 *  <br>
-	 *  
+	 *
 	 *  Dos argumentos de visualizacao:<br>
 	 *  &nbsp;&nbsp; "-gui" exibe uma representacao grafica da parse tree gerada;<br>
 	 *  &nbsp;&nbsp; "-list" exibe a parse tree em forma de lista;<br>
 	 *  <br>
-	 *  
+	 *
 	 * @throws IOException
 	 *  A execucao depende da existencia de arquivos de texto com as
 	 *  definicoes dos tokens.
@@ -45,31 +45,31 @@ public class Main {
 
 				System.out.println(
 						"Argumento de visualizacao invalido,"
-						+ "utilize -gui ou -list.");
+								+ "utilize -gui ou -list.");
 
 				return;
 			}
 		}
-		
+
 		//Alterar texto conforme necessario para o teste.
-		String input = "[-a]";
-		
+		String input = "\\\\\\\"";
+
 		/**
-		
+
 		Eclipse adiquiriu um bug onde e impossivel ler entradas
 		de texto a partir do console quando em modo debug.
-		
+
 		//Cria um leitor que le a entrada padrao, no caso o console
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		
+
 		//Leia a entrada ate a primeira quebra de linha e salve em uma String
 		String input = br.readLine();
-		
+
 		//Fecha o leitor
 		br.close();
-		
-		*/
-		
+
+		 */
+
 		//Envia o texto recebido para a classe Regex
 		Regex regex = new Regex(input);
 
@@ -87,7 +87,7 @@ public class Main {
 
 		//Se nenhum parametro foi passado
 		else {
-			
+
 			System.out.println("");
 
 			//Traduz a expressao para linguagem natural
@@ -102,6 +102,7 @@ public class Main {
 
 			//Se nao ocorreram erros, exibe a traducao
 			else {
+				System.out.println(regex.getRegularExpresion());
 				System.out.println(traducao.getText());
 				System.out.println(traducao.getJSONString());
 				System.out.println(traducao.getHtmlUnorderedList());
