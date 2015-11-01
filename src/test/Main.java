@@ -1,6 +1,8 @@
 package test;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 
 import regex.Regex;
 import regex.Traducao;
@@ -51,24 +53,22 @@ public class Main {
 			}
 		}
 
-		//Alterar texto conforme necessario para o teste.
-		String input = "\\\\\\\"";
+		//Alterar se necessario
+		String input = "";
 
 		/**
-
-		Eclipse adiquiriu um bug onde e impossivel ler entradas
-		de texto a partir do console quando em modo debug.
+		 * OBS: Eclipse adiquiriu um bug onde e impossivel ler entradas
+		 * de texto a partir do console quando em modo debug.
+		 */
 
 		//Cria um leitor que le a entrada padrao, no caso o console
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
 		//Leia a entrada ate a primeira quebra de linha e salve em uma String
-		String input = br.readLine();
+		input = br.readLine();
 
 		//Fecha o leitor
 		br.close();
-
-		 */
 
 		//Envia o texto recebido para a classe Regex
 		Regex regex = new Regex(input);
@@ -102,13 +102,19 @@ public class Main {
 
 			//Se nao ocorreram erros, exibe a traducao
 			else {
+				System.out.println("Expressao regular:");
 				System.out.println(regex.getRegularExpresion());
+				System.out.println();
+				System.out.println("Traducao em texto puro:");
 				System.out.println(traducao.getText());
+				System.out.println();
+				System.out.println("Traducao em JSON:");
 				System.out.println(traducao.getJSONString());
+				System.out.println();
+				System.out.println("Traducao em listas HTML:");
 				System.out.println(traducao.getHtmlUnorderedList());
+				System.out.println();
 			}
-
-			System.out.println("");
 		}
 	}
 }

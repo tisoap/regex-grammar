@@ -3,7 +3,7 @@ package regex;
 import static helper.EscapeHelper.encodeHtmlString;
 import static helper.EscapeHelper.escapeDoubleQuote;
 import static helper.EscapeHelper.escapeReverseSolidus;
-import static helper.EscapeHelper.unescapeDoubleQuote;
+import static helper.EscapeHelper.unescapeString;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -493,7 +493,7 @@ public class Traducao {
 				//A funcao "add" neste contexto faz escape,
 				//entao qualquer escape anterior precisa ser retirado
 				//para nao criar problemas
-				.add("content", unescapeDoubleQuote(to.getTextoOriginal()) )
+				.add("content", unescapeString(to.getTextoOriginal()) )
 				)
 
 		//Regra que disparou a traducao
@@ -511,10 +511,12 @@ public class Traducao {
 
 		//Se a traducao for do tipo "CHARACTERS"
 		if (
-				(to.getTipoRegra() == RegraRegex.CHARACTERS)     ||
-				(to.getTipoRegra() == RegraRegex.CHARACTER)      ||
-				(to.getTipoRegra() == RegraRegex.LIST_CHARACTER) ||
-				(to.getTipoRegra() == RegraRegex.LIST_CHARACTERS)
+				(to.getTipoRegra() == RegraRegex.CHARACTERS)        ||
+				(to.getTipoRegra() == RegraRegex.CHARACTER)         ||
+				(to.getTipoRegra() == RegraRegex.LIST_CHARACTER)    ||
+				(to.getTipoRegra() == RegraRegex.LIST_CHARACTERS)   ||
+				(to.getTipoRegra() == RegraRegex.LIST_LAST_ELEMENT) ||
+				(to.getTipoRegra() == RegraRegex.LIST_NO_SPECIAL)
 				)
 
 			//Adiciona o texto que compoe a regra CHARACTERS
@@ -524,7 +526,7 @@ public class Traducao {
 					//A funcao "add" neste contexto faz escape,
 					//entao qualquer escape anterior precisa ser retirado
 					//para nao criar problemas
-					.add("content", unescapeDoubleQuote(to.getTextoOriginal()) )
+					.add("content", unescapeString(to.getTextoOriginal()) )
 					);
 		else if (
 				(to.getTipoRegra() == RegraRegex.EXACT)     ||

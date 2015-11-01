@@ -1,7 +1,5 @@
 package regex;
 
-import static helper.EscapeHelper.removeEscape;
-
 import java.io.IOException;
 import java.io.StringReader;
 
@@ -373,11 +371,7 @@ public class Construtor {
 					//escapa todos os caracteres especiais do texto
 					//original para que eles sejam
 					//interpretados literalmente.
-					especialEscape(
-							removeEscape(
-									nodeData.getTextoOriginal()
-									)
-							)
+					especialEscape(nodeData.getTextoOriginal())
 					);
 
 			break;
@@ -452,6 +446,7 @@ public class Construtor {
 
 		case X_DIGIT:
 			buffer.append("[:xdigit:]");
+			break;
 
 		default:
 			throw new UnrecognisedRule(

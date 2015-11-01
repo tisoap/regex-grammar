@@ -64,7 +64,7 @@ public class TraducaoTO {
 	public int getNumero2() {
 		return numero2;
 	}
-	
+
 	// ----- SETTERS -----
 	public void setNivel(int nivel) {
 		this.nivel = nivel;

@@ -134,7 +134,7 @@ public class EscapeHelper {
 			if(caractereAtual != escape)
 				//Adiciona o caractere no buffer
 				buffer.setCharAt(posicaoAtual++, caractereAtual);
-			else {
+			else if (i<texto.length()){
 
 				//Recupera o proximo caractere
 				proximoCaractere = texto.charAt(i+1);

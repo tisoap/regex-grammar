@@ -1,5 +1,5 @@
 /**
- * Gramatica para expressoes regulares, padrao POSIX ERE
+ * Gramatica para expressoes regulares, padrao POSIX ERE V1
  * (Portable Operating System Interface Extended Regular Expressions)
  *
  * http://pubs.opengroup.org/onlinepubs/9699919799/basedefs/V1_chap09.html
@@ -137,13 +137,12 @@ firstValue : DIGIT+ ;
 lastValue  : DIGIT+ ;
 
 //Uma lista pode ser positiva ou negativa. Pode ocorrer da lista ser vazia.
-list :
-       //Listas vazias sao tratadas como erros
-       emptyList
-       {notifyErrorListeners("Lista vazia.");}
-
-     | negativeList
+list : negativeList
      | positiveList
+
+       //Listas vazias sao tratadas como erros
+     | emptyList
+       {notifyErrorListeners("Lista vazia.");}
      ;
 
 /**
@@ -175,7 +174,14 @@ positiveList : LISTOPEN listElements LISTCLOSE;
  * de lista. Pode ou nao conter casos especiais de elementos
  * na primeira ou ultima posicao.
  */
-listElements : listFirstElement? listElement*  listLastElement?;
+listElements : listFirstElement
+             | listLastElement
+             | listFirstElement listLastElement
+             | listFirstElement listElement+
+             | listElement+ listLastElement
+             | listFirstElement listElement+  listLastElement
+             | listElement+
+             ;
 
 //Um elemento de lista pode ser:
 listElement : range            //Uma serie de caracteres
@@ -237,8 +243,6 @@ listNoSpecial : LISTCLOSE
  */
 listFirstRange : a=LISTCLOSE  DASH  b=DASH          {vemAntesDe($a.text,$b.text)}?
                | c=DASH       DASH  d=DASH          {vemAntesDe($c.text,$d.text)}?
-               | e=LISTCLOSE  DASH  f=LISTCLOSE     {vemAntesDe($e.text,$f.text)}?
-               | g=DASH       DASH  h=LISTCLOSE     {vemAntesDe($g.text,$h.text)}?
                | i=LISTCLOSE  DASH  j=listCharacter {vemAntesDe($i.text,$j.text)}?
                | k=DASH       DASH  l=listCharacter {vemAntesDe($k.text,$l.text)}?
                ;
