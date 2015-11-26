@@ -82,6 +82,8 @@ public class Traducao {
 
 	// ----- METODOS -----
 
+	/** DS1 33-34 */
+
 	/**
 	 * Adiciona um novo objeto de traducao na lista de traducoes.
 	 *
@@ -304,7 +306,6 @@ public class Traducao {
 	public String getTextHtml(){
 
 		return encodeHtmlString(getText());
-
 	}
 
 	/**
@@ -334,9 +335,11 @@ public class Traducao {
 		//Recupera um objeto JSON em formato String
 		String jsonString = getJSON().toString();
 
+		/** DS1 52-53 */
 		//Escapa todas as barras invertidas
 		jsonString = escapeReverseSolidus(jsonString);
 
+		/** DS1 54-55 */
 		//Escapa todas as aspas duplas
 		jsonString = escapeDoubleQuote(jsonString);
 
@@ -357,15 +360,20 @@ public class Traducao {
 		nivel		= 0;
 		contadorId 	= 0;
 		tamanho 	= traducoes.size();
+
+		/** DS1 38-39 */
 		factory 	= Json.createBuilderFactory(null);
 
+		/** DS1 40-41 */
 		//Cria o elemento raiz de id=0
 		JsonObjectBuilder inicio = factory.createObjectBuilder();
 		inicio.add("id", contadorId++);
 
+		/** DS1 42-43 */
 		//Adciona os outros elementos de forma recursiva
 		inicio.add("item",jsonRecursivo());
 
+		/** DS1 50-51 */
 		//Constroi o objeto JSON
 		JsonObject json = inicio.build();
 
@@ -381,6 +389,8 @@ public class Traducao {
 
 		int 				novoNivel;
 		TraducaoTO			traducaoAtual;
+
+		/** DS1 44-45 */
 		JsonArrayBuilder 	arrayBuilder = factory.createArrayBuilder();
 
 		//Para cada item na lista de traducoes
@@ -422,7 +432,9 @@ public class Traducao {
 				//posicao, para que a busca continue no proximo item.
 				posicao = i+1;
 
+				/** DS1 48-49 */
 				arrayBuilder.add(
+						/** DS1 46-47 */
 						factory.createObjectBuilder()
 						.add("id", contadorId++)
 						.add("text", traducaoAtual.getTraducao())

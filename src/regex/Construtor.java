@@ -99,14 +99,21 @@ public class Construtor {
 		String      strigRegex;
 		Regex       regex;
 
+
+
 		//Cria um objeto JSON a partir de uma String
 		//http://docs.oracle.com/javaee/7/api/javax/json/JsonObject.html
+
+		/** DS2 04-05*/
 		reader = Json.createReader(new StringReader(jsonString));
+		/** DS2 06-07*/
 		json   = reader.readObject();
+		/** DS2 08-09*/
 		reader.close();
 
 		//Recupera o 1o array do objeto JSON,
 		//que contem todos os itens da raiz
+		/** DS2 10-11*/
 		itens = json.getJsonArray("item");
 
 		//Se este array nao existir, levanta uma excecao
@@ -120,12 +127,15 @@ public class Construtor {
 			strigRegex = textoRegex(itens);
 
 			//Valida o texto usando a classe Regex
+			/** DS2 18-31*/
 			regex = new Regex(strigRegex);
+			/** DS2 32-33*/
 			regex.validar();
 
 			//Retorna a instancia da classe Regex, que
 			//contem a expressao e informacoes sobre a
 			//validacao.
+			/** DS2 34*/
 			return regex;
 		}
 	}
@@ -180,6 +190,7 @@ public class Construtor {
 
 			//Recupera o valor da chave "userdata" como
 			//um array de objetos JSON
+			/** DS2 12-13*/
 			userdataArray = node.getJsonArray("userdata");
 
 			if ((userdataArray == null) || (userdataArray.size() < 1))
@@ -247,6 +258,7 @@ public class Construtor {
 	private TraducaoTO nodeData(JsonArray userdata)
 			throws UnrecognisedMetadata, MalformedMetadata {
 
+		/** DS2 14-15*/
 		TraducaoTO  to       = new TraducaoTO();
 		JsonObject  data     = null;
 		String      content  = null;
@@ -264,6 +276,7 @@ public class Construtor {
 
 			//Tenta recuperar valores de algumas chaves deste objeto JSON
 			try {
+				/** DS2 16-17 */
 
 				//Recupera o nome do tipo de dado contido neste objeto JSON
 				dataType = data.getString("name");

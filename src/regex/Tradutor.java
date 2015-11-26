@@ -57,9 +57,11 @@ import regex.transfer.TraducaoTO;
  */
 public class Tradutor extends RegularExpressionEREBaseVisitor<Void> {
 
+
+	/** DS1 19-20 */
+
 	//  ------- VARIAVEIS  -------
 
-	/** ----- DS 19-21 ----- **/
 	/** Objeto que vai armazenar as traducoes individuais dos metodos visit. */
 	private Traducao traducao  = new Traducao();
 
@@ -122,12 +124,10 @@ public class Tradutor extends RegularExpressionEREBaseVisitor<Void> {
 	{
 		//Um objeto de transferencia que contem todas as informacoes
 		//sobre a traducao feita
-		/** ----- DS 31-32 ----- **/
 		TraducaoTO to = populaTraducaoTO(tipoRegra, textoOriginal, textoTraduzido, terminal);
 
 		//Adciona o objeto de tranferencia em uma lista
 		//dentro do objeto Traducao
-		/** ----- DS 33-34 ----- **/
 		traducao.addTraducao(to);
 	}
 
@@ -264,6 +264,7 @@ public class Tradutor extends RegularExpressionEREBaseVisitor<Void> {
 			String      textoTraduzido,
 			boolean     terminal)
 	{
+		/** DS1 29-30 */
 		TraducaoTO to = new TraducaoTO();
 
 		to.setTipoRegra(tipoRegra);
@@ -815,6 +816,8 @@ public class Tradutor extends RegularExpressionEREBaseVisitor<Void> {
 	public Void visitCharacters(CharactersContext ctx) {
 
 		String caracteres = ctx.getText();
+
+		/** DS1 31-32*/
 
 		//Remove todas as barra invertidas, caso essa colecao
 		//tenha caracteres escapados

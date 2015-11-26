@@ -3,7 +3,8 @@ package regex;
 import java.io.IOException;
 
 import org.antlr.v4.gui.Trees;
-import org.antlr.v4.runtime.*;
+import org.antlr.v4.runtime.ANTLRInputStream;
+import org.antlr.v4.runtime.CommonTokenStream;
 
 import generated.RegularExpressionERELexer;
 import generated.RegularExpressionEREParser;
@@ -47,7 +48,7 @@ public class Regex {
 
 	/** Listener de erros do parser. */
 	private ErrorListenerPortugues errorListener;
-	
+
 	/** Mensagem de erro retornada pela validacao caso tenham
 	 * ocorridos erros. */
 	private String errorMessage = "";
@@ -55,7 +56,7 @@ public class Regex {
 	/** Posicao do erro retornada pela validacao caso tenham
 	 * ocorridos erros.*/
 	private String errorPosition = "";
-	
+
 	/** Indica se ocorreram erros durante a analise da expressao. */
 	private boolean expressaoValida;
 
@@ -86,12 +87,14 @@ public class Regex {
 
 	// ----- CONSTRUTOR -----
 
+	/** DS1 03-16 */
+
 	/**
 	 * Construtor que inicializa as variaveis da classe.
 	 *
 	 * @param  input
 	 *  Uma String que contem uma expressao regular
-	 *  
+	 *
 	 * @throws IOException
 	 */
 	public Regex(String input)
@@ -126,29 +129,29 @@ public class Regex {
 			throws IOException {
 
 		//Cria um stream de chars a partir de um texto digitado pelo usuario
-		/** ----- DS 4-5 ----- **/
+		/** ----- DS1 4-5 ----- **/
 		input  = new ANTLRInputStream(regularExpresion);
 
 		//Cria um lexer que recebe o stream de chars
-		/** ----- DS 6-7 ----- **/
+		/** ----- DS1 6-7 ----- **/
 		lexer  = new RegularExpressionERELexer(input);
 
 		//Cria um stream de tokens a partir do lexer
-		/** ----- DS 8-9 ----- **/
+		/** ----- DS1 8-9 ----- **/
 		tokens = new CommonTokenStream(lexer);
 
 		//Cria um parser que recebe o stream de tokens
-		/** ----- DS 10-11 ----- **/
+		/** ----- DS1 10-11 ----- **/
 		parser = new RegularExpressionEREParser(tokens);
 
 		// Troca o Error Listener padrao do parser por um com mensagens em portugues
 		parser.removeErrorListeners();
 
-		/** ----- DS 12-13 ----- **/
+		/** ----- DS1 12-13 ----- **/
 		parser.addErrorListener(new ErrorListenerPortugues());
 
 		// Troca o Error Handler padrao do parser por um com mensagens em portugues
-		/** ----- DS 14-15 ----- **/
+		/** ----- DS1 14-15 ----- **/
 		parser.setErrorHandler(new ErrorHandlerPortugues());
 	}
 
@@ -156,54 +159,58 @@ public class Regex {
 	 * Realiza a análise de estrutura da expressão regular,
 	 * utilizando o parser. Gera uma árvore de análise.
 	 *
-	 * @return 
+	 * @return
 	 *  False se ocorreram erros durante o processo de análise,
 	 *  True caso contrário.
 	 */
 	private void analisar() {
 
+		/** ----- DS1 22-25 ----- **/
+
 		// Realiza a analise de estrutura,
 		//começando pela regra inicial "expression"
-
-		/** ----- DS 22-25 ----- **/
 		parseTreeContext = parser.expression();
+
+
+		/** ----- DS1 26-27 ----- **/
 
 		/**
 		 * Recupera o error listener utilizado pelo parser.
 		 *
 		 * Um parser pode ter mais de um error listener,
 		 * mas no caso só existe um atrelado a ele,
-		 * que é o ErrorListenerPortugues adcionado pelo
+		 * que é o ErrorListenerPortugues adicionado pelo
 		 * metodo Inicializar() desta classe.
 		 *
 		 * Logo, só é necessário recuperar o primeiro
-		 * error listener (primeiro indice incia em 0)
+		 * error listener (primeiro indice inicia em 0)
 		 * e fazer um cast para ErrorListenerPortugues.
 		 */
 
-		/** ----- DS 26-27 ----- **/
 		errorListener =
-			(ErrorListenerPortugues) parser.getErrorListeners().get(0);
+				(ErrorListenerPortugues) parser.getErrorListeners().get(0);
 
 		//Recupera a mensagem de erro armazenada no error lisneter.
 		//Sera uma string vazia se nao ocorreram erros.
 		errorMessage = errorListener.getErrorMessage();
-		
+
 		//Recupera a mensagem indicando a posicao do erro
 		//Sera um string vazia se nao ocorream erros.
 		errorPosition = errorListener.getErrorPosition();
-		
-		//Recupera um valor booleano que indica se a expressao
+
+		//Recupera um valor booleano que indica se
 		//ocorreram erros durante a analize da expressao.
 		expressaoValida = !errorListener.isErro();
 	}
-	
+
 	public boolean validar(){
-		
+
 		analisar();
-		
+
 		return expressaoValida;
 	}
+
+	/** DS1 17-36 */
 
 	/**
 	 * Realiza a traducao da expressao.
@@ -213,21 +220,24 @@ public class Regex {
 	 */
 	public Traducao traduzir(){
 
+		/** DS1 18-21 */
+
 		//Cria uma nova instancia da classe responsavel pela traducao
-		/** ----- DS 18 ----- **/
 		tradutor = new Tradutor();
 
 		//Cria a arvore de análise e retorna um boolean
 		//indicando se ocorreram erros durante o processo.
 		expressaoValida = validar();
 
+
+		/** DS1 28-35 */
+
 		//Cria a traducao da expressao, utilizando a arvore de análise gerada
-		/** ----- DS 30-35 ----- **/
 		traducao = tradutor.traduzir(parseTreeContext);
 
 		//Se ocorreran erros durante a analise, armazena as informacoes dos erros
 		if (!expressaoValida){
-			
+
 			//Popula o objeto traducao com as informacoes de erro
 			traducao.setOcorreuErro(true);
 			traducao.setMensagemErro(errorMessage);
@@ -251,14 +261,14 @@ public class Regex {
 	 * Para testes apenas.
 	 */
 	public void parserTreeGui(){
-		
+
 		analisar();
-		
+
 		// http://stackoverflow.com/questions/29353114/running-antrl-testrig-gui-from-within-a-java-application
-		
+
 		//Versao 4.5 e anteriores
 		//parseTreeContext.inspect(parser);
-		
+
 		//Versao 4.5.1 e superiores
 		Trees.inspect(parseTreeContext, parser);
 
